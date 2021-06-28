@@ -1,0 +1,68 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "FootballContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": "Models\/DataContext",
+   "OutputPath": "Models\/DataContext",
+   "ProjectRootNamespace": "FFM_WIFI",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[League]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Player]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Season]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SeasonLeagueTeam_Assignment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Team]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TeamPlayer_Assignment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[User]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserPlayer_Assignment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Venue]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "desktop-1k1ems6.WIFI_FootballAPI.dbo",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
