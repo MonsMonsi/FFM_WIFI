@@ -17,24 +17,24 @@ namespace FFM_WIFI.ViewModels
     {
         // Properties
         // Properties für Image
-        private BitmapImage clubImage;
+        private BitmapImage _clubImage;
         public BitmapImage ClubImage
         {
-            get { return clubImage; }
+            get { return _clubImage; }
             set
             {
-                clubImage = value;
+                _clubImage = value;
                 OnPropertyChanged("ClubImage");
             }
         }
 
-        private BitmapImage venueImage;
+        private BitmapImage _venueImage;
         public BitmapImage VenueImage
         {
-            get { return venueImage; }
+            get { return _venueImage; }
             set
             {
-                venueImage = value;
+                _venueImage = value;
                 OnPropertyChanged("VenueImage");
             }
         }
@@ -48,25 +48,25 @@ namespace FFM_WIFI.ViewModels
         // Properties für Datagrids
         public ObservableCollection<Team> TeamList { get; set; }
 
-        private Team selectedTeam;
+        private Team _selectedTeam;
         public Team SelectedTeam
         {
-            get { return selectedTeam; }
+            get { return _selectedTeam; }
             set
             {
-                selectedTeam = value;
+                _selectedTeam = value;
                 ShowPlayers();
                 OnPropertyChanged("SelectedTeam");
             }
         }
 
-        private Venue selTeamVenue;
+        private Venue _selTeamVenue;
         public Venue SelTeamVenue
         {
-            get { return selTeamVenue; }
+            get { return _selTeamVenue; }
             set
             {
-                selTeamVenue = value;
+                _selTeamVenue = value;
                 OnPropertyChanged("SelTeamVenue");
             }
         }
@@ -83,15 +83,15 @@ namespace FFM_WIFI.ViewModels
         public EditDatabaseViewModel()
         {
             // Daten initialisieren
-            LeagueList = new ObservableCollection<League>();
-            SeasonList = new ObservableCollection<Season>();
-            TeamList = new ObservableCollection<Team>();
-            PlayerList = new ObservableCollection<Player>();
             SelectedLeague = null;
             SelectedSeason = null;
             // Commands
             ShowClubsCommand = new RelayCommand(ShowClubs);
-            // Listen füllen
+            // Listen initialisieren und füllen
+            LeagueList = new ObservableCollection<League>();
+            SeasonList = new ObservableCollection<Season>();
+            TeamList = new ObservableCollection<Team>();
+            PlayerList = new ObservableCollection<Player>();
             GetLeagueSeason();
         }
 

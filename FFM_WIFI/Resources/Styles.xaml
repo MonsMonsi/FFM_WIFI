@@ -1,0 +1,87 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style BasedOn="{StaticResource {x:Type Button}}"
+           TargetType="{x:Type Button}"
+           x:Key="ButtonLogin">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Background="BlanchedAlmond">
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1">
+                                <TextBlock Text="{TemplateBinding Property=Content}"
+                                       FontSize="14"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Text" Value="Anderer Spieler"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="TextBlockStandard" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="10,0,0,0" />
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Foreground" Value="DarkSlateGray"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="50"/>
+    </Style>
+    
+    <Style BasedOn="{StaticResource {x:Type DataGrid}}"
+           TargetType="{x:Type DataGrid}"
+           x:Key="DatagridPlayers">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGrid">
+                        <Grid HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Background="Linen">
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1">
+                                
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}"
+           x:Key="TextBoxStandard">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Rectangle StrokeThickness="1"/>
+                        <TextBox Margin="1"
+                                 Background="DarkBlue"
+                                 VerticalContentAlignment="Center"
+                                 Padding="5"
+                                 Foreground="#CFCFCF"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -26,13 +26,13 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        private string userPassword;
+        private string _userPassword;
         public string UserPassword
         {
-            get { return userPassword; }
+            get { return _userPassword; }
             set
             {
-                userPassword = value;
+                _userPassword = value;
                 OnPropertyChanged("UserPassword");
             }
         }
@@ -45,15 +45,8 @@ namespace FFM_WIFI.ViewModels
         // Konstruktor
         public StartViewModel()
         {
-            EditDBCommand = new RelayCommand(GoToEditDatabase);
             LoginCommand = new RelayCommand(CheckLogin);
             NewUserCommand = new RelayCommand(CheckNewUser);
-        }
-
-        private void GoToEditDatabase()
-        {
-            EditDatabaseWindow edbWindow = new EditDatabaseWindow();
-            edbWindow.ShowDialog();
         }
 
         private void GoToUserHome(User user)
@@ -95,6 +88,7 @@ namespace FFM_WIFI.ViewModels
                     user.UserPassword = UserPassword;
                     context.User.Add(user);
                     context.SaveChanges();
+                    user.UserPassword = null;
                     GoToUserHome(user);
                 }
                 else

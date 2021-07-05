@@ -15,6 +15,7 @@ namespace FFM_WIFI.Models.DataContext
 
         public int LeaguePk { get; set; }
         public string LeagueName { get; set; }
+        public string LeagueLogo { get; set; }
 
         public virtual ICollection<SeasonLeagueTeamAssignment> SeasonLeagueTeamAssignment { get; set; }
     }

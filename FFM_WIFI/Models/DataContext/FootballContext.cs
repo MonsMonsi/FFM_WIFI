@@ -49,6 +49,10 @@ namespace FFM_WIFI.Models.DataContext
                     .ValueGeneratedNever()
                     .HasColumnName("League_PK");
 
+                entity.Property(e => e.LeagueLogo)
+                    .IsRequired()
+                    .HasColumnName("League_Logo");
+
                 entity.Property(e => e.LeagueName)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -97,8 +101,6 @@ namespace FFM_WIFI.Models.DataContext
                     .IsRequired()
                     .HasMaxLength(15)
                     .HasColumnName("Player_Position");
-
-                entity.Property(e => e.PlayerRatingLastSeason).HasColumnName("Player_RatingLastSeason");
             });
 
             modelBuilder.Entity<Season>(entity =>
@@ -179,7 +181,7 @@ namespace FFM_WIFI.Models.DataContext
 
             modelBuilder.Entity<TeamPlayerAssignment>(entity =>
             {
-                entity.HasKey(e => new { e.TeaPlaTeamFk, e.TeaPlaPlayerFk })
+                entity.HasKey(e => new { e.TeaPlaTeamFk, e.TeaPlaPlayerFk, e.TeaPlaPlayerRating })
                     .HasName("TeaPla_PK");
 
                 entity.ToTable("TeamPlayer_Assignment");
@@ -187,6 +189,8 @@ namespace FFM_WIFI.Models.DataContext
                 entity.Property(e => e.TeaPlaTeamFk).HasColumnName("TeaPla_Team_FK");
 
                 entity.Property(e => e.TeaPlaPlayerFk).HasColumnName("TeaPla_Player_FK");
+
+                entity.Property(e => e.TeaPlaPlayerRating).HasColumnName("TeaPla_PlayerRating");
 
                 entity.HasOne(d => d.TeaPlaPlayerFkNavigation)
                     .WithMany(p => p.TeamPlayerAssignment)
@@ -205,9 +209,7 @@ namespace FFM_WIFI.Models.DataContext
             {
                 entity.HasKey(e => e.UserPk);
 
-                entity.Property(e => e.UserPk)
-                    .ValueGeneratedNever()
-                    .HasColumnName("User_PK");
+                entity.Property(e => e.UserPk).HasColumnName("User_PK");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()

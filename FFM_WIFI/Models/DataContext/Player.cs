@@ -23,7 +23,6 @@ namespace FFM_WIFI.Models.DataContext
         public string PlayerNationality { get; set; }
         public string PlayerHeight { get; set; }
         public string PlayerImage { get; set; }
-        public double? PlayerRatingLastSeason { get; set; }
 
         public virtual ICollection<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
         public virtual ICollection<UserPlayerAssignment> UserPlayerAssignment { get; set; }
