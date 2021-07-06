@@ -25,7 +25,7 @@ namespace FFM_WIFI.Models.DataContext
         public virtual DbSet<Team> Team { get; set; }
         public virtual DbSet<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserPlayerAssignment> UserPlayerAssignment { get; set; }
+        public virtual DbSet<UserTeam> UserTeam { get; set; }
         public virtual DbSet<Venue> Venue { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -222,28 +222,64 @@ namespace FFM_WIFI.Models.DataContext
                     .HasColumnName("User_Password");
             });
 
-            modelBuilder.Entity<UserPlayerAssignment>(entity =>
+            modelBuilder.Entity<UserTeam>(entity =>
             {
-                entity.HasKey(e => new { e.UsePlaUserFk, e.UsePlaPlayerFk })
-                    .HasName("UsePla_PK");
+                entity.HasKey(e => e.UserTeamPk);
 
-                entity.ToTable("UserPlayer_Assignment");
+                entity.Property(e => e.UserTeamPk).HasColumnName("UserTeam_PK");
 
-                entity.Property(e => e.UsePlaUserFk).HasColumnName("UsePla_User_FK");
+                entity.Property(e => e.UserTeamAt1).HasColumnName("UserTeam_AT1");
 
-                entity.Property(e => e.UsePlaPlayerFk).HasColumnName("UsePla_Player_FK");
+                entity.Property(e => e.UserTeamAt2).HasColumnName("UserTeam_AT2");
 
-                entity.HasOne(d => d.UsePlaPlayerFkNavigation)
-                    .WithMany(p => p.UserPlayerAssignment)
-                    .HasForeignKey(d => d.UsePlaPlayerFk)
+                entity.Property(e => e.UserTeamAt3).HasColumnName("UserTeam_AT3");
+
+                entity.Property(e => e.UserTeamAt4).HasColumnName("UserTeam_AT4");
+
+                entity.Property(e => e.UserTeamDf1).HasColumnName("UserTeam_DF1");
+
+                entity.Property(e => e.UserTeamDf2).HasColumnName("UserTeam_DF2");
+
+                entity.Property(e => e.UserTeamDf3).HasColumnName("UserTeam_DF3");
+
+                entity.Property(e => e.UserTeamDf4).HasColumnName("UserTeam_DF4");
+
+                entity.Property(e => e.UserTeamDf5).HasColumnName("UserTeam_DF5");
+
+                entity.Property(e => e.UserTeamGk1).HasColumnName("UserTeam_GK1");
+
+                entity.Property(e => e.UserTeamGk2).HasColumnName("UserTeam_GK2");
+
+                entity.Property(e => e.UserTeamLeague).HasColumnName("UserTeam_League");
+
+                entity.Property(e => e.UserTeamMf1).HasColumnName("UserTeam_MF1");
+
+                entity.Property(e => e.UserTeamMf2).HasColumnName("UserTeam_MF2");
+
+                entity.Property(e => e.UserTeamMf3).HasColumnName("UserTeam_MF3");
+
+                entity.Property(e => e.UserTeamMf4).HasColumnName("UserTeam_MF4");
+
+                entity.Property(e => e.UserTeamMf5).HasColumnName("UserTeam_MF5");
+
+                entity.Property(e => e.UserTeamMf6).HasColumnName("UserTeam_MF6");
+
+                entity.Property(e => e.UserTeamName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("UserTeam_Name");
+
+                entity.Property(e => e.UserTeamNumberPlayers).HasColumnName("UserTeam_NumberPlayers");
+
+                entity.Property(e => e.UserTeamSeason).HasColumnName("UserTeam_Season");
+
+                entity.Property(e => e.UserTeamUserFk).HasColumnName("UserTeam_User_FK");
+
+                entity.HasOne(d => d.UserTeamUserFkNavigation)
+                    .WithMany(p => p.UserTeam)
+                    .HasForeignKey(d => d.UserTeamUserFk)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("UsePla_Player_FK");
-
-                entity.HasOne(d => d.UsePlaUserFkNavigation)
-                    .WithMany(p => p.UserPlayerAssignment)
-                    .HasForeignKey(d => d.UsePlaUserFk)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("UsePla_User_FK");
+                    .HasConstraintName("FK_UserTeam_User");
             });
 
             modelBuilder.Entity<Venue>(entity =>

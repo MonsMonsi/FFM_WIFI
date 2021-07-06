@@ -1,0 +1,67 @@
+﻿<Window x:Class="FFM_WIFI.Views.NewTeamWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FFM_WIFI.Views"
+        mc:Ignorable="d"
+        Title="NewTeamWindow" Height="500" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Namen des Teams"
+                   Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
+                   FontSize="16"/>
+
+        <TextBox Text="{Binding NewTeamName}" 
+                 Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" 
+                 Width="150"/>
+
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <TextBlock Text="Wähle Liga" 
+                       HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" 
+                       FontSize="16" Width="100">
+            </TextBlock>
+
+            <TextBlock Text="Wähle Saison" 
+                       HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" 
+                       FontSize="16" Width="100">
+            </TextBlock>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <ComboBox ItemsSource="{Binding LeagueList}" SelectedItem="{Binding SelectedLeague}" 
+                      HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" 
+                      Width="150">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding LeagueName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <ComboBox ItemsSource="{Binding SeasonList}" SelectedItem="{Binding SelectedSeason}"
+                      HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="0,20,0,0"
+                      Width="150">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding SeasonName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+
+        <Button Content="Team Speichern" Command="{Binding SaveCommand}"
+                Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Height="20" Width="150"/>
+    </Grid>
+</Window>

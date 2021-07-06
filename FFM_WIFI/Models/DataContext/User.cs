@@ -10,13 +10,13 @@ namespace FFM_WIFI.Models.DataContext
     {
         public User()
         {
-            UserPlayerAssignment = new HashSet<UserPlayerAssignment>();
+            UserTeam = new HashSet<UserTeam>();
         }
 
         public int UserPk { get; set; }
         public string UserName { get; set; }
         public string UserPassword { get; set; }
 
-        public virtual ICollection<UserPlayerAssignment> UserPlayerAssignment { get; set; }
+        public virtual ICollection<UserTeam> UserTeam { get; set; }
     }
 }

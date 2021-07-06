@@ -37,6 +37,9 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
+        // Attribute
+        private User _user;
+
         // Commands
         public ICommand EditDBCommand { get; set; }
         public ICommand LoginCommand { get; set; }
@@ -49,9 +52,9 @@ namespace FFM_WIFI.ViewModels
             NewUserCommand = new RelayCommand(CheckNewUser);
         }
 
-        private void GoToUserHome(User user)
+        private void GoToUserHome()
         {
-            UserHomeWindow uhWindow = new UserHomeWindow(user);
+            UserHomeWindow uhWindow = new UserHomeWindow(_user);
             uhWindow.ShowDialog();
         }
 
@@ -63,16 +66,15 @@ namespace FFM_WIFI.ViewModels
 
                 if (existingUser != null)
                 {
-                    User user = new User();
-                    user.UserName = existingUser.UserName;
-                    GoToUserHome(user);
+                    _user = existingUser;
+                    GoToUserHome();
                 }
                 else
                 {
                     MessageBox.Show("Benutzer nicht gefunden!");
                 }
             }
-            
+
         }
 
         private void CheckNewUser()
@@ -87,9 +89,15 @@ namespace FFM_WIFI.ViewModels
                     user.UserName = UserName;
                     user.UserPassword = UserPassword;
                     context.User.Add(user);
+                    _user = user;
                     context.SaveChanges();
-                    user.UserPassword = null;
-                    GoToUserHome(user);
+
+                    UserTeam team = new UserTeam();
+                    team.UserTeamName = $"newTeam-User{user.UserName}";
+                    team.UserTeamUserFk = user.UserPk;
+                    context.UserTeam.Add(team);
+                    context.SaveChanges();
+                    GoToUserHome();
                 }
                 else
                 {

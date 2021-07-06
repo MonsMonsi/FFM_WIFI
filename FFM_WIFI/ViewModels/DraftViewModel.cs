@@ -24,68 +24,36 @@ namespace FFM_WIFI.ViewModels
     {
         // Properties für User
         // Datenstruktur überdenken
-        private User _user1;
-        public User User1
+        private UserTeam _userTeam;
+        public UserTeam UserTeam
         {
-            get { return _user1; }
+            get { return _userTeam; }
             set
             {
-                _user1 = value;
-                OnPropertyChanged("User1");
+                _userTeam = value;
+                OnPropertyChanged("UserTeam");
             }
         }
 
-        private User _user2;
-        public User User2
+        private Player[] _teamUser;
+        public Player[] TeamUser
         {
-            get { return _user2; }
+            get { return _teamUser; }
             set
             {
-                _user2 = value;
-                OnPropertyChanged("User2");
-            }
-        }
-
-        private Player[] _teamUser1;
-        public Player[] TeamUser1
-        {
-            get { return _teamUser1; }
-            set
-            {
-                _teamUser1 = value;
-            }
-        }
-
-        private Player[] _teamUser2;
-        public Player[] TeamUser2
-        {
-            get { return _teamUser2; }
-            set
-            {
-                _teamUser2 = value;
+                _teamUser = value;
             }
         }
 
         // Properties für TextBlock
-        private string _draftTextUser1;
-        public string DraftTextUser1
+        private string _draftText;
+        public string DraftText
         {
-            get { return _draftTextUser1; }
+            get { return _draftText; }
             set
             {
-                _draftTextUser1 = value;
-                OnPropertyChanged("DraftTextUser1");
-            }
-        }
-
-        private string _draftTextUser2;
-        public string DraftTextUser2
-        {
-            get { return _draftTextUser2; }
-            set
-            {
-                _draftTextUser2 = value;
-                OnPropertyChanged("DraftTextUser2");
+                _draftText = value;
+                OnPropertyChanged("DraftText");
             }
         }
 
@@ -99,46 +67,39 @@ namespace FFM_WIFI.ViewModels
             {
                 _selectedPlayer = value;
                 OnPropertyChanged("SelectedPlayer");
+                _draft.RaiseCanExecuteChanged();
             }
         }
 
         // Attribute
-        private int _indexUser1;
-        private int _indexUser2;
-        private bool _turnUser1;
-        private bool _turnUser2;
-        private League _league;
         private Season _season;
+        private League _league;
         private string _position;
         private bool _positionChanged;
         private int _draftCount;
+        private Window _window;
 
         // Commands
-        private RelayCommand _draftUser1;
-        public ICommand DraftUser1Command { get { return _draftUser1; } }
-        private RelayCommand _draftUser2;
-        public ICommand DraftUser2Command { get { return _draftUser2; } }
+        private RelayCommand _draft;
+        public ICommand DraftCommand { get { return _draft; } }
+        private RelayCommand _save;
+        public ICommand SaveCommand { get { return _save; } }
 
         // Konstruktor
-        public DraftViewModel(Window window, User user1, User user2, League league, Season season)
+        public DraftViewModel(Window window, UserTeam userTeam)
         {
-            SetTurns();
             // Attribute setzen
-            _user1 = user1;
-            _user2 = user2;
-            _indexUser1 = 0;
-            _indexUser2 = 0;
-            _league = league;
-            _season = season;
+            _window = window;
+            _userTeam = userTeam;
             _draftCount = 0;
             _position = "Goalkeeper";
             _positionChanged = false;
+            SetSeasonLeague();
             // Commands
-            _draftUser1 = new RelayCommand(DraftPlayer, () => _turnUser1);
-            _draftUser2 = new RelayCommand(DraftPlayer, () => _turnUser2);
+            _draft = new RelayCommand(DraftPlayer, () => SelectedPlayer != null && _draftCount != 17);
+            _save = new RelayCommand(SetUserTeam, () => _draftCount > 16);
             // Listen initialisieren
-            _teamUser1 = new Player[11];
-            _teamUser2 = new Player[11];
+            _teamUser = new Player[17];
             PlayerList = new ObservableCollection<Player>();
             ShowPlayers();
             SetDraftText();
@@ -149,48 +110,83 @@ namespace FFM_WIFI.ViewModels
         // 2: Neustart Button
         // 3: Marktwerte ausgeben und Maximalbudget hinzufügen
 
-        private void GoToGameHome()
+        private void GoToUserHome(User user)
         {
-            GameHomeWindow ghWindow = new GameHomeWindow(_user1, _user2, _teamUser1, _teamUser2, _season, _league);
-            ghWindow.ShowDialog();
+            UserHomeWindow uhWindow = new UserHomeWindow(user);
+            uhWindow.ShowDialog();
+            
+        }
+
+        private void SetUserTeam()
+        {
+            // Player PK hinterlegen
+            UserTeam.UserTeamGk1 = _teamUser[0].PlayerPk;
+            UserTeam.UserTeamDf1 = _teamUser[1].PlayerPk;
+            UserTeam.UserTeamDf2 = _teamUser[2].PlayerPk;
+            UserTeam.UserTeamDf3 = _teamUser[3].PlayerPk;
+            UserTeam.UserTeamDf4 = _teamUser[4].PlayerPk;
+            UserTeam.UserTeamMf1 = _teamUser[5].PlayerPk;
+            UserTeam.UserTeamMf2 = _teamUser[6].PlayerPk;
+            UserTeam.UserTeamMf3 = _teamUser[7].PlayerPk;
+            UserTeam.UserTeamMf4 = _teamUser[8].PlayerPk;
+            UserTeam.UserTeamAt1 = _teamUser[9].PlayerPk;
+            UserTeam.UserTeamAt2 = _teamUser[10].PlayerPk;
+            UserTeam.UserTeamGk2 = _teamUser[11].PlayerPk;
+            UserTeam.UserTeamDf5 = _teamUser[12].PlayerPk;
+            UserTeam.UserTeamMf5 = _teamUser[13].PlayerPk;
+            UserTeam.UserTeamMf6 = _teamUser[14].PlayerPk;
+            UserTeam.UserTeamAt3 = _teamUser[15].PlayerPk;
+            UserTeam.UserTeamAt4 = _teamUser[16].PlayerPk;
+            UserTeam.UserTeamNumberPlayers = 17;
+
+            using (FootballContext context = new FootballContext())
+            {
+                var userTeam = context.UserTeam.Where(u => u.UserTeamUserFk == UserTeam.UserTeamUserFkNavigation.UserPk).Include(u => u.UserTeamUserFkNavigation).FirstOrDefault();
+
+                if (userTeam != null)
+                {
+                    userTeam = UserTeam;
+                    userTeam.UserTeamGk1 = _teamUser[0].PlayerPk;
+                    userTeam.UserTeamDf1 = _teamUser[1].PlayerPk;
+                }
+
+                var user = context.User.Where(u => u.UserPk == UserTeam.UserTeamUserFkNavigation.UserPk).FirstOrDefault();
+
+                context.SaveChanges();
+                GoToUserHome(user);
+            }
         }
 
         private void DraftPlayer()
         {
             if (SelectedPlayer != null)
             {
-                _draftCount++;
-                SetTurns();
                 SetPosition();
                 SetDraftText();
-                if (_turnUser1)
+                _teamUser[_draftCount] = _selectedPlayer;
+                OnPropertyChanged("TeamUser");
+                PlayerList.Remove(_selectedPlayer);
+                _draftCount++;
+
+                if (_draftCount == 17)
                 {
-                    Player temp = new Player();
-                    temp = _selectedPlayer;
-                    _teamUser2[_indexUser2] = temp;
-                    OnPropertyChanged("TeamUser2");
-                    PlayerList.Remove(_selectedPlayer);
-                    _indexUser2++;
-                    _draftUser1.RaiseCanExecuteChanged();
-                    _draftUser2.RaiseCanExecuteChanged();
+                    _draft.RaiseCanExecuteChanged();
+                    _save.RaiseCanExecuteChanged();
                 }
-                if (_turnUser2)
-                {
-                    Player temp = new Player();
-                    temp = _selectedPlayer;
-                    _teamUser1[_indexUser1] = temp;
-                    OnPropertyChanged("TeamUser1");
-                    PlayerList.Remove(_selectedPlayer);
-                    _indexUser1++;
-                    _draftUser1.RaiseCanExecuteChanged();
-                    _draftUser2.RaiseCanExecuteChanged();
-                }
-                if (_draftCount == 22)
-                {
-                    GoToGameHome();
-                    // Draft schöner abschließen, z.B. kleine Zusammenfassung 
-                }
+
                 ShowPlayers();
+            }
+        }
+
+        private void SetSeasonLeague()
+        {
+            using (FootballContext context = new FootballContext())
+            {
+                var season = context.Season.Where(s => s.SeasonPk == _userTeam.UserTeamSeason).FirstOrDefault();
+                var league = context.League.Where(l => l.LeaguePk == _userTeam.UserTeamLeague).FirstOrDefault();
+
+                _season = season;
+                _league = league;
             }
         }
 
@@ -202,15 +198,31 @@ namespace FFM_WIFI.ViewModels
                     _position = "Goalkeeper";
                     _positionChanged = true;
                     break;
-                case 2:
+                case 1:
                     _position = "Defender";
                     _positionChanged = true;
                     break;
-                case 10:
+                case 5:
                     _position = "Midfielder";
                     _positionChanged = true;
                     break;
-                case 18:
+                case 9:
+                    _position = "Attacker";
+                    _positionChanged = true;
+                    break;
+                case 11:
+                    _position = "Goalkeeper";
+                    _positionChanged = true;
+                    break;
+                case 12:
+                    _position = "Defender";
+                    _positionChanged = true;
+                    break;
+                case 13:
+                    _position = "Midfielder";
+                    _positionChanged = true;
+                    break;
+                case 15:
                     _position = "Attacker";
                     _positionChanged = true;
                     break;
@@ -218,7 +230,7 @@ namespace FFM_WIFI.ViewModels
         }
 
         private void ShowPlayers()
-        { 
+        {
             SetPosition();
             if (_positionChanged)
             {
@@ -240,30 +252,8 @@ namespace FFM_WIFI.ViewModels
 
         private void SetDraftText()
         {
-            if (_turnUser1)
-            {
-                DraftTextUser1 = $"{User1.UserName}, bitte wähle einen {_position}!\nDu hast noch {11 - _indexUser1} Drafts";
-                DraftTextUser2 = "Anderer Spieler wählt!";
-            }
-            else
-            {
-                DraftTextUser2 = $"{User2.UserName}, bitte wähle einen {_position}!\nDu hast noch {11 - _indexUser2} Drafts";
-                DraftTextUser1 = "Anderer Spieler wählt!";
-            }
-        }
-
-        private void SetTurns()
-        {
-            if (_draftCount % 2 == 0)
-            {
-                _turnUser1 = true;
-                _turnUser2 = false;
-            }
-            if (_draftCount % 2 == 1)
-            {
-                _turnUser2 = true;
-                _turnUser1 = false;
-            }
+            DraftText = $"{UserTeam.UserTeamUserFkNavigation.UserName}, bitte wähle einen {_position}!\nDu hast noch {17 - _draftCount} Drafts";
+            
         }
     }
 }

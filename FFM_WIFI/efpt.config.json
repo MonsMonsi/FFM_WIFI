@@ -42,7 +42,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserPlayer_Assignment]",
+         "Name": "[dbo].[UserTeam]",
          "ObjectType": 0
       },
       {

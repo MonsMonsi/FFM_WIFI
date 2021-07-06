@@ -8,8 +8,9 @@
         Title="UserHomeWindow" Height="700" Width="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="149*"/>
-            <RowDefinition Height="436*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="324"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -22,49 +23,81 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" FontSize="20">
+        <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0"
+                   FontSize="20" Height="26" Width="0">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}Hallo {0}!">
-                    <Binding Path="User1.UserName"/>
+                    <Binding Path="User.UserName"/>
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
-        <Label Content="Statistiken"
-                       Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20" Height="37" Width="100"/>
-        <GroupBox Header="Neues Spiel" Grid.Column="0" Grid.Row="1" Height="250" VerticalAlignment="Top" Margin="0,0,0,0">
+
+        <GroupBox Header="Team wählen" Grid.Column="0" Grid.Row="1">
             <StackPanel>
-                <Label Content="Liga:" 
-                           HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="0,10,0,0"/>
-                <ComboBox ItemsSource="{Binding LeagueList}" SelectedItem="{Binding SelectedLeague}" 
-                          HorizontalAlignment="Center" Margin="0,0,0,0" Width="200" VerticalAlignment="Top">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding LeagueName}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Label Content="Saison:" 
-                           HorizontalAlignment="Center" VerticalAlignment="Top" Width="200"/>
-                <ComboBox ItemsSource="{Binding SeasonList}" SelectedItem="{Binding SelectedSeason}"
-                          HorizontalAlignment="Center" Margin="0,0,0,0" Width="200" VerticalAlignment="Top">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding SeasonName}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Content="Gegen KI" Command="{Binding LoginCommand}"
+                <Button Content="Neues Team" Command="{Binding NewTeamCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
-                <Button Content="Gegen anderen Spieler" Command="{Binding LoginCommand}"
+                <Button Content="Team wählen" Command="{Binding ShowTeamCommand}"
                         Margin="0,10,0,0" Height="20" Width="200"/>
+                <DataGrid ItemsSource="{Binding UserTeamList}" SelectedItem="{Binding SelectedUserTeam}"
+                          AutoGenerateColumns="False"
+                          Margin="0,20,0,0" Height="150" Width="200">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding UserTeamName}" Header="Teamname" 
+                                            Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Datenbank" Grid.Column="0" Grid.Row="1" Height="150" VerticalAlignment="Bottom" Margin="0,0,0,20">
+
+        <GroupBox Header="Neues Spiel" Grid.Column="0" Grid.Row="2" Height="250" VerticalAlignment="Center">
             <StackPanel>
-                <Button Content="Bearbeiten" Command="{Binding EditDBCommand}"
+                <Button Content="Saison spielen"
                         Margin="0,40,0,0" Height="20" Width="200"/>
-                <Button Content="Erweitern"
-                        Margin="0,10,0,0" Height="20" Width="200"/>
+            </StackPanel>
+        </GroupBox>
+
+        <TextBlock Text="{Binding SelectedUserTeam.UserTeamName}"
+                   Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" 
+                   FontSize="20" Height="26" Width="0"/>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"
+                   FontSize="20" Height="27" Width="0">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} - {1}">
+                    <Binding Path="SelectedUserTeam.UserTeamLeague"/>
+                    <Binding Path="SelectedUserTeam.UserTeamSeason"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+
+        <DataGrid ItemsSource="{Binding UserPlayerList}"
+                  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                  AutoGenerateColumns="False" Height="250">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Pos"
+                                    Width="70" Binding="{Binding PlayerPosition}"/>
+                <DataGridTemplateColumn Header="Spielername" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="PlayerFirstName" />
+                                        <Binding Path="PlayerLastName" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+
+        <GroupBox Header="Teamoptionen" Grid.Column="1" Grid.Row="2" Height="250" VerticalAlignment="Center">
+            <StackPanel>
+                <Button Content="Team draften" Command="{Binding DraftCommand}"
+                        Margin="0,40,0,0" Height="20" Width="200"/>
             </StackPanel>
         </GroupBox>
     </Grid>

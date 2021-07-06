@@ -17,16 +17,16 @@ using System.Windows.Shapes;
 namespace FFM_WIFI.Views
 {
     /// <summary>
-    /// Interaction logic for LoginWindow.xaml
+    /// Interaction logic for DraftWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class DraftWindowOld : Window
     {
-        private LoginViewModel lvm;
-        public LoginWindow(User user = null, League league = null, Season season = null)
+        private DraftViewModelOld dvm;
+        public DraftWindowOld(User user1 = null, User user2 = null, League league = null, Season season = null)
         {
             InitializeComponent();
-            lvm = new LoginViewModel(this, user, league, season);
-            this.DataContext = lvm;
+            dvm = new DraftViewModelOld(this, user1, user2, league, season);
+            this.DataContext = dvm;
         }
     }
 }

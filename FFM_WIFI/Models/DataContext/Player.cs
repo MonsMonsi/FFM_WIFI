@@ -11,7 +11,6 @@ namespace FFM_WIFI.Models.DataContext
         public Player()
         {
             TeamPlayerAssignment = new HashSet<TeamPlayerAssignment>();
-            UserPlayerAssignment = new HashSet<UserPlayerAssignment>();
         }
 
         public int PlayerPk { get; set; }
@@ -25,6 +24,5 @@ namespace FFM_WIFI.Models.DataContext
         public string PlayerImage { get; set; }
 
         public virtual ICollection<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
-        public virtual ICollection<UserPlayerAssignment> UserPlayerAssignment { get; set; }
     }
 }

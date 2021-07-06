@@ -1,6 +1,7 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
 using FFM_WIFI.Views;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,16 +15,31 @@ namespace FFM_WIFI.ViewModels
     class UserHomeViewModel : BaseViewModel
     {
         // Properties für User
-        private User _user1;
-        public User User1 
+        private User _user;
+        public User User 
         { 
-            get { return _user1; }
+            get { return _user; }
             set
             {
-                _user1 = value;
-                OnPropertyChanged("User1");
+                _user = value;
+                OnPropertyChanged("User");
             }
         }
+
+        // Property für Team Datagrids
+        public ObservableCollection<UserTeam> UserTeamList { get; set; }
+        private UserTeam _selectedUserTeam;
+        public UserTeam SelectedUserTeam
+        {
+            get { return _selectedUserTeam; }
+            set
+            {
+                _selectedUserTeam = value;
+                ShowUserPlayer();
+                OnPropertyChanged("SelectedUserTeam");
+            }
+        }
+        public ObservableCollection<Player> UserPlayerList { get; set; }
 
         // Properties für Combobox
         public ObservableCollection<League> LeagueList { get; set; }
@@ -35,8 +51,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedLeague = value;
-                _login.RaiseCanExecuteChanged();
-                // OnPropertyChanged("SelectedLeague");
+                OnPropertyChanged("SelectedLeague");
             }
         }
 
@@ -48,18 +63,18 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedSeason = value;
-                _login.RaiseCanExecuteChanged();
-                // OnPropertyChanged("SelectedSeason");
+                OnPropertyChanged("SelectedSeason");
             }
         }
 
         // Attribute
+        private UserTeam _userTeam;
 
         // Commands
-        public ICommand EditDBCommand { get; set; }
+        public ICommand NewTeamCommand { get; set; }
 
-        protected RelayCommand _login;
-        public ICommand LoginCommand { get { return _login; } }
+        private RelayCommand _draft;
+        public ICommand DraftCommand { get { return _draft; } }
             
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
@@ -68,26 +83,78 @@ namespace FFM_WIFI.ViewModels
             _selectedLeague = null;
             _selectedSeason = null;
             // Commands
-            EditDBCommand = new RelayCommand(GoToEditDatabase);
-            _login = new RelayCommand(GoToLogin, () => SelectedLeague != null && SelectedSeason != null);
+            //EditDBCommand = new RelayCommand(GoToEditDatabase);
+            NewTeamCommand = new RelayCommand(GoToNewTeam);
+            _draft = new RelayCommand(GoToDraft, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers != 17);
             // User
-            User1 = user;
+            _user = user;
+            _userTeam = null;
             // Listen initialisieren und füllen
+            UserTeamList = new ObservableCollection<UserTeam>();
+            UserPlayerList = new ObservableCollection<Player>();
             SeasonList = new ObservableCollection<Season>();
             LeagueList = new ObservableCollection<League>();
+            GetUserTeam();
             GetLeagueSeason();
         }
 
-        private void GoToEditDatabase()
+        private void GoToNewTeam()
         {
-            EditDatabaseWindow edbWindow = new EditDatabaseWindow();
-            edbWindow.ShowDialog();
+            NewTeamWindow ntwindow = new NewTeamWindow(_user);
+            ntwindow.ShowDialog();
         }
 
-        private void GoToLogin()
+        private void GoToDraft()
         {
-            LoginWindow lWindow = new LoginWindow(User1, SelectedLeague, SelectedSeason);
-            lWindow.ShowDialog();
+            DraftWindow dWindow = new DraftWindow(_userTeam);
+            dWindow.ShowDialog();
+
+        }
+
+        private void ShowUserPlayer()
+        {
+            using (FootballContext context = new FootballContext())
+            {
+                _userTeam = SelectedUserTeam;
+                _draft.RaiseCanExecuteChanged();
+
+                int?[] players = new int?[]
+                {
+                    SelectedUserTeam.UserTeamGk1, SelectedUserTeam.UserTeamDf1, SelectedUserTeam.UserTeamDf2, SelectedUserTeam.UserTeamDf3, SelectedUserTeam.UserTeamDf4, SelectedUserTeam.UserTeamMf1,
+                    SelectedUserTeam.UserTeamMf2, SelectedUserTeam.UserTeamMf3, SelectedUserTeam.UserTeamMf4, SelectedUserTeam.UserTeamAt1, SelectedUserTeam.UserTeamAt2, SelectedUserTeam.UserTeamGk2,
+                    SelectedUserTeam.UserTeamDf5, SelectedUserTeam.UserTeamMf5, SelectedUserTeam.UserTeamMf6, SelectedUserTeam.UserTeamAt3, SelectedUserTeam.UserTeamAt4
+                };
+
+                // UserPlayerList.Clear();
+                foreach (var p in players)
+                {
+                    if (p != null)
+                    {
+                        var player = context.Player.Where(pl => pl.PlayerPk == p).FirstOrDefault();
+                        UserPlayerList.Add(player);
+                    }
+                }
+            }
+        }
+
+        private void GetUserTeam()
+        {
+            using (FootballContext context = new FootballContext())
+            {
+                UserTeamList.Clear();
+                var userTeam = context.UserTeam.Where(t => t.UserTeamUserFk == _user.UserPk).Include(t => t.UserTeamUserFkNavigation).FirstOrDefault();
+
+                if (userTeam != null && userTeam.UserTeamName != $"newTeam-User{_user.UserName}")
+                {
+                    UserTeamList.Add(userTeam);
+                }
+                else
+                {
+                    UserTeam temp = new UserTeam();
+                    temp.UserTeamName = "Keine Teams gefunden!";
+                    UserTeamList.Add(temp);
+                }
+            }
         }
 
         private void GetLeagueSeason()
@@ -112,5 +179,13 @@ namespace FFM_WIFI.ViewModels
                 }
             }
         }
+
+        // Zugang zur Datenbank
+        //private void GoToEditDatabase()
+        //{
+        //    EditDatabaseWindow edbWindow = new EditDatabaseWindow();
+        //    edbWindow.ShowDialog();
+        //}
+
     }
 }
