@@ -1,74 +1,141 @@
-﻿using FFM_WIFI.Models.DataContext;
+﻿using FFM_WIFI.Commands;
+using FFM_WIFI.Models.DataContext;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace FFM_WIFI.ViewModels
 {
     class GameHomeViewModel : BaseViewModel
     {
         // Properties für User
-        private User _user1;
-        public User User1
+        private UserTeam _userTeam;
+        public UserTeam UserTeam
         {
-            get { return _user1; }
+            get { return _userTeam; }
             set
             {
-                _user1 = value;
-                OnPropertyChanged("User1");
+                _userTeam = value;
+                OnPropertyChanged("UserTeam");
             }
         }
 
-        private User _user2;
-        public User User2
+        // Properties für Datagrids
+        public ObservableCollection<Player> SubstitutionList { get; set; }
+        private Player _selectedSubstitution;
+        public Player SelectedSubstitution
         {
-            get { return _user2; }
+            get { return _selectedSubstitution; }
             set
             {
-                _user2 = value;
-                OnPropertyChanged("User2");
+                _selectedSubstitution = value;
+                OnPropertyChanged("SelectedSubstitution");
             }
         }
 
-        private Player[] _teamUser1;
-        public Player[] TeamUser1
+        // Property für Canvas
+        private Player[] _lineUp;
+        public Player[] LineUp
         {
-            get { return _teamUser1; }
+            get { return _lineUp; }
             set
             {
-                _teamUser1 = value;
-                OnPropertyChanged("TeamUser1");
+                _lineUp = value;
             }
         }
 
-        private Player[] _teamUser2;
-        public Player[] TeamUser2
-        {
-            get { return _teamUser2; }
-            set
-            {
-                _teamUser2 = value;
-                OnPropertyChanged("TeamUser2");
-            }
-        }
+        private RelayCommand<object> _sub;
+        public ICommand SubCommand { get { return _sub; } }
 
         // Attribute
-        private Season _season;
-        private League _league;
 
         // Konstruktor
-        public GameHomeViewModel(Window window, User user1, User user2, Player[] teamUser1, Player[] teamUser2, Season season, League league)
+        public GameHomeViewModel(Window window, User user)
         {
-            // Attribute setzen
-            _user1 = user1;
-            _user2 = user2;
-            _teamUser1 = teamUser1;
-            _teamUser2 = teamUser2;
-            _season = season;
-            _league = league;
+            // Property setzen
+            GetUserTeam(user);
+            // Commands
+
+            _sub = new RelayCommand<object>(SubPlayer);
+            // Listen initialisieren
+            LineUp = new Player[11];
+            
+            SubstitutionList = new ObservableCollection<Player>();
+            SetUserPlayer();
+        }
+
+        private void SubPlayer (object position)
+        {
+            if (position != null)
+            {
+                string p = position.ToString();
+                int index = int.Parse(p);
+
+                Player temp = new Player();
+                if (LineUp[index] != null)
+                {
+                    temp = LineUp[index];
+                    LineUp[index] = null;
+                    OnPropertyChanged("LineUp");
+                }
+
+                if (temp != null)
+                {
+                    SubstitutionList.Add(temp);
+                }
+            }
+        }
+
+        private void GetUserTeam(User user)
+        {
+            using (FootballContext context = new FootballContext())
+            {
+                var userTeam = context.UserTeam.Where(u => u.UserTeamUserFk == user.UserPk).FirstOrDefault();
+
+                if (userTeam != null)
+                {
+                    UserTeam = userTeam;
+                }
+            }
+        }
+
+        private void SetUserPlayer()
+        {
+            using (FootballContext context = new FootballContext())
+            {
+                int?[] players = new int?[]
+                {
+                    UserTeam.UserTeamGk1, UserTeam.UserTeamDf1, UserTeam.UserTeamDf2, UserTeam.UserTeamDf3, UserTeam.UserTeamDf4, UserTeam.UserTeamMf1,
+                    UserTeam.UserTeamMf2, UserTeam.UserTeamMf3, UserTeam.UserTeamMf4, UserTeam.UserTeamAt1, UserTeam.UserTeamAt2, UserTeam.UserTeamGk2,
+                    UserTeam.UserTeamDf5, UserTeam.UserTeamMf5, UserTeam.UserTeamMf6, UserTeam.UserTeamAt3, UserTeam.UserTeamAt4
+                };
+
+                for (int i = 0; i < 11; i++)
+                {
+                    if (players[i] != null)
+                    {
+                        var player = context.Player.Where(pl => pl.PlayerPk == players[i]).FirstOrDefault();
+                        LineUp[i] = player;
+                    }
+                }
+                OnPropertyChanged("LineUp");
+
+                SubstitutionList.Clear();
+                for (int i = 11; i < 17; i++)
+                {
+                    if (players[i] != null)
+                    {
+                        var player = context.Player.Where(pl => pl.PlayerPk == players[i]).FirstOrDefault();
+                        SubstitutionList.Add(player);
+                    }
+                }
+            }
         }
     }
 }

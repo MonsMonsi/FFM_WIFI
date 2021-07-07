@@ -36,8 +36,6 @@
             <StackPanel>
                 <Button Content="Neues Team" Command="{Binding NewTeamCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
-                <Button Content="Team wählen" Command="{Binding ShowTeamCommand}"
-                        Margin="0,10,0,0" Height="20" Width="200"/>
                 <DataGrid ItemsSource="{Binding UserTeamList}" SelectedItem="{Binding SelectedUserTeam}"
                           AutoGenerateColumns="False"
                           Margin="0,20,0,0" Height="150" Width="200">
@@ -51,7 +49,7 @@
 
         <GroupBox Header="Neues Spiel" Grid.Column="0" Grid.Row="2" Height="250" VerticalAlignment="Center">
             <StackPanel>
-                <Button Content="Saison spielen"
+                <Button Content="Saison spielen" Command="{Binding GameCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
             </StackPanel>
         </GroupBox>

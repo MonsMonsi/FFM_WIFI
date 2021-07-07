@@ -7,36 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800">
     <Grid>
-        <Canvas Height="600" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" Background="LightGreen">
-            <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="0" X2="100" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="300" Y1="0" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="100" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="600" X2="100" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Line X1="300" Y1="600" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Image Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Top="125" Canvas.Left="100" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Top="125" Canvas.Right="100" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Top="235" Canvas.Right="160" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Top="345" Canvas.Right="160" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Top="265" Canvas.Right="40" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Top="265" Canvas.Left="40" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="135" Canvas.Left="20" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="135" Canvas.Right="20" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="115" Canvas.Right="110" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="115" Canvas.Left="110" Content="{Binding Name}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Source="{Binding Image}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="5" Canvas.Right="160" Content="{Binding Name}"/>
-        </Canvas>
+        <Button Command="{Binding Test}" CommandParameter="0" 
+                        Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Background="Transparent">
+            <Image Source="{Binding Image}"/>
+        </Button>
     </Grid>
 </Window>

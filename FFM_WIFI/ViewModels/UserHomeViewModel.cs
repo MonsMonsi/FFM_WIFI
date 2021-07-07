@@ -35,6 +35,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedUserTeam = value;
+                UserPlayerList.Clear();
                 ShowUserPlayer();
                 OnPropertyChanged("SelectedUserTeam");
             }
@@ -75,7 +76,9 @@ namespace FFM_WIFI.ViewModels
 
         private RelayCommand _draft;
         public ICommand DraftCommand { get { return _draft; } }
-            
+        private RelayCommand _game;
+        public ICommand GameCommand { get { return _game; } }
+
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
         {
@@ -85,9 +88,10 @@ namespace FFM_WIFI.ViewModels
             // Commands
             //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
-            _draft = new RelayCommand(GoToDraft, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers != 17);
+            _draft = new RelayCommand(GoToDraft, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers != 17 && SelectedUserTeam.UserTeamName != "Keine Teams gefunden!");
+            _game = new RelayCommand(GoToGame, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers == 17 && SelectedUserTeam.UserTeamName != "Keine Teams gefunden!");
             // User
-            _user = user;
+            User = user;
             _userTeam = null;
             // Listen initialisieren und füllen
             UserTeamList = new ObservableCollection<UserTeam>();
@@ -111,12 +115,19 @@ namespace FFM_WIFI.ViewModels
 
         }
 
+        private void GoToGame()
+        {
+            GameHomeWindow ghWindow = new GameHomeWindow(_user);
+            ghWindow.ShowDialog();
+        }
+
         private void ShowUserPlayer()
         {
             using (FootballContext context = new FootballContext())
             {
                 _userTeam = SelectedUserTeam;
                 _draft.RaiseCanExecuteChanged();
+                _game.RaiseCanExecuteChanged();
 
                 int?[] players = new int?[]
                 {
@@ -142,11 +153,14 @@ namespace FFM_WIFI.ViewModels
             using (FootballContext context = new FootballContext())
             {
                 UserTeamList.Clear();
-                var userTeam = context.UserTeam.Where(t => t.UserTeamUserFk == _user.UserPk).Include(t => t.UserTeamUserFkNavigation).FirstOrDefault();
+                var userTeam = context.UserTeam.Where(t => t.UserTeamUserFk == _user.UserPk).Include(t => t.UserTeamUserFkNavigation);
 
-                if (userTeam != null && userTeam.UserTeamName != $"newTeam-User{_user.UserName}")
+                if (userTeam != null)
                 {
-                    UserTeamList.Add(userTeam);
+                    foreach (var u in userTeam)
+                    {
+                            UserTeamList.Add(u);
+                    }
                 }
                 else
                 {

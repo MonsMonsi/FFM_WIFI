@@ -7,54 +7,45 @@ using System.Windows.Input;
 
 namespace Test.Commands
 {
-    // Command hat 2 Eigenschaften:
-    // 1) delegate für eine Methode: hier wird eine Methode aus dem ViewModel registriert, die beim Aufruf des Commands aufgerufen werden soll
-    // 2) boolsche Eigenschaft, ob ein Button aktiviert oder nicht aktiviert ist
-    class RelayCommand : ICommand
+    public class RelayCommand<T> : ICommand
+
     {
-        // Attribute
-        private Action m_execute; // s. 1)
-        private Func<bool> m_canExecute; // s. 2)
+        readonly Action<T> _execute = null;
+        readonly Predicate<T> _canExecute = null;
 
-        public event EventHandler CanExecuteChanged;
-
-        // Konstruktoren:
-        // Konstruktor für Buttons, die immer aktiv sind
-        public RelayCommand(Action execute)
+        public RelayCommand(Action<T> execute) : this(execute, null)
         {
-            // Abspeichern einer Methode im delegate
-            m_execute = execute;
-            m_canExecute = null;
+
         }
 
-        // Konstruktor für Buttons, die eine aktiv/nicht aktiv Logik haben
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            // Abspeichern einer Methode im delegate
-            m_execute = execute;
-            m_canExecute = canExecute;
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            if (m_canExecute == null)
-                return true;
-            else
-                return m_canExecute();
+            return _canExecute == null ? true : _canExecute((T)parameter);
+        }
+
+
+
+
+        public event EventHandler CanExecuteChanged
+        {
+            add
+            { CommandManager.RequerySuggested += value; }
+            remove
+            { CommandManager.RequerySuggested -= value; }
         }
 
         public void Execute(object parameter)
-        {
-            // Aufruf des, mittels Konstruktor registrierten, delegates
-            m_execute();
-        }
 
-        public void RaiseCanExecuteChanged()
         {
-            if (CanExecuteChanged != null)
-            {
-                CanExecuteChanged(this, EventArgs.Empty);
-            }
+            _execute((T)parameter);
         }
     }
 }

@@ -5,128 +5,124 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
-        Title="GameWindow" Height="800" Width="1250">
+        Title="GameWindow" Height="800" Width="1000">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="450"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="143*"/>
-                <RowDefinition Height="641*"/>
-            </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="25,50,0,0" VerticalAlignment="Top" Width="150" FontSize="20">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat="{}FC {0}&#x0a;Punkte Team: ">
-                        <Binding Path="User1.UserName"/>
-                    </MultiBinding>
-                </TextBlock.Text>
-        </TextBlock>
-            <Canvas Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
-                    Height="600" Width="400" 
-                    Background="LightGreen">
-            <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="0" X2="100" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="300" Y1="0" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="100" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="600" X2="100" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Line X1="300" Y1="600" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Image Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Source="{Binding TeamUser1[0].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="5" Canvas.Right="160" Content="{Binding TeamUser1[0].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Source="{Binding TeamUser1[1].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="135" Canvas.Left="20" Content="{Binding TeamUser1[1].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Source="{Binding TeamUser1[2].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="115" Canvas.Left="110" Content="{Binding TeamUser1[2].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Source="{Binding TeamUser1[3].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="115" Canvas.Right="110" Content="{Binding TeamUser1[3].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Source="{Binding TeamUser1[4].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="135" Canvas.Right="20" Content="{Binding TeamUser1[4].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Source="{Binding TeamUser1[5].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="265" Canvas.Left="40" Content="{Binding TeamUser1[5].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Source="{Binding TeamUser1[6].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="345" Canvas.Right="160" Content="{Binding TeamUser1[6].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Source="{Binding TeamUser1[7].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="235" Canvas.Right="160" Content="{Binding TeamUser1[7].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Source="{Binding TeamUser1[8].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="265" Canvas.Right="40" Content="{Binding TeamUser1[8].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Source="{Binding TeamUser1[9].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="125" Canvas.Left="100" Content="{Binding TeamUser1[9].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Source="{Binding TeamUser1[10].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="125" Canvas.Right="100" Content="{Binding TeamUser1[10].PlayerLastName}"/>
-        </Canvas>
-        </Grid>
-
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="143*"/>
-                <RowDefinition Height="641*"/>
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="25,50,0,0" VerticalAlignment="Top" Width="150" FontSize="20">
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0" FontSize="20">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="{}FC {0}&#x0a;Punkte Team: ">
-                        <Binding Path="User2.UserName"/>
+                    <MultiBinding StringFormat="{}{0}&#x0a;Punkte Team: ">
+                        <Binding Path="UserTeam.UserTeamName"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
 
-            <Canvas Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
+            <Canvas Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Height="600" Width="400" 
                     Background="LightGreen">
-            <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="0" X2="100" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="300" Y1="0" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="100" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="600" X2="100" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Line X1="300" Y1="600" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-            <Image Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Source="{Binding TeamUser2[0].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="5" Canvas.Right="160" Content="{Binding TeamUser2[0].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Source="{Binding TeamUser2[1].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="135" Canvas.Left="20" Content="{Binding TeamUser2[1].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Source="{Binding TeamUser2[2].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="115" Canvas.Left="110" Content="{Binding TeamUser2[2].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Source="{Binding TeamUser2[3].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="115" Canvas.Right="110" Content="{Binding TeamUser2[3].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Source="{Binding TeamUser2[4].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Bottom="135" Canvas.Right="20" Content="{Binding TeamUser2[4].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Source="{Binding TeamUser2[5].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="265" Canvas.Left="40" Content="{Binding TeamUser2[5].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Source="{Binding TeamUser2[6].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="345" Canvas.Right="160" Content="{Binding TeamUser2[6].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Source="{Binding TeamUser2[7].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="235" Canvas.Right="160" Content="{Binding TeamUser2[7].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Source="{Binding TeamUser2[8].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="265" Canvas.Right="40" Content="{Binding TeamUser2[8].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Source="{Binding TeamUser2[9].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="125" Canvas.Left="100" Content="{Binding TeamUser2[9].PlayerLastName}"/>
-            <Image Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Source="{Binding TeamUser2[10].PlayerImage}"/>
-            <Label Height="25" Width="75" Canvas.Top="125" Canvas.Right="100" Content="{Binding TeamUser2[10].PlayerLastName}"/>
-        </Canvas>
+                <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
+                <Line X1="100" Y1="0" X2="100" Y2="100" Stroke="White" StrokeThickness="8"/>
+                <Line X1="300" Y1="0" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
+                <Line X1="100" Y1="100" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
+                <Line X1="100" Y1="600" X2="100" Y2="500" Stroke="White" StrokeThickness="8"/>
+                <Line X1="300" Y1="600" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
+                <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
+                <Button Command="{Binding SubCommand}" CommandParameter="0" 
+                        Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Background="Transparent">
+                    <Image Source="{Binding LineUp[0].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="1" 
+                        Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Background="Transparent">
+                    <Image Source="{Binding LineUp[1].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="2" 
+                        Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Background="Transparent">
+                    <Image Source="{Binding LineUp[2].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="3" 
+                        Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Background="Transparent">
+                    <Image Source="{Binding LineUp[3].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="4" 
+                        Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Background="Transparent">
+                    <Image Source="{Binding LineUp[4].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="5" 
+                        Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Background="Transparent">
+                    <Image Source="{Binding LineUp[5].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="6" 
+                        Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Background="Transparent">
+                    <Image Source="{Binding LineUp[6].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="7" 
+                        Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Background="Transparent">
+                    <Image Source="{Binding LineUp[7].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="8" 
+                        Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Background="Transparent">
+                    <Image Source="{Binding LineUp[8].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="9" 
+                        Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Background="Transparent">
+                    <Image Source="{Binding LineUp[9].PlayerImage}"/>
+                </Button>
+                <Button Command="{Binding SubCommand}" CommandParameter="10" 
+                        Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Background="Transparent">
+                    <Image Source="{Binding LineUp[10].PlayerImage}"/>
+                </Button>
+            </Canvas>
         </Grid>
-        
+
         <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <DataGrid ItemsSource="{Binding SubstitutionList}" SelectedItem="{Binding SelectedSubstitution}"
+                      AutoGenerateColumns="False" Grid.Row="1">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding PlayerImage}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Content="aufstellen"
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Width="100" Height="25"/>
+        </Grid>
+
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="300"/>
                 <RowDefinition Height="300"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <DataGrid Grid.Row="0">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Pos" Width="40"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Team" Width="235"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Img" Width="40"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Name" Width="235"></DataGridTextColumn>
                     <DataGridTextColumn Header="Punkte" Width="70"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            
-            <Button Content="Nächster Spieltag" HorizontalAlignment="Left" Margin="180,0,0,0" Grid.Row="2" VerticalAlignment="Center" Height="26" Width="120"/>
-            
+
             <DataGrid Grid.Row="1">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Heimteam" Width="140"></DataGridTextColumn>
@@ -134,6 +130,10 @@
                     <DataGridTextColumn Header="Auswärtsteam" Width="140"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Button Content="Nächster Spieltag" 
+                    Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="right" Margin="0,0,40,0" 
+                    Height="26" Width="120"/>
         </Grid>
     </Grid>
 </Window>

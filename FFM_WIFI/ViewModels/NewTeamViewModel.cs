@@ -85,17 +85,27 @@ namespace FFM_WIFI.ViewModels
         {
             using (FootballContext context = new FootballContext())
             {
-                var user = context.UserTeam.Where(u => u.UserTeamUserFkNavigation.UserName == _user.UserName)
-                                           .FirstOrDefault();
 
-                if (user != null && user.UserTeamName != NewTeamName)
-                {
-                    user.UserTeamName = NewTeamName;
-                    user.UserTeamLeague = _selectedLeague.LeaguePk;
-                    user.UserTeamSeason = _selectedSeason.SeasonPk;
-                    context.SaveChanges();
-                    GoToUserHome();
-                }
+                //var user = context.UserTeam.Where(u => u.UserTeamUserFkNavigation.UserName == _user.UserName)
+                //                           .FirstOrDefault();
+
+                //if (user != null && user.UserTeamName != NewTeamName)
+                //{
+                //    user.UserTeamName = NewTeamName;
+                //    user.UserTeamLeague = _selectedLeague.LeaguePk;
+                //    user.UserTeamSeason = _selectedSeason.SeasonPk;
+                //    context.SaveChanges();
+                //    GoToUserHome();
+                //}
+
+                UserTeam temp = new UserTeam();
+                temp.UserTeamName = NewTeamName;
+                temp.UserTeamLeague = _selectedLeague.LeaguePk;
+                temp.UserTeamSeason = _selectedSeason.SeasonPk;
+                temp.UserTeamUserFk = _user.UserPk;
+                context.UserTeam.Add(temp);
+                context.SaveChanges();
+                GoToUserHome();
             }
         }
 

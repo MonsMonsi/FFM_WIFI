@@ -119,35 +119,31 @@ namespace FFM_WIFI.ViewModels
 
         private void SetUserTeam()
         {
-            // Player PK hinterlegen
-            UserTeam.UserTeamGk1 = _teamUser[0].PlayerPk;
-            UserTeam.UserTeamDf1 = _teamUser[1].PlayerPk;
-            UserTeam.UserTeamDf2 = _teamUser[2].PlayerPk;
-            UserTeam.UserTeamDf3 = _teamUser[3].PlayerPk;
-            UserTeam.UserTeamDf4 = _teamUser[4].PlayerPk;
-            UserTeam.UserTeamMf1 = _teamUser[5].PlayerPk;
-            UserTeam.UserTeamMf2 = _teamUser[6].PlayerPk;
-            UserTeam.UserTeamMf3 = _teamUser[7].PlayerPk;
-            UserTeam.UserTeamMf4 = _teamUser[8].PlayerPk;
-            UserTeam.UserTeamAt1 = _teamUser[9].PlayerPk;
-            UserTeam.UserTeamAt2 = _teamUser[10].PlayerPk;
-            UserTeam.UserTeamGk2 = _teamUser[11].PlayerPk;
-            UserTeam.UserTeamDf5 = _teamUser[12].PlayerPk;
-            UserTeam.UserTeamMf5 = _teamUser[13].PlayerPk;
-            UserTeam.UserTeamMf6 = _teamUser[14].PlayerPk;
-            UserTeam.UserTeamAt3 = _teamUser[15].PlayerPk;
-            UserTeam.UserTeamAt4 = _teamUser[16].PlayerPk;
-            UserTeam.UserTeamNumberPlayers = 17;
-
             using (FootballContext context = new FootballContext())
             {
                 var userTeam = context.UserTeam.Where(u => u.UserTeamUserFk == UserTeam.UserTeamUserFkNavigation.UserPk).Include(u => u.UserTeamUserFkNavigation).FirstOrDefault();
 
                 if (userTeam != null)
                 {
-                    userTeam = UserTeam;
+                    // Player PK hinterlegen
                     userTeam.UserTeamGk1 = _teamUser[0].PlayerPk;
                     userTeam.UserTeamDf1 = _teamUser[1].PlayerPk;
+                    userTeam.UserTeamDf2 = _teamUser[2].PlayerPk;
+                    userTeam.UserTeamDf3 = _teamUser[3].PlayerPk;
+                    userTeam.UserTeamDf4 = _teamUser[4].PlayerPk;
+                    userTeam.UserTeamMf1 = _teamUser[5].PlayerPk;
+                    userTeam.UserTeamMf2 = _teamUser[6].PlayerPk;
+                    userTeam.UserTeamMf3 = _teamUser[7].PlayerPk;
+                    userTeam.UserTeamMf4 = _teamUser[8].PlayerPk;
+                    userTeam.UserTeamAt1 = _teamUser[9].PlayerPk;
+                    userTeam.UserTeamAt2 = _teamUser[10].PlayerPk;
+                    userTeam.UserTeamGk2 = _teamUser[11].PlayerPk;
+                    userTeam.UserTeamDf5 = _teamUser[12].PlayerPk;
+                    userTeam.UserTeamMf5 = _teamUser[13].PlayerPk;
+                    userTeam.UserTeamMf6 = _teamUser[14].PlayerPk;
+                    userTeam.UserTeamAt3 = _teamUser[15].PlayerPk;
+                    userTeam.UserTeamAt4 = _teamUser[16].PlayerPk;
+                    userTeam.UserTeamNumberPlayers = 17;
                 }
 
                 var user = context.User.Where(u => u.UserPk == UserTeam.UserTeamUserFkNavigation.UserPk).FirstOrDefault();

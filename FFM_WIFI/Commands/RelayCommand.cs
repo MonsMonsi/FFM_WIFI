@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace FFM_WIFI.Commands
 {
@@ -13,7 +14,7 @@ namespace FFM_WIFI.Commands
     /// <see cref="RaiseCanExecuteChanged"/> muss jedes mal aufgerufen werden, wenn
     /// <see cref="CanExecute"/> muss einen anderen Wert zurückgeben.
     /// </summary>
-    public class RelayCommand : System.Windows.Input.ICommand
+    public class RelayCommand : ICommand
     {
         // interne Variablen, speichern jeweils einen Delegate (Referenz auf eine Methode)
         private readonly Action m_execute;   // "Action" => Return void, keine Parameter
@@ -81,6 +82,45 @@ namespace FFM_WIFI.Commands
             {
                 handler(this, EventArgs.Empty);
             }
+        }
+    }
+
+    public class RelayCommand<T> : ICommand
+
+    {
+        readonly Action<T> _execute = null;
+        readonly Predicate<T> _canExecute = null;
+
+        public RelayCommand(Action<T> execute) : this(execute, null)
+        {
+
+        }
+
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
+        {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null ? true : _canExecute((T)parameter);
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add
+            { CommandManager.RequerySuggested += value; }
+            remove
+            { CommandManager.RequerySuggested -= value; }
+        }
+
+        public void Execute(object parameter)
+
+        {
+            _execute((T)parameter);
         }
     }
 }

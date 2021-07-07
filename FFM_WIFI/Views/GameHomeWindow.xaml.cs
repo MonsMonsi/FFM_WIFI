@@ -22,10 +22,10 @@ namespace FFM_WIFI.Views
     public partial class GameHomeWindow : Window
     {
         private GameHomeViewModel ghvm;
-        public GameHomeWindow(User user1, User user2, Player[] teamUser1, Player[] teamUser2, Season season, League league)
+        public GameHomeWindow(User user = null)
         {
             InitializeComponent();
-            ghvm = new GameHomeViewModel(this, user1, user2, teamUser1, teamUser2, season, league);
+            ghvm = new GameHomeViewModel(this, user);
             this.DataContext = ghvm;
         }
     }
