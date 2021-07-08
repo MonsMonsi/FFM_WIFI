@@ -1,0 +1,63 @@
+﻿<Window x:Class="FFM_WIFI.Views.FixtureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FFM_WIFI.Views"
+        mc:Ignorable="d"
+        Title="FixtureWindow" Height="800" Width="600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Image Source="{Binding}"
+               Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+               Height="100" Width="100"/>
+
+        <DataGrid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+                  Height="330" Width="100">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="30">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}"
+                                   Height="30" Width="30"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding}" Header="Punkte"
+                                    Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="UserHome"
+                    Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50"
+                    Height="25" Width="100"
+                    FontSize="15"/>
+
+        <TextBlock Text="1. Bundesliga: Spieltag xy"
+                   Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Height="80" Width="400"
+                   FontSize="30" FontWeight="Bold">
+        </TextBlock>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="330"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListView ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+                  Height=" 500" Width="300"/>
+
+            <Button Content="Start"
+                    Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+                    Height="25" Width="80"/>
+        </Grid>
+    </Grid>
+</Window>
