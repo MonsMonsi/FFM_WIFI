@@ -16,7 +16,6 @@ namespace FFM_WIFI.Models.DataContext
         public int PlayerPk { get; set; }
         public string PlayerFirstName { get; set; }
         public string PlayerLastName { get; set; }
-        public int PlayerAge { get; set; }
         public string PlayerDateOfBirth { get; set; }
         public string PlayerPosition { get; set; }
         public string PlayerNationality { get; set; }

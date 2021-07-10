@@ -56,6 +56,7 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Attribute
+        private Window _window;
         private User _user;
 
         // Commands
@@ -66,6 +67,7 @@ namespace FFM_WIFI.ViewModels
         public NewTeamViewModel(Window window, User user)
         {
             // Attribute
+            _window = window;
             _user = user;
             // Commands
             _save = new RelayCommand(SaveTeam, () => SelectedLeague != null && SelectedSeason != null);
@@ -78,6 +80,7 @@ namespace FFM_WIFI.ViewModels
         private void GoToUserHome()
         {
             UserHomeWindow uhWindow = new UserHomeWindow(_user);
+            _window.Close();
             uhWindow.ShowDialog();
         }
 
@@ -98,12 +101,28 @@ namespace FFM_WIFI.ViewModels
                 //    GoToUserHome();
                 //}
 
-                UserTeam temp = new UserTeam();
-                temp.UserTeamName = NewTeamName;
-                temp.UserTeamLeague = _selectedLeague.LeaguePk;
-                temp.UserTeamSeason = _selectedSeason.SeasonPk;
-                temp.UserTeamUserFk = _user.UserPk;
-                context.UserTeam.Add(temp);
+
+                // neues Team
+                UserTeam team = new UserTeam();
+                team.UserTeamName = NewTeamName;
+                team.UserTeamLeague = _selectedLeague.LeaguePk;
+                team.UserTeamSeason = _selectedSeason.SeasonPk;
+                team.UserTeamUserFk = _user.UserPk;
+                team.UserTeamPlayday = 1;
+                team.UserTeamGk1 = 1001001; team.UserTeamDf1 = 1001001; team.UserTeamDf2 = 1001001; team.UserTeamDf3 = 1001001; team.UserTeamDf4 = 1001001; team.UserTeamMf1 = 1001001; team.UserTeamMf2 = 1001001;
+                team.UserTeamMf3 = 1001001; team.UserTeamMf4 = 1001001; team.UserTeamAt1 = 1001001; team.UserTeamAt2 = 1001001; team.UserTeamGk2 = 1001001; team.UserTeamDf5 = 1001001; team.UserTeamMf5 = 1001001;
+                team.UserTeamMf6 = 1001001; team.UserTeamAt3 = 1001001; team.UserTeamAt4 = 1001001; team.UserTeamNumberPlayers = 0;
+                context.UserTeam.Add(team);
+                context.SaveChanges();
+
+                UserTeamPerformance performance = new UserTeamPerformance();
+                performance.UserTeamPerformanceUserTeamFk = team.UserTeamPk;
+                performance.UserTeamPerformanceGk1 = 0; performance.UserTeamPerformanceDf1 = 0; performance.UserTeamPerformanceDf2 = 0; performance.UserTeamPerformanceDf3 = 0;
+                performance.UserTeamPerformanceDf4 = 0; performance.UserTeamPerformanceMf1 = 0; performance.UserTeamPerformanceMf2 = 0; performance.UserTeamPerformanceMf3 = 0;
+                performance.UserTeamPerformanceMf4 = 0; performance.UserTeamPerformanceAt1 = 0; performance.UserTeamPerformanceAt2 = 0; performance.UserTeamPerformanceGk2 = 0;
+                performance.UserTeamPerformanceDf5 = 0; performance.UserTeamPerformanceMf5 = 0; performance.UserTeamPerformanceMf6 = 0; performance.UserTeamPerformanceAt3 = 0;
+                performance.UserTeamPerformanceAt4 = 0;
+                context.UserTeamPerformance.Add(performance);
                 context.SaveChanges();
                 GoToUserHome();
             }

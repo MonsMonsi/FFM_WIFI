@@ -36,7 +36,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="UserHome"
+        <Button Content="GameHome" Command="{Binding HomeCommand}"
                     Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50"
                     Height="25" Width="100"
                     FontSize="15"/>
@@ -52,10 +52,10 @@
                 <ColumnDefinition Width="330"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListView ItemsSource="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+            <ListView ItemsSource="{Binding PlaydayText}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
                   Height=" 500" Width="300"/>
 
-            <Button Content="Start"
+            <Button Content="Start" Command="{Binding StartCommand}"
                     Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
                     Height="25" Width="80"/>
         </Grid>

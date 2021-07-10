@@ -26,6 +26,7 @@ namespace FFM_WIFI.Models.DataContext
         public virtual DbSet<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserTeam> UserTeam { get; set; }
+        public virtual DbSet<UserTeamPerformance> UserTeamPerformance { get; set; }
         public virtual DbSet<Venue> Venue { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,7 +34,7 @@ namespace FFM_WIFI.Models.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=desktop-1k1ems6;Initial Catalog=WIFI_FootballAPI;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=localhost\\sqlexpress;Initial Catalog=WIFI_FootballAPI;Integrated Security=True");
             }
         }
 
@@ -66,8 +67,6 @@ namespace FFM_WIFI.Models.DataContext
                 entity.Property(e => e.PlayerPk)
                     .ValueGeneratedNever()
                     .HasColumnName("Player_PK");
-
-                entity.Property(e => e.PlayerAge).HasColumnName("Player_Age");
 
                 entity.Property(e => e.PlayerDateOfBirth)
                     .IsRequired()
@@ -271,6 +270,8 @@ namespace FFM_WIFI.Models.DataContext
 
                 entity.Property(e => e.UserTeamNumberPlayers).HasColumnName("UserTeam_NumberPlayers");
 
+                entity.Property(e => e.UserTeamPlayday).HasColumnName("UserTeam_Playday");
+
                 entity.Property(e => e.UserTeamSeason).HasColumnName("UserTeam_Season");
 
                 entity.Property(e => e.UserTeamUserFk).HasColumnName("UserTeam_User_FK");
@@ -280,6 +281,49 @@ namespace FFM_WIFI.Models.DataContext
                     .HasForeignKey(d => d.UserTeamUserFk)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserTeam_User");
+            });
+
+            modelBuilder.Entity<UserTeamPerformance>(entity =>
+            {
+                entity.HasKey(e => e.UserTeamPerformancePk);
+
+                entity.Property(e => e.UserTeamPerformancePk).HasColumnName("UserTeamPerformance_PK");
+
+                entity.Property(e => e.UserTeamPerformanceAt1).HasColumnName("UserTeamPerformance_AT1");
+
+                entity.Property(e => e.UserTeamPerformanceAt2).HasColumnName("UserTeamPerformance_AT2");
+
+                entity.Property(e => e.UserTeamPerformanceAt3).HasColumnName("UserTeamPerformance_AT3");
+
+                entity.Property(e => e.UserTeamPerformanceAt4).HasColumnName("UserTeamPerformance_AT4");
+
+                entity.Property(e => e.UserTeamPerformanceDf1).HasColumnName("UserTeamPerformance_DF1");
+
+                entity.Property(e => e.UserTeamPerformanceDf2).HasColumnName("UserTeamPerformance_DF2");
+
+                entity.Property(e => e.UserTeamPerformanceDf3).HasColumnName("UserTeamPerformance_DF3");
+
+                entity.Property(e => e.UserTeamPerformanceDf4).HasColumnName("UserTeamPerformance_DF4");
+
+                entity.Property(e => e.UserTeamPerformanceDf5).HasColumnName("UserTeamPerformance_DF5");
+
+                entity.Property(e => e.UserTeamPerformanceGk1).HasColumnName("UserTeamPerformance_GK1");
+
+                entity.Property(e => e.UserTeamPerformanceGk2).HasColumnName("UserTeamPerformance_GK2");
+
+                entity.Property(e => e.UserTeamPerformanceMf1).HasColumnName("UserTeamPerformance_MF1");
+
+                entity.Property(e => e.UserTeamPerformanceMf2).HasColumnName("UserTeamPerformance_MF2");
+
+                entity.Property(e => e.UserTeamPerformanceMf3).HasColumnName("UserTeamPerformance_MF3");
+
+                entity.Property(e => e.UserTeamPerformanceMf4).HasColumnName("UserTeamPerformance_MF4");
+
+                entity.Property(e => e.UserTeamPerformanceMf5).HasColumnName("UserTeamPerformance_MF5");
+
+                entity.Property(e => e.UserTeamPerformanceMf6).HasColumnName("UserTeamPerformance_MF6");
+
+                entity.Property(e => e.UserTeamPerformanceUserTeamFk).HasColumnName("UserTeamPerformance_UserTeam_FK");
             });
 
             modelBuilder.Entity<Venue>(entity =>

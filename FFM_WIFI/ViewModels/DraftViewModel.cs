@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using FFM_WIFI.Models.Utility;
 using System.Windows.Data;
 using System.Globalization;
 using System.ComponentModel;
@@ -113,15 +112,15 @@ namespace FFM_WIFI.ViewModels
         private void GoToUserHome(User user)
         {
             UserHomeWindow uhWindow = new UserHomeWindow(user);
+            _window.Close();
             uhWindow.ShowDialog();
-            
         }
 
         private void SetUserTeam()
         {
             using (FootballContext context = new FootballContext())
             {
-                var userTeam = context.UserTeam.Where(u => u.UserTeamUserFk == UserTeam.UserTeamUserFkNavigation.UserPk).Include(u => u.UserTeamUserFkNavigation).FirstOrDefault();
+                var userTeam = context.UserTeam.Where(u => u.UserTeamUserFk == UserTeam.UserTeamUserFkNavigation.UserPk && u.UserTeamName == UserTeam.UserTeamName).Include(u => u.UserTeamUserFkNavigation).FirstOrDefault();
 
                 if (userTeam != null)
                 {
@@ -144,6 +143,30 @@ namespace FFM_WIFI.ViewModels
                     userTeam.UserTeamAt3 = _teamUser[15].PlayerPk;
                     userTeam.UserTeamAt4 = _teamUser[16].PlayerPk;
                     userTeam.UserTeamNumberPlayers = 17;
+                }
+
+                var userTeamPerformance = context.UserTeamPerformance.Where(u => u.UserTeamPerformanceUserTeamFk == UserTeam.UserTeamPk).FirstOrDefault();
+
+                if (userTeamPerformance != null)
+                {
+                    // Punkte auf null
+                    userTeamPerformance.UserTeamPerformanceGk1 = 0;
+                    userTeamPerformance.UserTeamPerformanceDf1 = 0;
+                    userTeamPerformance.UserTeamPerformanceDf2 = 0;
+                    userTeamPerformance.UserTeamPerformanceDf3 = 0;
+                    userTeamPerformance.UserTeamPerformanceDf4 = 0;
+                    userTeamPerformance.UserTeamPerformanceMf1 = 0;
+                    userTeamPerformance.UserTeamPerformanceMf2 = 0;
+                    userTeamPerformance.UserTeamPerformanceMf3 = 0;
+                    userTeamPerformance.UserTeamPerformanceMf4 = 0;
+                    userTeamPerformance.UserTeamPerformanceAt1 = 0;
+                    userTeamPerformance.UserTeamPerformanceAt2 = 0;
+                    userTeamPerformance.UserTeamPerformanceGk2 = 0;
+                    userTeamPerformance.UserTeamPerformanceDf5 = 0;
+                    userTeamPerformance.UserTeamPerformanceMf5 = 0;
+                    userTeamPerformance.UserTeamPerformanceMf6 = 0;
+                    userTeamPerformance.UserTeamPerformanceAt3 = 0;
+                    userTeamPerformance.UserTeamPerformanceAt4 = 0;
                 }
 
                 var user = context.User.Where(u => u.UserPk == UserTeam.UserTeamUserFkNavigation.UserPk).FirstOrDefault();

@@ -44,6 +44,8 @@
                                             Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Button Content="Team löschen" Command="{Binding}"
+                        Margin="0,20,0,0" Height="20" Width="200"/>
             </StackPanel>
         </GroupBox>
 
@@ -68,29 +70,28 @@
             </TextBlock.Text>
         </TextBlock>
 
-        <DataGrid ItemsSource="{Binding UserPlayerList}"
-                  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                  AutoGenerateColumns="False" Height="250">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Pos"
-                                    Width="70" Binding="{Binding PlayerPosition}"/>
-                <DataGridTemplateColumn Header="Spielername" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="PlayerFirstName" />
-                                        <Binding Path="PlayerLastName" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-            
-        </DataGrid>
+        <GroupBox Header="Teamdaten" Grid.Column="1" Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="{Binding TeamData.Name}"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,20,0,0"
+                           FontSize="20"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,40,0,0"
+                           FontSize="16">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}Aktueller Spieltag: {0}&#x0a;Anzahl Spieler: {1}&#x0a;">
+                            <Binding Path="TeamData.Playday"/>
+                            <Binding Path="TeamData.Players"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <Image Source="{Binding TeamData.League}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,40,0,0"
+                       Height="50" Width="50"/>
+                <TextBlock Text="{Binding TeamData.Season}"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
+                           FontSize="20"/>
+            </StackPanel>
+        </GroupBox>
 
         <GroupBox Header="Teamoptionen" Grid.Column="1" Grid.Row="2" Height="250" VerticalAlignment="Center">
             <StackPanel>

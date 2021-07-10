@@ -21,8 +21,9 @@
 
             <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0" FontSize="20">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="{}{0}&#x0a;Punkte Team: ">
+                    <MultiBinding StringFormat="{}{0}&#x0a;Aktueller Spieltag: {1}">
                         <Binding Path="UserTeam.UserTeamName"/>
+                        <Binding Path="UserTeam.UserTeamPlayday"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
@@ -39,72 +40,74 @@
                 <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
                 <Button Command="{Binding SubCommand}" CommandParameter="0" 
                         Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Background="Transparent">
-                    <Image Source="{Binding LineUp[0].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[0].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="1" 
                         Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Background="Transparent">
-                    <Image Source="{Binding LineUp[1].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[1].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="2" 
                         Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Background="Transparent">
-                    <Image Source="{Binding LineUp[2].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[2].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="3" 
                         Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Background="Transparent">
-                    <Image Source="{Binding LineUp[3].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[3].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="4" 
                         Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Background="Transparent">
-                    <Image Source="{Binding LineUp[4].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[4].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="5" 
                         Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Background="Transparent">
-                    <Image Source="{Binding LineUp[5].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[5].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="6" 
                         Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Background="Transparent">
-                    <Image Source="{Binding LineUp[6].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[6].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="7" 
                         Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Background="Transparent">
-                    <Image Source="{Binding LineUp[7].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[7].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="8" 
                         Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Background="Transparent">
-                    <Image Source="{Binding LineUp[8].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[8].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="9" 
                         Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Background="Transparent">
-                    <Image Source="{Binding LineUp[9].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[9].Image}"/>
                 </Button>
                 <Button Command="{Binding SubCommand}" CommandParameter="10" 
                         Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Background="Transparent">
-                    <Image Source="{Binding LineUp[10].PlayerImage}"/>
+                    <Image Source="{Binding LineUp[10].Image}"/>
                 </Button>
             </Canvas>
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="140"/>
-                <RowDefinition Height="400"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="163"/>
+                <RowDefinition Height="377"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <DataGrid ItemsSource="{Binding SubstitutionList}" SelectedItem="{Binding SelectedSubstitution}"
-                      AutoGenerateColumns="False" Grid.Row="1">
+            <DataGrid ItemsSource="{Binding PlayerDraftList}" SelectedItem="{Binding SelectedPlayer}"
+                      AutoGenerateColumns="False" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" 
+                      Height="300" Width="160">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="40">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding PlayerImage}"/>
+                                <Image Source="{Binding Image}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" Binding="{Binding Position}"/>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button Content="aufstellen"
+            <Button Content="aufstellen" Command="{Binding LineUpCommand}"
                     Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Width="100" Height="25"/>
         </Grid>
 
@@ -115,24 +118,37 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <DataGrid Grid.Row="0">
+            <DataGrid ItemsSource="{Binding PlayerDataList}"
+                      AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 25,0"
+                      Height="280" Width="150">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Img" Width="40"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Name" Width="235"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Punkte" Width="70"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="" Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Image}"
+                                       Height="30" Width="30"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Punkte" Width="*" Binding="{Binding Points}"/>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <DataGrid Grid.Row="1">
+            <DataGrid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10"
+                      Height="250" Width="300">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Heimteam" Width="140"></DataGridTextColumn>
-                    <DataGridTextColumn Header="vs" Width="65"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Auswärtsteam" Width="140"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Heimteam" Width="135"></DataGridTextColumn>
+                    <DataGridTextColumn Header="vs" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Auswärtsteam" Width="135"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button Content="Nächster Spieltag" 
+            <Button Content="Nächster Spieltag" Command="{Binding PlayCommand}" 
                     Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="right" Margin="0,0,40,0" 
+                    Height="26" Width="120"/>
+
+            <Button Content="UserHome" Command="{Binding SaveCommand}" 
+                    Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" 
                     Height="26" Width="120"/>
         </Grid>
     </Grid>

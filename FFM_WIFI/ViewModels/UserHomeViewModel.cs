@@ -35,45 +35,45 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedUserTeam = value;
-                UserPlayerList.Clear();
-                ShowUserPlayer();
+                _draft.RaiseCanExecuteChanged();
+                _game.RaiseCanExecuteChanged();
                 OnPropertyChanged("SelectedUserTeam");
+                GetTeamInfo();
             }
         }
-        public ObservableCollection<Player> UserPlayerList { get; set; }
 
-        // Properties für Combobox
-        public ObservableCollection<League> LeagueList { get; set; }
-
-        private League _selectedLeague;
-        public League SelectedLeague
+        // Property für Teamdaten
+        public class TeamInfo
         {
-            get { return _selectedLeague; }
+            public string Name { get; set; }
+            public int Playday { get; set; }
+            public int? Players { get; set; }
+            public string League { get; set; }
+            public string Season { get; set; }
+
+            public TeamInfo(string name, int day, int? players, string league, string season)
+            {
+                Name = name;
+                Playday = day;
+                Players = players;
+                League = league;
+                Season = season;
+            }
+        }
+
+        private TeamInfo _teamData;
+        public TeamInfo TeamData
+        {
+            get { return _teamData; }
             set
             {
-                _selectedLeague = value;
-                OnPropertyChanged("SelectedLeague");
+                _teamData = value;
+                OnPropertyChanged("TeamData");
             }
-        }
-
-        public ObservableCollection<Season> SeasonList { get; set; }
-        private Season _selectedSeason;
-        public Season SelectedSeason
-        {
-            get { return _selectedSeason; }
-            set
-            {
-                _selectedSeason = value;
-                OnPropertyChanged("SelectedSeason");
-            }
-        }
-
-        // Attribute
-        private UserTeam _userTeam;
+        } 
 
         // Commands
         public ICommand NewTeamCommand { get; set; }
-
         private RelayCommand _draft;
         public ICommand DraftCommand { get { return _draft; } }
         private RelayCommand _game;
@@ -82,24 +82,16 @@ namespace FFM_WIFI.ViewModels
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
         {
-            //Daten initialisieren
-            _selectedLeague = null;
-            _selectedSeason = null;
+            // User
+            User = user;
             // Commands
             //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
             _draft = new RelayCommand(GoToDraft, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers != 17 && SelectedUserTeam.UserTeamName != "Keine Teams gefunden!");
-            _game = new RelayCommand(GoToGame, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers == 17 && SelectedUserTeam.UserTeamName != "Keine Teams gefunden!");
-            // User
-            User = user;
-            _userTeam = null;
+            _game = new RelayCommand(GoToGameHome, () => SelectedUserTeam != null && SelectedUserTeam.UserTeamNumberPlayers == 17 && SelectedUserTeam.UserTeamName != "Keine Teams gefunden!");
             // Listen initialisieren und füllen
             UserTeamList = new ObservableCollection<UserTeam>();
-            UserPlayerList = new ObservableCollection<Player>();
-            SeasonList = new ObservableCollection<Season>();
-            LeagueList = new ObservableCollection<League>();
             GetUserTeam();
-            GetLeagueSeason();
         }
 
         private void GoToNewTeam()
@@ -110,42 +102,15 @@ namespace FFM_WIFI.ViewModels
 
         private void GoToDraft()
         {
-            DraftWindow dWindow = new DraftWindow(_userTeam);
+            DraftWindow dWindow = new DraftWindow(_selectedUserTeam);
             dWindow.ShowDialog();
 
         }
 
-        private void GoToGame()
+        private void GoToGameHome()
         {
-            GameHomeWindow ghWindow = new GameHomeWindow(_user);
+            GameHomeWindow ghWindow = new GameHomeWindow(SelectedUserTeam);
             ghWindow.ShowDialog();
-        }
-
-        private void ShowUserPlayer()
-        {
-            using (FootballContext context = new FootballContext())
-            {
-                _userTeam = SelectedUserTeam;
-                _draft.RaiseCanExecuteChanged();
-                _game.RaiseCanExecuteChanged();
-
-                int?[] players = new int?[]
-                {
-                    SelectedUserTeam.UserTeamGk1, SelectedUserTeam.UserTeamDf1, SelectedUserTeam.UserTeamDf2, SelectedUserTeam.UserTeamDf3, SelectedUserTeam.UserTeamDf4, SelectedUserTeam.UserTeamMf1,
-                    SelectedUserTeam.UserTeamMf2, SelectedUserTeam.UserTeamMf3, SelectedUserTeam.UserTeamMf4, SelectedUserTeam.UserTeamAt1, SelectedUserTeam.UserTeamAt2, SelectedUserTeam.UserTeamGk2,
-                    SelectedUserTeam.UserTeamDf5, SelectedUserTeam.UserTeamMf5, SelectedUserTeam.UserTeamMf6, SelectedUserTeam.UserTeamAt3, SelectedUserTeam.UserTeamAt4
-                };
-
-                // UserPlayerList.Clear();
-                foreach (var p in players)
-                {
-                    if (p != null)
-                    {
-                        var player = context.Player.Where(pl => pl.PlayerPk == p).FirstOrDefault();
-                        UserPlayerList.Add(player);
-                    }
-                }
-            }
         }
 
         private void GetUserTeam()
@@ -159,7 +124,7 @@ namespace FFM_WIFI.ViewModels
                 {
                     foreach (var u in userTeam)
                     {
-                            UserTeamList.Add(u);
+                        UserTeamList.Add(u);
                     }
                 }
                 else
@@ -171,35 +136,27 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        private void GetLeagueSeason()
+        private void GetTeamInfo()
         {
             using (FootballContext context = new FootballContext())
             {
-                var leagues = context.League;
-                var seasons = context.Season;
+                var league = context.League.Where(l => l.LeaguePk == SelectedUserTeam.UserTeamLeague).FirstOrDefault();
+                var season = context.Season.Where(s => s.SeasonPk == SelectedUserTeam.UserTeamSeason).FirstOrDefault();
 
-                foreach (var item in leagues)
-                {
-                    League temp = new League();
-                    temp = item;
-                    LeagueList.Add(temp);
-                }
-
-                foreach (var item in seasons)
-                {
-                    Season temp = new Season();
-                    temp = item;
-                    SeasonList.Add(temp);
-                }
+                TeamData = new TeamInfo(SelectedUserTeam.UserTeamName, SelectedUserTeam.UserTeamPlayday, SelectedUserTeam.UserTeamNumberPlayers, league.LeagueLogo, season.SeasonName);
             }
         }
 
-        // Zugang zur Datenbank
-        //private void GoToEditDatabase()
+        //private void DeleteTeam()
         //{
-        //    EditDatabaseWindow edbWindow = new EditDatabaseWindow();
-        //    edbWindow.ShowDialog();
-        //}
+        //    using (FootballContext context = new FootballContext())
+        //    {
+        //        var team = context.UserTeam.Where(t => t.UserTeamPk == SelectedUserTeam.UserTeamPk).FirstOrDefault();
 
+        //        context.Remove(team);
+        //        context.SaveChanges();
+        //        GetUserTeam();
+        //    }
+        //}
     }
 }

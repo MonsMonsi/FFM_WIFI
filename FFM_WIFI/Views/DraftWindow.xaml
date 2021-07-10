@@ -4,12 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
-        xmlns:converter="clr-namespace:FFM_WIFI.Models.Utility;assembly=FFM_WIFI"
         mc:Ignorable="d"
         Title="DraftWindow" Height="700" Width="600">
-    <!--<Window.Resources>
-        <converter:StringToImageConverter x:Key="StringToImage"/>
-    </Window.Resources>-->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>

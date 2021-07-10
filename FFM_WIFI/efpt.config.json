@@ -46,11 +46,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[UserTeamPerformance]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Venue]",
          "ObjectType": 0
       }
    ],
-   "UiHint": "desktop-1k1ems6.WIFI_FootballAPI.dbo",
+   "UiHint": "laptop-s0b8gd3m\\sqlexpress.WIFI_FootballAPI.dbo",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

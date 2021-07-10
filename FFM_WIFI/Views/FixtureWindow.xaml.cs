@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,12 @@ namespace FFM_WIFI.Views
     /// </summary>
     public partial class FixtureWindow : Window
     {
-        public FixtureWindow()
+        private FixtureViewModel fvm;
+        public FixtureWindow(UserTeam userTeam, int[] fixtures, PlayerInfo[] userTeamData)
         {
             InitializeComponent();
+            fvm = new FixtureViewModel(this, userTeam, fixtures, userTeamData);
+            this.DataContext = fvm;
         }
     }
 }
