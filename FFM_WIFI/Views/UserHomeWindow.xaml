@@ -36,11 +36,11 @@
             <StackPanel>
                 <Button Content="Neues Team" Command="{Binding NewTeamCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
-                <DataGrid ItemsSource="{Binding UserTeamList}" SelectedItem="{Binding SelectedUserTeam}"
+                <DataGrid ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}"
                           AutoGenerateColumns="False"
                           Margin="0,20,0,0" Height="150" Width="200">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding UserTeamName}" Header="Teamname" 
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Teamname" 
                                             Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -56,7 +56,7 @@
             </StackPanel>
         </GroupBox>
 
-        <TextBlock Text="{Binding SelectedUserTeam.UserTeamName}"
+        <TextBlock Text="{Binding SelectedTeam.Name}"
                    Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" 
                    FontSize="20" Height="26" Width="0"/>
 
@@ -64,30 +64,30 @@
                    FontSize="20" Height="27" Width="0">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}{0} - {1}">
-                    <Binding Path="SelectedUserTeam.UserTeamLeague"/>
-                    <Binding Path="SelectedUserTeam.UserTeamSeason"/>
+                    <Binding Path="SelectedTeam.League"/>
+                    <Binding Path="SelectedTeam.Season"/>
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
 
         <GroupBox Header="Teamdaten" Grid.Column="1" Grid.Row="1">
             <StackPanel>
-                <TextBlock Text="{Binding TeamData.Name}"
+                <TextBlock Text="{Binding SelectedTeam.Name}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,20,0,0"
                            FontSize="20"/>
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,40,0,0"
                            FontSize="16">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}Aktueller Spieltag: {0}&#x0a;Anzahl Spieler: {1}&#x0a;">
-                            <Binding Path="TeamData.Playday"/>
-                            <Binding Path="TeamData.Players"/>
+                            <Binding Path="SelectedTeam.Playday"/>
+                            <Binding Path="SelectedTeam.Players"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Image Source="{Binding TeamData.League}"
+                <Image Source="{Binding SelectedTeam.League}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,40,0,0"
                        Height="50" Width="50"/>
-                <TextBlock Text="{Binding TeamData.Season}"
+                <TextBlock Text="{Binding SelectedTeam.Season}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
                            FontSize="20"/>
             </StackPanel>

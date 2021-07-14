@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FFM_WIFI.Models.DataContext
+namespace DatabaseTesting.Models
 {
     public partial class TeamPlayerAssignment
     {
         public int TeaPlaTeamFk { get; set; }
         public int TeaPlaPlayerFk { get; set; }
         public double TeaPlaPlayerRating { get; set; }
-        public int TeaPlaPlayerValue { get; set; }
+        public int? TeaPlaPlayerValue { get; set; }
 
         public virtual Player TeaPlaPlayerFkNavigation { get; set; }
         public virtual SeasonLeagueTeamAssignment TeaPlaTeamFkNavigation { get; set; }

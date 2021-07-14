@@ -19,6 +19,24 @@ using FFM_WIFI.Views;
 
 namespace FFM_WIFI.ViewModels
 {
+    public class DraftInfo
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+        public string Position { get; set; }
+        public double Value { get; set; }
+
+        public DraftInfo(int id, string name, string image, string position, double value)
+        {
+            Id = id;
+            Name = name;
+            Image = image;
+            Position = position;
+            Value = (double)value;
+        }
+    }
+
     class DraftViewModel : BaseViewModel
     {
         // Properties für User
@@ -34,13 +52,27 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        private Player[] _teamUser;
-        public Player[] TeamUser
+        // Properties für Draft
+        private List<DraftInfo> _allPlayers;
+        private DraftInfo[] _draftedTeam;
+        public DraftInfo[] DraftedTeam
         {
-            get { return _teamUser; }
+            get { return _draftedTeam; }
             set
             {
-                _teamUser = value;
+                _draftedTeam = value;
+            }
+        }
+
+        // Property für Progressbar
+        private double _moneyMax;
+        public double MoneyMax
+        {
+            get { return _moneyMax; }
+            set
+            {
+                _moneyMax = value;
+                OnPropertyChanged("MoneyMax");
             }
         }
 
@@ -57,9 +89,9 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Properties für Datagrid
-        public ObservableCollection<Player> PlayerList { get; set; }
-        private Player _selectedPlayer;
-        public Player SelectedPlayer
+        public ObservableCollection<DraftInfo> PlayerList { get; set; }
+        private DraftInfo _selectedPlayer;
+        public DraftInfo SelectedPlayer
         {
             get { return _selectedPlayer; }
             set
@@ -74,13 +106,15 @@ namespace FFM_WIFI.ViewModels
         private Season _season;
         private League _league;
         private string _position;
-        private bool _positionChanged;
+        private int _draftIndex;
         private int _draftCount;
         private Window _window;
 
         // Commands
         private RelayCommand _draft;
         public ICommand DraftCommand { get { return _draft; } }
+        private RelayCommand<object> _sub;
+        public ICommand SubCommand { get { return _sub; } }
         private RelayCommand _save;
         public ICommand SaveCommand { get { return _save; } }
 
@@ -90,16 +124,18 @@ namespace FFM_WIFI.ViewModels
             // Attribute setzen
             _window = window;
             _userTeam = userTeam;
-            _draftCount = 0;
-            _position = "Goalkeeper";
-            _positionChanged = false;
+            _moneyMax = 300;
+            _draftedTeam = new DraftInfo[17];
+            _allPlayers = new List<DraftInfo>();
+            _draftIndex = GetDraftIndex();
+            _draftCount = GetDraftCount();
+            SetPosition();
             SetSeasonLeague();
             // Commands
-            _draft = new RelayCommand(DraftPlayer, () => SelectedPlayer != null && _draftCount != 17);
-            _save = new RelayCommand(SetUserTeam, () => _draftCount > 16);
-            // Listen initialisieren
-            _teamUser = new Player[17];
-            PlayerList = new ObservableCollection<Player>();
+            _draft = new RelayCommand(DraftPlayer, () => SelectedPlayer != null && GetDraftIndex() < 17);
+            _sub = new RelayCommand<object>(SubPlayer);
+            _save = new RelayCommand(SetUserTeam, () => GetDraftIndex() == 17);
+            PlayerList = new ObservableCollection<DraftInfo>();
             ShowPlayers();
             SetDraftText();
         }
@@ -116,6 +152,140 @@ namespace FFM_WIFI.ViewModels
             uhWindow.ShowDialog();
         }
 
+        private void DraftPlayer()
+        {
+            if (SelectedPlayer != null)
+            {
+                _draftedTeam[_draftIndex] = _selectedPlayer;
+                MoneyMax -= _selectedPlayer.Value;  // _moneyMax funktioniert nicht
+                OnPropertyChanged("DraftedTeam");
+                _draft.RaiseCanExecuteChanged();
+            }
+            ShowPlayers();
+        }
+
+        private void SubPlayer(object position)
+        {
+            string t = position.ToString();
+            int i = int.Parse(t);
+
+            if (_draftedTeam[i] != null)
+            {
+                MoneyMax += _draftedTeam[i].Value;
+                _draftedTeam[i] = null;
+                OnPropertyChanged("DraftedTeam");
+            }
+            ShowPlayers();
+        }
+
+        private void SetSeasonLeague()
+        {
+            using (FootballContext context = new FootballContext())
+            {
+                var season = context.Season.Where(s => s.SeasonPk == _userTeam.UserTeamSeason).FirstOrDefault();
+                var league = context.League.Where(l => l.LeaguePk == _userTeam.UserTeamLeague).FirstOrDefault();
+
+                _season = season;
+                _league = league;
+            }
+        }
+
+        private int GetDraftIndex()
+        {
+            for (int i = 0; i < _draftedTeam.Length; i++)
+            {
+                if (_draftedTeam[i] == null)
+                    return i;
+            }
+            return _draftedTeam.Length;
+        }
+
+        private int GetDraftCount()
+        {
+            int count = 0;
+            for (int i = 0; i < _draftedTeam.Length; i++)
+            {
+                if (_draftedTeam[i] == null)
+                    count++;
+            }
+            return count;
+        }
+
+        private void ShowPlayers()
+        {
+            _draftIndex = GetDraftIndex();
+            _draftCount = GetDraftCount();
+            _save.RaiseCanExecuteChanged();
+            SetPosition();
+            SetDraftText();
+            PlayerList.Clear();
+
+            if (_allPlayers.Count == 0)
+            {
+                using (FootballContext context = new FootballContext())
+                {
+                    var players = context.TeamPlayerAssignment.Where(p => p.TeaPlaTeamFkNavigation.SeaLeaTeaSeasonFk == _season.SeasonPk
+                                                                     && p.TeaPlaTeamFkNavigation.SeaLeaTeaLeagueFk == _league.LeaguePk)
+                                                                     .Include(p => p.TeaPlaPlayerFkNavigation);
+
+                    foreach (var p in players)
+                    {
+                        DraftInfo temp = new DraftInfo(p.TeaPlaPlayerFkNavigation.PlayerPk, p.TeaPlaPlayerFkNavigation.PlayerFirstName + " " + p.TeaPlaPlayerFkNavigation.PlayerLastName,
+                                                       p.TeaPlaPlayerFkNavigation.PlayerImage, p.TeaPlaPlayerFkNavigation.PlayerPosition, p.TeaPlaPlayerValue / 1000000);
+
+                        if (!_allPlayers.Contains(temp))
+                        _allPlayers.Add(temp);
+                    }
+                }
+            }
+
+            foreach (var player in _allPlayers)
+            {
+                if (player.Position == _position && player.Value < _moneyMax && !_draftedTeam.Contains(player))
+                    PlayerList.Add(player);
+            }
+        }
+
+        private void SetDraftText()
+        {
+            if (_draftCount > 0)
+                DraftText = $"{UserTeam.UserTeamUserFkNavigation.UserName}, bitte wähle einen {_position}!\nDu hast noch {_draftCount} Drafts";
+            else
+                DraftText = $"Dein Team ist komplett!\nDu kannst es nun speichern";
+        }
+
+        private void SetPosition()
+        {
+            switch (_draftIndex)
+            {
+                case 0:
+                case 11:
+                    _position = "Goalkeeper";
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 12:
+                    _position = "Defender";
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 13:
+                case 14:
+                    _position = "Midfielder";
+                    break;
+                case 9:
+                case 10:
+                case 15:
+                case 16:
+                    _position = "Attacker";
+                    break;
+            }
+        }
+
         private void SetUserTeam()
         {
             using (FootballContext context = new FootballContext())
@@ -125,23 +295,23 @@ namespace FFM_WIFI.ViewModels
                 if (userTeam != null)
                 {
                     // Player PK hinterlegen
-                    userTeam.UserTeamGk1 = _teamUser[0].PlayerPk;
-                    userTeam.UserTeamDf1 = _teamUser[1].PlayerPk;
-                    userTeam.UserTeamDf2 = _teamUser[2].PlayerPk;
-                    userTeam.UserTeamDf3 = _teamUser[3].PlayerPk;
-                    userTeam.UserTeamDf4 = _teamUser[4].PlayerPk;
-                    userTeam.UserTeamMf1 = _teamUser[5].PlayerPk;
-                    userTeam.UserTeamMf2 = _teamUser[6].PlayerPk;
-                    userTeam.UserTeamMf3 = _teamUser[7].PlayerPk;
-                    userTeam.UserTeamMf4 = _teamUser[8].PlayerPk;
-                    userTeam.UserTeamAt1 = _teamUser[9].PlayerPk;
-                    userTeam.UserTeamAt2 = _teamUser[10].PlayerPk;
-                    userTeam.UserTeamGk2 = _teamUser[11].PlayerPk;
-                    userTeam.UserTeamDf5 = _teamUser[12].PlayerPk;
-                    userTeam.UserTeamMf5 = _teamUser[13].PlayerPk;
-                    userTeam.UserTeamMf6 = _teamUser[14].PlayerPk;
-                    userTeam.UserTeamAt3 = _teamUser[15].PlayerPk;
-                    userTeam.UserTeamAt4 = _teamUser[16].PlayerPk;
+                    userTeam.UserTeamGk1 = _draftedTeam[0].Id;
+                    userTeam.UserTeamDf1 = _draftedTeam[1].Id;
+                    userTeam.UserTeamDf2 = _draftedTeam[2].Id;
+                    userTeam.UserTeamDf3 = _draftedTeam[3].Id;
+                    userTeam.UserTeamDf4 = _draftedTeam[4].Id;
+                    userTeam.UserTeamMf1 = _draftedTeam[5].Id;
+                    userTeam.UserTeamMf2 = _draftedTeam[6].Id;
+                    userTeam.UserTeamMf3 = _draftedTeam[7].Id;
+                    userTeam.UserTeamMf4 = _draftedTeam[8].Id;
+                    userTeam.UserTeamAt1 = _draftedTeam[9].Id;
+                    userTeam.UserTeamAt2 = _draftedTeam[10].Id;
+                    userTeam.UserTeamGk2 = _draftedTeam[11].Id;
+                    userTeam.UserTeamDf5 = _draftedTeam[12].Id;
+                    userTeam.UserTeamMf5 = _draftedTeam[13].Id;
+                    userTeam.UserTeamMf6 = _draftedTeam[14].Id;
+                    userTeam.UserTeamAt3 = _draftedTeam[15].Id;
+                    userTeam.UserTeamAt4 = _draftedTeam[16].Id;
                     userTeam.UserTeamNumberPlayers = 17;
                 }
 
@@ -174,105 +344,6 @@ namespace FFM_WIFI.ViewModels
                 context.SaveChanges();
                 GoToUserHome(user);
             }
-        }
-
-        private void DraftPlayer()
-        {
-            if (SelectedPlayer != null)
-            {
-                SetPosition();
-                SetDraftText();
-                _teamUser[_draftCount] = _selectedPlayer;
-                OnPropertyChanged("TeamUser");
-                PlayerList.Remove(_selectedPlayer);
-                _draftCount++;
-
-                if (_draftCount == 17)
-                {
-                    _draft.RaiseCanExecuteChanged();
-                    _save.RaiseCanExecuteChanged();
-                }
-
-                ShowPlayers();
-            }
-        }
-
-        private void SetSeasonLeague()
-        {
-            using (FootballContext context = new FootballContext())
-            {
-                var season = context.Season.Where(s => s.SeasonPk == _userTeam.UserTeamSeason).FirstOrDefault();
-                var league = context.League.Where(l => l.LeaguePk == _userTeam.UserTeamLeague).FirstOrDefault();
-
-                _season = season;
-                _league = league;
-            }
-        }
-
-        private void SetPosition()
-        {
-            switch (_draftCount)
-            {
-                case 0:
-                    _position = "Goalkeeper";
-                    _positionChanged = true;
-                    break;
-                case 1:
-                    _position = "Defender";
-                    _positionChanged = true;
-                    break;
-                case 5:
-                    _position = "Midfielder";
-                    _positionChanged = true;
-                    break;
-                case 9:
-                    _position = "Attacker";
-                    _positionChanged = true;
-                    break;
-                case 11:
-                    _position = "Goalkeeper";
-                    _positionChanged = true;
-                    break;
-                case 12:
-                    _position = "Defender";
-                    _positionChanged = true;
-                    break;
-                case 13:
-                    _position = "Midfielder";
-                    _positionChanged = true;
-                    break;
-                case 15:
-                    _position = "Attacker";
-                    _positionChanged = true;
-                    break;
-            }
-        }
-
-        private void ShowPlayers()
-        {
-            SetPosition();
-            if (_positionChanged)
-            {
-                PlayerList.Clear();
-                using (FootballContext context = new FootballContext())
-                {
-                    var players = context.TeamPlayerAssignment.Where(p => p.TeaPlaTeamFkNavigation.SeaLeaTeaSeasonFk == _season.SeasonPk && p.TeaPlaTeamFkNavigation.SeaLeaTeaLeagueFk == _league.LeaguePk && p.TeaPlaPlayerFkNavigation.PlayerPosition == _position).Include(p => p.TeaPlaPlayerFkNavigation).Select(p => p.TeaPlaPlayerFkNavigation);
-
-                    foreach (var item in players)
-                    {
-                        Player temp = new Player();
-                        temp = item;
-                        PlayerList.Add(item);
-                    }
-                }
-                _positionChanged = false;
-            }
-        }
-
-        private void SetDraftText()
-        {
-            DraftText = $"{UserTeam.UserTeamUserFkNavigation.UserName}, bitte wähle einen {_position}!\nDu hast noch {17 - _draftCount} Drafts";
-            
         }
     }
 }

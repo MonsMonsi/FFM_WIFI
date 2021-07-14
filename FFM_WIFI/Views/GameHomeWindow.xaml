@@ -19,11 +19,15 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0" FontSize="20">
+            <Image Source="{Binding TeamData.League}"
+                   Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"
+                   Height="100" Width="100"/>
+
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="140,0,0,0" FontSize="20">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="{}{0}&#x0a;Aktueller Spieltag: {1}">
-                        <Binding Path="UserTeam.UserTeamName"/>
-                        <Binding Path="UserTeam.UserTeamPlayday"/>
+                    <MultiBinding StringFormat="{}{0}&#x0a;Punkte gesamt: {1}">
+                        <Binding Path="TeamData.Name"/>
+                        <Binding Path="TeamData.Points"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
@@ -92,7 +96,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <DataGrid ItemsSource="{Binding PlayerDraftList}" SelectedItem="{Binding SelectedPlayer}"
+            <DataGrid ItemsSource="{Binding DraftList}" SelectedItem="{Binding SelectedDraft}"
                       AutoGenerateColumns="False" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" 
                       Height="300" Width="160">
                 <DataGrid.Columns>
@@ -118,8 +122,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <DataGrid ItemsSource="{Binding PlayerDataList}"
-                      AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 25,0"
+            <ListView ItemsSource="{Binding DetailText}"
+                      Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25, 0, 0, 0"
+                      Height="280" Width="150"/>
+
+            <DataGrid ItemsSource="{Binding DataList}" SelectedItem="{Binding SelectedData}"
+                      AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 25, 0"
                       Height="280" Width="150">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="" Width="30">

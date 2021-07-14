@@ -1,5 +1,4 @@
-﻿using FFM_WIFI.Models.DataContext;
-using FFM_WIFI.ViewModels;
+﻿using DragDropTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +11,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FFM_WIFI.Views
+namespace DragDropTest
 {
     /// <summary>
-    /// Interaction logic for FixtureWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class FixtureWindow : Window
+    public partial class MainWindow : Window
     {
-        private FixtureViewModel fvm;
-        public FixtureWindow(TeamInfo teamInfo, PlayerInfo[] playerData, int[] fixtures)
+        private MainViewModel mvm;
+        public MainWindow()
         {
             InitializeComponent();
-            fvm = new FixtureViewModel(this, teamInfo, playerData, fixtures);
-            this.DataContext = fvm;
+            mvm = new MainViewModel();
+            this.DataContext = mvm;
+        }
+
+        private void Button_DragOver(object sender, DragEventArgs e)
+        {
+
         }
     }
 }

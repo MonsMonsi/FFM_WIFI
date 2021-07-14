@@ -16,35 +16,44 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding}"
+        <Image Source="{Binding TeamData.League}"
                Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
                Height="100" Width="100"/>
 
-        <DataGrid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+        <DataGrid ItemsSource="{Binding DraftedPlayers}" SelectedItem="{Binding SelectedPlayer}"
+                  AutoGenerateColumns="False" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
                   Height="330" Width="100">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="30">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding}"
+                            <Image Source="{Binding Image}"
                                    Height="30" Width="30"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding}" Header="Punkte"
+                <DataGridTextColumn Binding="{Binding Points}" Header="Punkte"
                                     Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button Content="Spielerdetail" Command="{Binding DetailCommand}"
+                    Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,200"
+                    Height="25" Width="100"
+                    FontSize="15"/>
 
         <Button Content="GameHome" Command="{Binding HomeCommand}"
                     Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50"
                     Height="25" Width="100"
                     FontSize="15"/>
 
-        <TextBlock Text="1. Bundesliga: Spieltag xy"
-                   Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Height="80" Width="400"
+        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
                    FontSize="30" FontWeight="Bold">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}Spieltag: {0}">
+                    <Binding Path="TeamData.Playday"/>
+                </MultiBinding> 
+            </TextBlock.Text>
         </TextBlock>
 
         <Grid Grid.Column="1" Grid.Row="1">
@@ -52,7 +61,8 @@
                 <ColumnDefinition Width="330"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListView ItemsSource="{Binding PlaydayText}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+            
+            <ListView ItemsSource="{Binding ListViewText}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
                   Height=" 500" Width="300"/>
 
             <Button Content="Start" Command="{Binding StartCommand}"
