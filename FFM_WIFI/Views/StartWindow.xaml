@@ -5,24 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI"
         mc:Ignorable="d"
-        Title="Start-Menu" Height="500" Width="300">
+        Title="Start-Menu" Height="500" Width="300"
+        WindowStartupLocation="CenterScreen">
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="93*"/>
-            <RowDefinition Height="149*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Login" Grid.Row="1" Margin="0,35,0,0">
+        <GroupBox Header="Login" Grid.Row="1" Margin="0,0,0,0">
             <StackPanel>
-                <TextBlock Text="Benutzername:" 
-                           Margin="0,20,0,0"/>
-                <TextBox Text="{Binding UserName}"/>
-                <TextBlock Text="Passwort:" 
-                           Margin="0,10,0,0"/>
-                <TextBox Text="{Binding UserPassword}"/>
-                <Button Style="{StaticResource ButtonLogin}" Content="Anmelden" Command="{Binding LoginCommand}"
-                        Margin="0,30,0,0" Height="20"/>
-                <Button Style="{StaticResource ButtonLogin}" Content="Neuer Benutzer" Command="{Binding NewUserCommand}" 
-                        Margin="0,10,0,0" Height="20"/>
+
+                <TextBox Style="{StaticResource TextBoxUserName}" Text="{Binding UserName}"
+                         Margin="0,40,0,0"/>
+
+                <TextBox Style="{StaticResource TextBoxPassword}" Text="{Binding UserPassword}"
+                         Margin="0,10,0,0"/>
+
+                <Button Style="{StaticResource Button}" Content="Anmelden" Command="{Binding LoginCommand}"
+                        Margin="0,100,0,0" Height="25" Width="200"/>
+
+                <Button Style="{StaticResource Button}" Content="Neuer Benutzer" Command="{Binding NewUserCommand}" 
+                        Margin="0,10,0,0" Height="25" Width="200"/>
             </StackPanel>
         </GroupBox>
     </Grid>

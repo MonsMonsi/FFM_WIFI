@@ -60,21 +60,23 @@ namespace FFM_WIFI.ViewModels
 
         private void CheckLogin()
         {
-            using (FootballContext context = new FootballContext())
+            if (_userName != null)
             {
-                var existingUser = context.User.Where(u => u.UserName == UserName && u.UserPassword == UserPassword).FirstOrDefault();
+                using (FootballContext context = new FootballContext())
+                {
+                    var existingUser = context.User.Where(u => u.UserName == UserName && u.UserPassword == UserPassword).FirstOrDefault();
 
-                if (existingUser != null)
-                {
-                    _user = existingUser;
-                    GoToUserHome();
-                }
-                else
-                {
-                    MessageBox.Show("Benutzer nicht gefunden!");
+                    if (existingUser != null)
+                    {
+                        _user = existingUser;
+                        GoToUserHome();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Benutzer nicht gefunden!");
+                    }
                 }
             }
-
         }
 
         private void CheckNewUser()

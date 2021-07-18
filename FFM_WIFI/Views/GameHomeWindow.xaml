@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
-        Title="GameWindow" Height="800" Width="1000">
-    <Grid>
+        Title="GameWindow" Height="740" Width="1000"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid Background="BlanchedAlmond">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="450"/>
             <ColumnDefinition Width="*"/>
@@ -15,15 +17,15 @@
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="140"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Image Source="{Binding TeamData.League}"
-                   Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"
-                   Height="100" Width="100"/>
+            <!--Image vom Team einfügen-->
 
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="140,0,0,0" FontSize="20">
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="130,5,0,0"  
+                       Height="60"
+                       FontSize="22" FontWeight="DemiBold" Foreground="DarkSlateBlue">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0}&#x0a;Punkte gesamt: {1}">
                         <Binding Path="TeamData.Name"/>
@@ -32,7 +34,7 @@
                 </TextBlock.Text>
             </TextBlock>
 
-            <Canvas Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <Canvas Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Height="600" Width="400" 
                     Background="LightGreen">
                 <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
@@ -91,14 +93,49 @@
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="163"/>
-                <RowDefinition Height="377"/>
+                <RowDefinition Height="290"/>
+                <RowDefinition Height="290"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
+            <Canvas HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="Azure"
+                    Height="280" Width="150">
+
+                <TextBlock Text="{Binding SelectedDraft.Name}" 
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           Canvas.Left="5" Canvas.Top="5"
+                           Height="45" Width="140" 
+                           FontSize="14" FontWeight="Bold"/>
+
+                <Image Source="{Binding SelectedDraft.Image}"
+                       Canvas.Left="26" Canvas.Top="60"
+                       Height="100" Width="100"/>
+
+                <TextBlock Text="{Binding SelectedDraft.Position}"
+                           TextAlignment="Center" 
+                           Canvas.Left="5" Canvas.Top="180"
+                           Height="15" Width="140"
+                           FontSize="12" FontWeight="DemiBold"/>
+
+                <TextBlock Text="{Binding SelectedDraft.Height}"
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           Canvas.Left="5" Canvas.Top="210"
+                           Height="15" Width="140"
+                           FontSize="12" FontWeight="DemiBold"/>
+
+                <TextBlock Text="{Binding SelectedDraft.Nationality}"
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           Canvas.Left="5" Canvas.Top="240"
+                           Height="15" Width="140"
+                           FontSize="12" FontWeight="DemiBold"/>
+            </Canvas>
+
             <DataGrid ItemsSource="{Binding DraftList}" SelectedItem="{Binding SelectedDraft}"
-                      AutoGenerateColumns="False" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" 
-                      Height="300" Width="160">
+                      AutoGenerateColumns="False" HeadersVisibility="None" 
+                      Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Background="Azure"
+                      Height="280" Width="150">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="40">
                         <DataGridTemplateColumn.CellTemplate>
@@ -111,30 +148,39 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button Content="aufstellen" Command="{Binding LineUpCommand}"
-                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Width="100" Height="25"/>
+            <Button Style="{StaticResource Button}" Content="aufstellen" Command="{Binding LineUpCommand}"
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"
+                    Height="25" Width="140"/>
+
+            <Button Style="{StaticResource Button}" Content="schnell" Command="{Binding FastCommand}"
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,60,0,0"
+                    Height="25" Width="140"/>
+
         </Grid>
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="290"/>
+                <RowDefinition Height="325"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ListView ItemsSource="{Binding DetailText}"
-                      Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25, 0, 0, 0"
+            <ListView ItemsSource="{Binding DetailText}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"
+                      Background="LightBlue"
+                      FontSize="12" FontWeight="Bold"
                       Height="280" Width="150"/>
 
             <DataGrid ItemsSource="{Binding DataList}" SelectedItem="{Binding SelectedData}"
-                      AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 25, 0"
+                      AutoGenerateColumns="False" HeadersVisibility="None" 
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      HorizontalAlignment="Left" VerticalAlignment="Center" Margin="175,0,0,0"
                       Height="280" Width="150">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="" Width="30">
+                    <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Image Source="{Binding Image}"
-                                       Height="30" Width="30"/>
+                                       Height="20" Width="20"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -142,22 +188,111 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <DataGrid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10"
-                      Height="250" Width="300">
+            <Image Source="{Binding TeamData.League}"
+                   Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,0,0,0"
+                   Height="30" Width="30"/>
+
+            <TextBlock Text="{Binding TeamData.Season}"
+                       Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,32,0,0"
+                       FontSize="8" FontWeight="ExtraBold" Foreground="DarkSlateBlue"
+                       Height="13"/>
+
+            <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,5,0,0"
+                       FontSize="22" FontWeight="Bold" Foreground="DarkSlateBlue"
+                       Height="29">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Spieltag {0}">
+                        <Binding Path="TeamData.Playday"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+
+            <DataGrid ItemsSource="{Binding PlaydayList}" SelectedItem="{Binding SelectedPlayday}"
+                      AutoGenerateColumns="False" HeadersVisibility="None"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
+                      Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,0,0,0"
+                      Height="280" Width="150">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Heimteam" Width="135"></DataGridTextColumn>
-                    <DataGridTextColumn Header="vs" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Auswärtsteam" Width="135"></DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Height="28" Width="144">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Source="{Binding HomeImage}"
+                                           Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0"
+                                           Height="27" Width="27"/>
+
+                                    <TextBlock Text="vs"
+                                               Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
+                                               
+                                               FontWeight="DemiBold"/>
+
+                                    <Image Source="{Binding AwayImage}"
+                                           Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"
+                                           Height="27" Width="27"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button Content="Nächster Spieltag" Command="{Binding PlayCommand}" 
-                    Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="right" Margin="0,0,40,0" 
-                    Height="26" Width="120"/>
+            <Canvas Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="175,0,0,0"
+                    Background="LightBlue"
+                    Height="280" Width="150">
 
-            <Button Content="UserHome" Command="{Binding SaveCommand}" 
-                    Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" 
-                    Height="26" Width="120"/>
+                <TextBlock Text="{Binding SelectedPlayday.Venue.VenueName}" 
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           Canvas.Left="5" Canvas.Top="5"
+                           Height="45" Width="140" 
+                           FontSize="14" FontWeight="Bold"/>
+
+                <TextBlock TextAlignment="Center" 
+                           Canvas.Left="5" Canvas.Top="50"
+                           Height="15" Width="140"
+                           FontSize="12" FontWeight="DemiBold">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}Zuschauer: {0}">
+                            <Binding Path="SelectedPlayday.Venue.VenueCapacity"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <Image Source="{Binding SelectedPlayday.Venue.VenueImage}"
+                       Canvas.Left="5" Canvas.Top="90"
+                       Height="140" Width="140"/>
+
+                <TextBlock Text="{Binding SelectedPlayday.Date}"
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           Canvas.Top="240" Canvas.Left="5"
+                           Height="15" Width="140"
+                           FontSize="11" FontWeight="DemiBold"/>
+
+                <TextBlock TextAlignment="Center" TextWrapping="Wrap"
+                           Canvas.Left="5" Canvas.Top="260" 
+                           Height="15" Width="140"
+                           FontSize="11" FontWeight="DemiBold">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}Schiedsrichter: {0}">
+                            <Binding Path="SelectedPlayday.Referee"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Canvas>
+
+            <Button Style="{StaticResource Button}" Content="Nächster Spieltag" Command="{Binding PlayCommand}" 
+                    Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"  Margin="0,0,25,0" 
+                    Height="26" Width="140"/>
+
+            <Button Style="{StaticResource Button}" Content="UserHome" Command="{Binding SaveCommand}" 
+                    Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0" 
+                    Height="25" Width="140"/>
+
         </Grid>
     </Grid>
 </Window>

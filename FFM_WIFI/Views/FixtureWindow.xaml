@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
-        Title="FixtureWindow" Height="800" Width="600">
-    <Grid>
+        Title="FixtureWindow" Height="800" Width="600"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid Background="BlanchedAlmond">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
@@ -21,7 +23,8 @@
                Height="100" Width="100"/>
 
         <DataGrid ItemsSource="{Binding DraftedPlayers}" SelectedItem="{Binding SelectedPlayer}"
-                  AutoGenerateColumns="False" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+                  HeadersVisibility="None" AutoGenerateColumns="False" 
+                  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
                   Height="330" Width="100">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="30">
@@ -37,12 +40,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="Spielerdetail" Command="{Binding DetailCommand}"
+        <Button Style="{StaticResource Button}"  Content="Spielerdetail" Command="{Binding DetailCommand}"
                     Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,200"
                     Height="25" Width="100"
                     FontSize="15"/>
 
-        <Button Content="GameHome" Command="{Binding HomeCommand}"
+        <Button Style="{StaticResource Button}" Content="GameHome" Command="{Binding HomeCommand}"
                     Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50"
                     Height="25" Width="100"
                     FontSize="15"/>
@@ -61,11 +64,59 @@
                 <ColumnDefinition Width="330"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <ListView ItemsSource="{Binding ListViewText}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
-                  Height=" 500" Width="300"/>
 
-            <Button Content="Start" Command="{Binding StartCommand}"
+            <ListView ItemsSource="{Binding InfoList}" 
+                      BorderThickness="0"
+                      HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+                      Height="500" Width="Auto">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border CornerRadius="5" Background="LightBlue">
+                                        <Grid Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="145"/>
+                                                <ColumnDefinition Width="145"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="50"/>
+                                                <RowDefinition Height="300"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding HomeName}"
+                                                       Grid.Column="0" Grid.Row="0"
+                                                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                       TextWrapping="Wrap" Margin="5 10 0 0"
+                                                       Height="50"
+                                                       FontSize="14" FontWeight="DemiBold"
+                                                       Foreground="DarkBlue"/>
+
+                                            <TextBlock Text="{Binding AwayName}"
+                                                       Grid.Column="2" Grid.Row="0"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                       TextWrapping="Wrap" Margin="0 10 5 0"
+                                                       Height="50"
+                                                       FontSize="14" FontWeight="DemiBold"
+                                                       Foreground="DarkBlue"/>
+
+                                            <ListView ItemsSource="{Binding List}" BorderBrush="DarkBlue" BorderThickness="3"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                                      Grid.Row="1" Grid.ColumnSpan="2"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 10 0 0"
+                                                      Width="250"
+                                                      FontSize="12" FontWeight="ExtraBold"
+                                                      Background="AliceBlue" Foreground="DarkBlue"/>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <Button Style="{StaticResource Button}" Content="Start" Command="{Binding StartCommand}"
                     Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
                     Height="25" Width="80"/>
         </Grid>

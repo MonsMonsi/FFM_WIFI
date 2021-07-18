@@ -11,15 +11,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Data;
-using System.Globalization;
-using System.ComponentModel;
 using FFM_WIFI.Views;
+using FFM_WIFI.Models.Utility;
 
 namespace FFM_WIFI.ViewModels
 {
-    public class DraftInfo
+    #region InfoClasses
+    public class DraftInfo : IComparable
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -35,10 +33,23 @@ namespace FFM_WIFI.ViewModels
             Position = position;
             Value = (double)value;
         }
+
+        public int CompareTo(object obj)
+        {
+            DraftInfo other = obj as DraftInfo;
+            if (other == null)
+            {
+                throw new ArgumentException("Object is not Preson");
+            }
+            return this.Value.CompareTo(other.Value);
+        }
     }
+    #endregion
 
     class DraftViewModel : BaseViewModel
     {
+        #region Properties
+
         // Properties für User
         // Datenstruktur überdenken
         private UserTeam _userTeam;
@@ -101,22 +112,27 @@ namespace FFM_WIFI.ViewModels
                 _draft.RaiseCanExecuteChanged();
             }
         }
+        #endregion
 
-        // Attribute
+        #region Attributes
+
         private Season _season;
         private League _league;
         private string _position;
         private int _draftIndex;
         private int _draftCount;
         private Window _window;
+        #endregion
 
-        // Commands
+        #region Commands
+
         private RelayCommand _draft;
         public ICommand DraftCommand { get { return _draft; } }
         private RelayCommand<object> _sub;
         public ICommand SubCommand { get { return _sub; } }
         private RelayCommand _save;
         public ICommand SaveCommand { get { return _save; } }
+        #endregion
 
         // Konstruktor
         public DraftViewModel(Window window, UserTeam userTeam)
@@ -141,10 +157,13 @@ namespace FFM_WIFI.ViewModels
         }
 
         // noch zu implemetieren
-        // 1: Undo Button
-        // 2: Neustart Button
-        // 3: Marktwerte ausgeben und Maximalbudget hinzufügen
 
+
+
+
+        // 2: Neustart Button
+
+        #region Methods
         private void GoToUserHome(User user)
         {
             UserHomeWindow uhWindow = new UserHomeWindow(user);
@@ -244,7 +263,8 @@ namespace FFM_WIFI.ViewModels
                 if (player.Position == _position && player.Value < _moneyMax && !_draftedTeam.Contains(player))
                     PlayerList.Add(player);
             }
-        }
+            // PlayerList.BubbleSort();
+        } 
 
         private void SetDraftText()
         {
@@ -345,6 +365,7 @@ namespace FFM_WIFI.ViewModels
                 GoToUserHome(user);
             }
         }
+        #endregion
     }
 }
 

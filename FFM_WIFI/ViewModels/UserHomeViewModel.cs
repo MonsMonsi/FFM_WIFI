@@ -12,6 +12,7 @@ using System.Windows.Input;
 
 namespace FFM_WIFI.ViewModels
 {
+    #region InfoClasses
     public class TeamInfo
     {
         public int Id { get; set; }
@@ -42,8 +43,10 @@ namespace FFM_WIFI.ViewModels
 
         }
     }
+    #endregion
     class UserHomeViewModel : BaseViewModel
     {
+        #region Properties
         // Property für Team Datagrids
         public ObservableCollection<TeamInfo> TeamList { get; set; }
         private TeamInfo _selectedTeam;
@@ -58,17 +61,22 @@ namespace FFM_WIFI.ViewModels
                 OnPropertyChanged("SelectedTeam");
             }
         }
+        #endregion
 
-        // Commands
+        #region Commands
+
         public ICommand NewTeamCommand { get; set; }
         private RelayCommand _draft;
         public ICommand DraftCommand { get { return _draft; } }
         private RelayCommand _game;
         public ICommand GameCommand { get { return _game; } }
+        #endregion
 
-        // Attribute
+
+        #region Attributes
+
         private User _user;
-
+        #endregion
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
         {
@@ -84,6 +92,7 @@ namespace FFM_WIFI.ViewModels
             GetTeamInfo();
         }
 
+        #region Methods
         private void GoToNewTeam()
         {
             NewTeamWindow ntwindow = new NewTeamWindow(_user);
@@ -129,7 +138,7 @@ namespace FFM_WIFI.ViewModels
                 }
             }
         }
-
+        #endregion
 
         //private void DeleteTeam()
         //{

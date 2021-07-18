@@ -15,8 +15,25 @@ using FFM_WIFI.Views;
 
 namespace FFM_WIFI.ViewModels
 {
+    public class FixtureInfo
+    {
+        public string HomeName { get; set; }
+        public string AwayName { get; set; }
+        public ObservableCollection<string> List { get; set; }
+
+        public FixtureInfo(string hn, string an, ObservableCollection<string> list)
+        {
+            HomeName = hn;
+            AwayName = an;
+            List = list;
+        }
+    }
+
     class FixtureViewModel : BaseViewModel
     {
+        //Property für FixtureInfos
+        public ObservableCollection<FixtureInfo> InfoList { get; set; }
+
         // Property für User Team und Performance
         public PlayerInfo[] PlayerData { get; set; }
         public ObservableCollection<PlayerInfo> DraftedPlayers { get; set; }
@@ -77,6 +94,7 @@ namespace FFM_WIFI.ViewModels
             _userTeam = _teamData.Team;
             _fixtures = fixtures;
             PlayerData = playerData;
+            InfoList = new ObservableCollection<FixtureInfo>();
             DraftedPlayers = new ObservableCollection<PlayerInfo>();
             SetDraftedPlayersList();
             _playday = _userTeam.UserTeamPlayday;
@@ -111,6 +129,7 @@ namespace FFM_WIFI.ViewModels
 
         private void ShowDetailText()
         {
+            InfoList.Clear();
             ListViewText.Clear();
             ListViewText.Add(_headerDetail + "\n" + SelectedPlayer.Name);
             ListViewText.Add("Punkte gesamt: " + SelectedPlayer.Points);
@@ -133,6 +152,8 @@ namespace FFM_WIFI.ViewModels
                 ListViewText.Add($"RedCard-Strafe: {SelectedPlayer.RedC * -4} ({SelectedPlayer.RedC} Rote Karte)");
             if (SelectedPlayer.Subst > 0)
                 ListViewText.Add($"Subst-Strafe: {SelectedPlayer.Subst * -2} (Spieler wurde 1.Halbzeit ausgewechselt)");
+
+            InfoList.Add(new FixtureInfo(null, null, ListViewText));
         }
 
         private void SetPlaydayText()
@@ -161,8 +182,10 @@ namespace FFM_WIFI.ViewModels
                 SetEventPoints(fixture);
                 SetDraftedPlayersList();
 
-                ListViewText.Add(_headerPlayday + "\n" + fixture.response[0].teams.home.name + " vs. " + fixture.response[0].teams.away.name);
-                ListViewText.Add(_line);
+                //ListViewText.Add(_headerPlayday + "\n" + fixture.response[0].teams.home.name + " vs. " + fixture.response[0].teams.away.name);
+                //ListViewText.Add(_line);
+                //InfoList.Add(new FixtureInfo(fixture.response[0].teams.home.name, fixture.response[0].teams.home.name));
+                ListViewText.Clear();
 
                 foreach (var e in fixture.response[0].events)
                 {
@@ -190,6 +213,7 @@ namespace FFM_WIFI.ViewModels
                                       $"{_line}";
                     ListViewText.Add(newEvent);
                 }
+                InfoList.Add(new FixtureInfo(fixture.response[0].teams.home.name, fixture.response[0].teams.away.name, ListViewText));
             }
         }
 

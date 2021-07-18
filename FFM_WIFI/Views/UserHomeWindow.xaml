@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
-        Title="UserHomeWindow" Height="700" Width="600">
+        Title="UserHomeWindow" Height="700" Width="600"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -34,7 +35,7 @@
 
         <GroupBox Header="Team wählen" Grid.Column="0" Grid.Row="1">
             <StackPanel>
-                <Button Content="Neues Team" Command="{Binding NewTeamCommand}"
+                <Button Style="{StaticResource Button}" Content="Neues Team" Command="{Binding NewTeamCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
                 <DataGrid ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}"
                           AutoGenerateColumns="False"
@@ -44,14 +45,14 @@
                                             Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Content="Team löschen" Command="{Binding}"
+                <Button Style="{StaticResource Button}" Content="Team löschen" Command="{Binding}"
                         Margin="0,20,0,0" Height="20" Width="200"/>
             </StackPanel>
         </GroupBox>
 
         <GroupBox Header="Neues Spiel" Grid.Column="0" Grid.Row="2" Height="250" VerticalAlignment="Center">
             <StackPanel>
-                <Button Content="Saison spielen" Command="{Binding GameCommand}"
+                <Button Style="{StaticResource Button}" Content="Saison spielen" Command="{Binding GameCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
             </StackPanel>
         </GroupBox>
@@ -95,7 +96,7 @@
 
         <GroupBox Header="Teamoptionen" Grid.Column="1" Grid.Row="2" Height="250" VerticalAlignment="Center">
             <StackPanel>
-                <Button Content="Team draften" Command="{Binding DraftCommand}"
+                <Button Style="{StaticResource Button}" Content="Team draften" Command="{Binding DraftCommand}"
                         Margin="0,40,0,0" Height="20" Width="200"/>
             </StackPanel>
         </GroupBox>
