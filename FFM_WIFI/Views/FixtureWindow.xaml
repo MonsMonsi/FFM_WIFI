@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
-        Title="FixtureWindow" Height="800" Width="600"
+        Title="FixtureWindow" Height="740" Width="800"
         WindowStartupLocation="CenterScreen">
-    
+
     <Grid Background="BlanchedAlmond">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -24,8 +24,8 @@
 
         <DataGrid ItemsSource="{Binding DraftedPlayers}" SelectedItem="{Binding SelectedPlayer}"
                   HeadersVisibility="None" AutoGenerateColumns="False" 
-                  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
-                  Height="330" Width="100">
+                  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+                  Height="450" Width="100">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="30">
                     <DataGridTemplateColumn.CellTemplate>
@@ -40,13 +40,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Style="{StaticResource Button}"  Content="Spielerdetail" Command="{Binding DetailCommand}"
-                    Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,200"
-                    Height="25" Width="100"
-                    FontSize="15"/>
-
-        <Button Style="{StaticResource Button}" Content="GameHome" Command="{Binding HomeCommand}"
-                    Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50"
+        <Button Style="{StaticResource Button}" Content="GameHome" Command="{Binding HomeCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,537,0,0"
                     Height="25" Width="100"
                     FontSize="15"/>
 
@@ -55,20 +49,21 @@
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}Spieltag: {0}">
                     <Binding Path="TeamData.Playday"/>
-                </MultiBinding> 
+                </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
 
         <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="330"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="475"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
             <ListView ItemsSource="{Binding InfoList}" 
                       BorderThickness="0"
-                      HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
-                      Height="500" Width="Auto">
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
+                      Height="450" Width="300">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Template">
@@ -104,6 +99,7 @@
                                                       ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                                       Grid.Row="1" Grid.ColumnSpan="2"
                                                       HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 10 0 0"
+                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                                       Width="250"
                                                       FontSize="12" FontWeight="ExtraBold"
                                                       Background="AliceBlue" Foreground="DarkBlue"/>
@@ -116,9 +112,10 @@
                 </ListView.ItemContainerStyle>
             </ListView>
 
-            <Button Style="{StaticResource Button}" Content="Start" Command="{Binding StartCommand}"
-                    Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
-                    Height="25" Width="80"/>
+            <Button Style="{StaticResource Button}" Command="{Binding StartCommand}"
+                Content="Start"     
+                Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100 0 0 0"
+                Height="25" Width="100"/>
         </Grid>
     </Grid>
 </Window>

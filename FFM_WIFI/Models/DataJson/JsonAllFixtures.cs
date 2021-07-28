@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FFM_WIFI.Models.DataJson
 {
@@ -10,136 +6,136 @@ namespace FFM_WIFI.Models.DataJson
     {
         public class Root
         {
-            public string get { get; set; }
-            public Parameters parameters { get; set; }
-            public object[] errors { get; set; }
-            public int results { get; set; }
-            public Paging paging { get; set; }
-            public Response[] response { get; set; }
+            public string Get { get; set; }
+            public Parameters Parameters { get; set; }
+            public object[] Errors { get; set; }
+            public int Results { get; set; }
+            public Paging Paging { get; set; }
+            public Response[] Response { get; set; }
         }
 
         public class Parameters
         {
-            public string league { get; set; }
-            public string season { get; set; }
+            public string League { get; set; }
+            public string Season { get; set; }
         }
 
         public class Paging
         {
-            public int current { get; set; }
-            public int total { get; set; }
+            public int Current { get; set; }
+            public int Total { get; set; }
         }
 
         public class Response
         {
-            public Fixture fixture { get; set; }
-            public League league { get; set; }
-            public Teams teams { get; set; }
-            public Goals goals { get; set; }
-            public Score score { get; set; }
+            public Fixture Fixture { get; set; }
+            public League League { get; set; }
+            public Teams Teams { get; set; }
+            public Goals Goals { get; set; }
+            public Score Score { get; set; }
         }
 
         public class Fixture
         {
-            public int id { get; set; }
-            public string referee { get; set; }
-            public string timezone { get; set; }
-            public DateTime date { get; set; }
-            public int timestamp { get; set; }
-            public Periods periods { get; set; }
-            public Venue venue { get; set; }
-            public Status status { get; set; }
+            public int Id { get; set; }
+            public string Referee { get; set; }
+            public string Timezone { get; set; }
+            public DateTime Date { get; set; }
+            public int Timestamp { get; set; }
+            public Periods Periods { get; set; }
+            public Venue Venue { get; set; }
+            public Status Status { get; set; }
         }
 
         public class Periods
         {
-            public int first { get; set; }
-            public int second { get; set; }
+            public int First { get; set; }
+            public int Second { get; set; }
         }
 
         public class Venue
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string city { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string City { get; set; }
         }
 
         public class Status
         {
             public string _long { get; set; }
             public string _short { get; set; }
-            public int elapsed { get; set; }
+            public int Elapsed { get; set; }
         }
 
         public class League
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string country { get; set; }
-            public string logo { get; set; }
-            public string flag { get; set; }
-            public int season { get; set; }
-            public string round { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Country { get; set; }
+            public string Logo { get; set; }
+            public string Flag { get; set; }
+            public int Season { get; set; }
+            public string Round { get; set; }
         }
 
         public class Teams
         {
-            public Home home { get; set; }
-            public Away away { get; set; }
+            public Home Home { get; set; }
+            public Away Away { get; set; }
         }
 
         public class Home
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string logo { get; set; }
-            public bool? winner { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Logo { get; set; }
+            public bool? Winner { get; set; }
         }
 
         public class Away
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string logo { get; set; }
-            public bool? winner { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Logo { get; set; }
+            public bool? Winner { get; set; }
         }
 
         public class Goals
         {
-            public int home { get; set; }
-            public int away { get; set; }
+            public int Home { get; set; }
+            public int Away { get; set; }
         }
 
         public class Score
         {
-            public Halftime halftime { get; set; }
-            public Fulltime fulltime { get; set; }
-            public Extratime extratime { get; set; }
-            public Penalty penalty { get; set; }
+            public Halftime Halftime { get; set; }
+            public Fulltime Fulltime { get; set; }
+            public Extratime Extratime { get; set; }
+            public Penalty Penalty { get; set; }
         }
 
         public class Halftime
         {
-            public int home { get; set; }
-            public int away { get; set; }
+            public int Home { get; set; }
+            public int Away { get; set; }
         }
 
         public class Fulltime
         {
-            public int home { get; set; }
-            public int away { get; set; }
+            public int Home { get; set; }
+            public int Away { get; set; }
         }
 
         public class Extratime
         {
-            public object home { get; set; }
-            public object away { get; set; }
+            public object Home { get; set; }
+            public object Away { get; set; }
         }
 
         public class Penalty
         {
-            public object home { get; set; }
-            public object away { get; set; }
+            public object Home { get; set; }
+            public object Away { get; set; }
         }
     }
 }

@@ -6,28 +6,44 @@
         xmlns:local="clr-namespace:FFM_WIFI"
         mc:Ignorable="d"
         Title="Start-Menu" Height="500" Width="300"
-        WindowStartupLocation="CenterScreen">
-    
-    <Grid>
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Grid Background="BlanchedAlmond">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Login" Grid.Row="1" Margin="0,0,0,0">
+
+        <Border CornerRadius="4 4 0 0"
+                Background="LightGray" BorderThickness="5 5 5 0" BorderBrush="DarkBlue" 
+                Margin="3 3 3 0">
+            
+            <TextBlock Text="Fantasy Football Manager"
+                   Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   TextAlignment="Center" TextWrapping="Wrap"
+                   Width="240"
+                   Foreground="DarkBlue" FontSize="30" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
+        </Border>
+
+        <Border CornerRadius="0 0 4 4"
+                BorderThickness="5 0 5 5" BorderBrush="DarkBlue" 
+                Grid.Row="1" Margin="3 0 3 3">
+
             <StackPanel>
 
                 <TextBox Style="{StaticResource TextBoxUserName}" Text="{Binding UserName}"
-                         Margin="0,40,0,0"/>
+                         Margin="0,100,0,0"/>
 
                 <TextBox Style="{StaticResource TextBoxPassword}" Text="{Binding UserPassword}"
                          Margin="0,10,0,0"/>
 
                 <Button Style="{StaticResource Button}" Content="Anmelden" Command="{Binding LoginCommand}"
-                        Margin="0,100,0,0" Height="25" Width="200"/>
+                        Margin="0,40,0,0" Height="25" Width="200"/>
 
                 <Button Style="{StaticResource Button}" Content="Neuer Benutzer" Command="{Binding NewUserCommand}" 
                         Margin="0,10,0,0" Height="25" Width="200"/>
             </StackPanel>
-        </GroupBox>
+        </Border>
     </Grid>
 </Window>

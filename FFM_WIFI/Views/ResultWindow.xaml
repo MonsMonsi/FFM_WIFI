@@ -5,9 +5,186 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
-        Title="ResultWindow" Height="700" Width="600">
+        Title="ResultWindow" Height="700" Width="600"
+        WindowStartupLocation="CenterScreen">
     
     <Grid Background="BlanchedAlmond">
-       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="1" Margin="10 0 30 0"
+                    CornerRadius="4 4 4 4"
+                    Background="DarkGray"
+                    BorderBrush="DarkBlue" BorderThickness="3 3 3 3">
+
+                <Grid>
+                    <ListView ItemsSource="{Binding InfoList}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Height="470" Width="380">
+                        
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            
+                                            <Border CornerRadius="5"
+                                                    Background="LightBlue">
+                                                
+                                                <Grid Background="Transparent">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="100"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="100"/>
+                                                        <RowDefinition Height="100"/>
+                                                        <RowDefinition Height="100"/>
+                                                        <RowDefinition Height="100"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Image Source="{Binding Team.League}"
+                                                           Grid.Column="0" Grid.Row="0"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Height="70" Width="70"/>
+
+                                                    <TextBlock Grid.Column="1" Grid.Row="0"
+                                                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               TextWrapping="Wrap"
+                                                               Padding="0 15 0 0"
+                                                               Height="90" Width="250"
+                                                               FontSize="16" FontWeight="DemiBold"
+                                                               Foreground="DarkBlue">
+
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0}&#x0a;Saison: {1}&#x0a;Punkte gesamt: {2}">
+                                                                <Binding Path="Team.Name"/>
+                                                                <Binding Path="Team.Season"/>
+                                                                <Binding Path="Team.Points"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+
+                                                    <Image Source="{Binding Player1.Image}"
+                                                           Grid.Column="0" Grid.Row="1"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Height="80" Width="80"/>
+
+                                                    <TextBlock Grid.Column="1" Grid.Row="1"
+                                                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               TextWrapping="Wrap"
+                                                               Padding="0 10 0 0"
+                                                               Height="100" Width="250"
+                                                               FontSize="12" FontWeight="DemiBold"
+                                                               Foreground="DarkBlue">
+
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0}&#x0a;Punkte: {1}">
+                                                                <Binding Path="Player1.Name"/>
+                                                                <Binding Path="Player1.Points"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+
+                                                    <Image Source="{Binding Player2.Image}"
+                                                           Grid.Column="0" Grid.Row="2"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Height="80" Width="80"/>
+
+                                                    <TextBlock Grid.Column="1" Grid.Row="2"
+                                                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               TextWrapping="Wrap"
+                                                               Padding="0 10 0 0"
+                                                               Height="100" Width="250"
+                                                               FontSize="12" FontWeight="DemiBold"
+                                                               Foreground="DarkBlue">
+
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0}&#x0a;Punkte: {1}">
+                                                                <Binding Path="Player2.Name"/>
+                                                                <Binding Path="Player2.Points"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+
+                                                    <Image Source="{Binding Player3.Image}"
+                                                           Grid.Column="0" Grid.Row="3"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Height="80" Width="80"/>
+
+                                                    <TextBlock Grid.Column="1" Grid.Row="3"
+                                                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                               TextWrapping="Wrap"
+                                                               Padding="0 10 0 0"
+                                                               Height="100" Width="180"
+                                                               FontSize="12" FontWeight="DemiBold"
+                                                               Foreground="DarkBlue">
+
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0}&#x0a;Punkte: {1}">
+                                                                <Binding Path="Player3.Name"/>
+                                                                <Binding Path="Player3.Points"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </Grid>
+            </Border>
+
+            <Button Style="{StaticResource Button}" Command="{Binding HomeCommand}"
+                    Content="UserHome"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Height="25" Width="100"/>
+        </Grid>
+
+        <Border Margin="3 3 3 0"
+                CornerRadius="4 4 0 0"
+                BorderBrush="DarkBlue" BorderThickness="5 5 5 0">
+
+            <Grid>
+                
+                <Image Source="{Binding ResultData.Team.Logo}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"
+                       Height="80" Width="80"
+                       Opacity="0.3"/>
+                
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100 0 0 0"
+                           Foreground="DarkBlue" FontSize="24" FontWeight="DemiBold"
+                           Text="{Binding ResultData.Team.Name, StringFormat={}{0} hat die Saison abgeschlossen!}">
+                
+                </TextBlock>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Margin="3 0 3 0"
+                BorderBrush="DarkBlue" BorderThickness="5 0 5 0">
+
+        </Border>
+
+        <Border Grid.Row="2" Margin="3 0 3 3"
+                CornerRadius="0 0 4 4"
+                BorderBrush="DarkBlue" BorderThickness="5 0 5 5">
+
+            <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
+                    Content="Saisonbericht speichern (Pdf)"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="130 0 0 0"
+                    Height="25" Width="250"/>
+        </Border>
     </Grid>
 </Window>

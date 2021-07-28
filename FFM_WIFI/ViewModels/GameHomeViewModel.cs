@@ -1,19 +1,17 @@
 ﻿using FFM_WIFI.Commands;
-using FFM_WIFI.Models.DataJson;
 using FFM_WIFI.Models.DataContext;
-using Newtonsoft.Json;
+using FFM_WIFI.Models.DataJson;
+using FFM_WIFI.Models.Utility;
+using FFM_WIFI.Views;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using FFM_WIFI.Views;
-using Microsoft.EntityFrameworkCore;
+using System.Windows.Media.Imaging;
 
 namespace FFM_WIFI.ViewModels
 {
@@ -27,7 +25,7 @@ namespace FFM_WIFI.ViewModels
         public string Position { get; set; }
         public string Height { get; set; }
         public string Nationality { get; set; }
-        public string Image { get; set; }
+        public BitmapImage Image { get; set; }
         public int Points { get; set; }
         public int LineUp { get; set; }
         public int Subst { get; set; }
@@ -37,7 +35,7 @@ namespace FFM_WIFI.ViewModels
         public int Assists { get; set; }
         public bool Drafted { get; set; }
 
-        public PlayerInfo(int id, string name, string position, string height, string nationality, string image, int points, bool drafted)
+        public PlayerInfo(int id, string name, string position, string height, string nationality, BitmapImage image, int points, bool drafted)
         {
             Id = id;
             Name = name;
@@ -61,28 +59,6 @@ namespace FFM_WIFI.ViewModels
 
         }
     }
-    public class PlaydayInfo
-    {
-        public string Home { get; set; }
-        public string HomeImage { get; set; }
-        public string Away { get; set; }
-        public string AwayImage { get; set; }
-        public string Date { get; set; }
-        public string Referee { get; set; }
-        public Venue Venue { get; set; }
-
-        public PlaydayInfo(string h, string hI, string a, string aI, DateTime date, string referee, Venue venue)
-        {
-            Home = h;
-            HomeImage = hI;
-            Away = a;
-            AwayImage = aI;
-            Date = date.ToShortDateString();
-            Referee = referee;
-            Venue = venue;
-        }
-    }
-
     #endregion
 
     class GameHomeViewModel : BaseViewModel
@@ -102,7 +78,7 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Property für TextBlock und Image
-        private TeamInfo _teamData; 
+        private TeamInfo _teamData;
         public TeamInfo TeamData
         {
             get { return _teamData; }
@@ -131,7 +107,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedData = value;
-                OnPropertyChanged("SelectedData");
+                OnPropertyChanged();
                 SetDetailText();
             }
         }
@@ -144,12 +120,22 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedDraft = value;
-                OnPropertyChanged("SelectedDraft");
+                OnPropertyChanged();
                 _line.RaiseCanExecuteChanged();
             }
         }
 
-        public ObservableCollection<PlaydayInfo> PlaydayList { get; set; }
+        private ObservableCollection<PlaydayInfo> _playdayList;
+        public ObservableCollection<PlaydayInfo> PlaydayList
+        {
+            get { return _playdayList; }
+            set
+            {
+                _playdayList = value;
+                OnPropertyChanged();
+            }
+        }
+
         private PlaydayInfo _selectedPlayday;
         public PlaydayInfo SelectedPlayday
         {
@@ -157,7 +143,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedPlayday = value;
-                OnPropertyChanged("SelectedPlayday");
+                OnPropertyChanged();
             }
         }
 
@@ -190,10 +176,8 @@ namespace FFM_WIFI.ViewModels
         #region Attributes
 
         private Window _window;
-        private User _user = new User();
+        private User _user;
         private int _playday;
-        private int _iMin;
-        private int _iMax;
         private int _lineCount;
         private string _position;
 
@@ -203,13 +187,10 @@ namespace FFM_WIFI.ViewModels
         {
             // Daten setzen Listen initialisieren
             _window = window;
+            _user = new User();
             _teamData = teamData;
             _userTeam = _teamData.Team;
             _playday = _userTeam.UserTeamPlayday;
-            if (_playday == 35)
-                EndSeason();
-            _iMin = 0;
-            _iMax = 0;
             DetailText = new ObservableCollection<string>();
             LineUp = new PlayerInfo[11];
             _lineCount = GetLineUpIndex();
@@ -219,12 +200,13 @@ namespace FFM_WIFI.ViewModels
             if (playerData == null)
                 SetPlayerInfo();
             else
-                ResetPlayerData(playerData);
+                ResetDrafted(playerData);
             PlaydayFixtures = new int[9];
             DataList = new ObservableCollection<PlayerInfo>();
             PlaydayList = new ObservableCollection<PlaydayInfo>();
             SetPlayerDataList();
             SetPlayerDraftList();
+            SetPlaydayList();
             // Commands
             _sub = new RelayCommand<object>(SubPlayer);
             _line = new RelayCommand(LineUpPlayer, () => !CheckComplete() && SelectedDraft != null);
@@ -232,14 +214,12 @@ namespace FFM_WIFI.ViewModels
             _play = new RelayCommand(GoToFixture, () => CheckComplete() && _playday < 35);
             _save = new RelayCommand(GoToUserHome);
             _play.RaiseCanExecuteChanged();
-            SetIndexes();
-            GetPlaydayFixtures();
         }
 
         #region Methods
         private void GoToFixture()
         {
-            FixtureWindow fWindow = new FixtureWindow(TeamData, PlayerData, PlaydayFixtures);
+            FixtureWindow fWindow = new FixtureWindow(TeamData, PlayerData);
             _window.Close();
             fWindow.ShowDialog();
         }
@@ -253,13 +233,7 @@ namespace FFM_WIFI.ViewModels
             uhWindow.ShowDialog();
         }
 
-        private void EndSeason()
-        {
-            MessageBox.Show("Die Saison ist beendet!");
-            GoToUserHome();
-        }
-
-        private void SubPlayer (object position)
+        private void SubPlayer(object position)
         {
             string t = position.ToString();
             int i = int.Parse(t);
@@ -284,43 +258,13 @@ namespace FFM_WIFI.ViewModels
                 LineUp[_lineCount] = SelectedDraft;
                 DraftList.Remove(SelectedDraft);
                 LineUp[_lineCount].Drafted = true;
-                OnPropertyChanged("LineUp");    
+                OnPropertyChanged("LineUp");
             }
 
             _lineCount = GetLineUpIndex();
             SetPlayerDraftList();
             _line.RaiseCanExecuteChanged();
             _play.RaiseCanExecuteChanged();
-        }
-
-        private void GetPlaydayFixtures()
-        {
-            string filePath = @"D:\VS_Projects\FFM_WIFI\JsonFiles\AllFixturesBULI2020\AllFixturesBULI2020.json";
-
-            StreamReader reader = File.OpenText(filePath);
-          
-            var fixtures = JsonConvert.DeserializeObject<JsonAllFixtures.Root>(reader.ReadToEnd());
-
-            int index = 0;
-            PlaydayList.Clear();
-
-            for (int i = _iMin; i < _iMax; i++)
-            {
-                // Stadioninformation hinzufügen
-                var venue = new Venue();
-                using (FootballContext context = new FootballContext())
-                {
-                    venue = context.Team.Where(v => v.TeamVenueFkNavigation.VenuePk == fixtures.response[i].fixture.venue.id).Include(v => v.TeamVenueFkNavigation).Select(v => v.TeamVenueFkNavigation).FirstOrDefault();
-                }
-
-                var info = new PlaydayInfo(fixtures.response[i].teams.home.name, fixtures.response[i].teams.home.logo,
-                                           fixtures.response[i].teams.away.name, fixtures.response[i].teams.away.logo,
-                                           fixtures.response[i].fixture.date, fixtures.response[i].fixture.referee, venue);
-                PlaydayList.Add(info);
-
-                PlaydayFixtures[index] = fixtures.response[i].fixture.id;
-                index++;
-            }
         }
 
         private void SetPlayerInfo()
@@ -345,7 +289,7 @@ namespace FFM_WIFI.ViewModels
                 int poi = 0;
                 foreach (var p in points)
                 {
-                    poi += p; 
+                    poi += p;
                 }
 
                 _teamData.Points = poi;
@@ -354,7 +298,7 @@ namespace FFM_WIFI.ViewModels
                 {
                     var player = context.Player.Where(p => p.PlayerPk == players[i]).FirstOrDefault();
                     PlayerInfo temp = new PlayerInfo(players[i], player.PlayerFirstName + " " + player.PlayerLastName,
-                    player.PlayerPosition, player.PlayerHeight, player.PlayerNationality, player.PlayerImage, points[i], false);
+                    player.PlayerPosition, player.PlayerHeight, player.PlayerNationality, Get.Image(player.PlayerImage), points[i], false);
 
                     PlayerData[i] = temp;
                 }
@@ -369,9 +313,9 @@ namespace FFM_WIFI.ViewModels
                     return i;
             }
             return LineUp.Length;
-        } 
+        }
 
-        private void ResetPlayerData(PlayerInfo[] playerData)
+        private void ResetDrafted(PlayerInfo[] playerData)
         {
             int poi = 0;
             PlayerData = playerData;
@@ -391,7 +335,7 @@ namespace FFM_WIFI.ViewModels
             DetailText.Add("Punkte: " + SelectedData.Points);
             DetailText.Add("");
             DetailText.Add("Letzer Spieltag");
-            DetailText.Add("" );
+            DetailText.Add("");
             DetailText.Add("  LineUp  +" + SelectedData.LineUp);
             DetailText.Add("  Goal    +" + SelectedData.Goals);
             DetailText.Add("  Assist  +" + SelectedData.Assists);
@@ -416,7 +360,14 @@ namespace FFM_WIFI.ViewModels
             {
                 if (p.Position == _position && !p.Drafted)
                     DraftList.Add(p);
-            }  
+            }
+        }
+
+        private void SetPlaydayList()
+        {
+            Calculate calc = new Calculate(_playday);
+            calc.PlaydayInfo();
+            PlaydayList = calc.PlaydayList;
         }
 
         private void FastLineUp()
@@ -538,20 +489,6 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        private void SetIndexes()
-        {
-            if (_playday == 1)
-            {
-                _iMin = 0;
-                _iMax = _iMin + 9;
-            }
-            else
-            {
-                _iMin = (_playday - 1) * 8 + (_playday - 1);
-                _iMax = _iMin + 9;
-            }
-        }
-
         private void SetUser()
         {
             using (FootballContext context = new FootballContext())
@@ -570,7 +507,6 @@ namespace FFM_WIFI.ViewModels
             }
             return true;
         }
-
         #endregion
     }
 }

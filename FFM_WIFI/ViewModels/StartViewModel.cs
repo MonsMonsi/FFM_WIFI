@@ -1,17 +1,13 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
 using FFM_WIFI.Views;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace FFM_WIFI.ViewModels
 {
-    class StartViewModel: BaseViewModel
+    class StartViewModel : BaseViewModel
     {
         // Properties
         // Properties für Login
@@ -22,7 +18,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _userName = value;
-                OnPropertyChanged("UserName");
+                OnPropertyChanged();
             }
         }
 
@@ -33,7 +29,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _userPassword = value;
-                OnPropertyChanged("UserPassword");
+                OnPropertyChanged();
             }
         }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FFM_WIFI.Models.DataJson
+﻿namespace FFM_WIFI.Models.DataJson
 {
     class JsonTeamVenue
     {

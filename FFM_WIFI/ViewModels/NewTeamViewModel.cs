@@ -1,21 +1,31 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace FFM_WIFI.ViewModels
 {
+    public class TeamLogo
+    {
+        public BitmapImage Logo { get; set; }
+        public string LogoPath { get; set; }
+        public string Name { get; set; }
+        public TeamLogo(BitmapImage logo, string path, string name)
+        {
+            Logo = logo;
+            LogoPath = path;
+            Name = name;
+        }
+    }
+
     class NewTeamViewModel : BaseViewModel
     {
-        // Properties
+        #region Properties
+
         private string _newTeamName;
         public string NewTeamName
         {
@@ -55,6 +65,20 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
+        public ObservableCollection<TeamLogo> LogoList { get; set; }
+        private TeamLogo _selectedLogo;
+        public TeamLogo SelectedLogo
+        {
+            get { return _selectedLogo; }
+            set
+            {
+                _selectedLogo = value;
+                OnPropertyChanged("SelectedLogo");
+                _save.RaiseCanExecuteChanged();
+            }
+        }
+        #endregion
+
         // Attribute
         private Window _window;
         private User _user;
@@ -70,11 +94,12 @@ namespace FFM_WIFI.ViewModels
             _window = window;
             _user = user;
             // Commands
-            _save = new RelayCommand(SaveTeam, () => SelectedLeague != null && SelectedSeason != null);
+            _save = new RelayCommand(SaveTeam, () => SelectedLeague != null && SelectedSeason != null && SelectedLogo != null);
             // Listen
             LeagueList = new ObservableCollection<League>();
             SeasonList = new ObservableCollection<Season>();
-            GetLeagueSeason();
+            LogoList = new ObservableCollection<TeamLogo>();
+            GetComboBoxData();
         }
 
         private void GoToUserHome()
@@ -105,13 +130,14 @@ namespace FFM_WIFI.ViewModels
                 // neues Team
                 UserTeam team = new UserTeam();
                 team.UserTeamName = NewTeamName;
+                team.UserTeamLogo = _selectedLogo.LogoPath;
                 team.UserTeamLeague = _selectedLeague.LeaguePk;
                 team.UserTeamSeason = _selectedSeason.SeasonPk;
                 team.UserTeamUserFk = _user.UserPk;
                 team.UserTeamPlayday = 1;
-                team.UserTeamGk1 = 1001001; team.UserTeamDf1 = 1001001; team.UserTeamDf2 = 1001001; team.UserTeamDf3 = 1001001; team.UserTeamDf4 = 1001001; team.UserTeamMf1 = 1001001; team.UserTeamMf2 = 1001001;
-                team.UserTeamMf3 = 1001001; team.UserTeamMf4 = 1001001; team.UserTeamAt1 = 1001001; team.UserTeamAt2 = 1001001; team.UserTeamGk2 = 1001001; team.UserTeamDf5 = 1001001; team.UserTeamMf5 = 1001001;
-                team.UserTeamMf6 = 1001001; team.UserTeamAt3 = 1001001; team.UserTeamAt4 = 1001001; team.UserTeamNumberPlayers = 0;
+                team.UserTeamGk1 = 0; team.UserTeamDf1 = 0; team.UserTeamDf2 = 0; team.UserTeamDf3 = 0; team.UserTeamDf4 = 0; team.UserTeamMf1 = 0; team.UserTeamMf2 = 0;
+                team.UserTeamMf3 = 0; team.UserTeamMf4 = 0; team.UserTeamAt1 = 0; team.UserTeamAt2 = 0; team.UserTeamGk2 = 0; team.UserTeamDf5 = 0; team.UserTeamMf5 = 0;
+                team.UserTeamMf6 = 0; team.UserTeamAt3 = 0; team.UserTeamAt4 = 0; team.UserTeamNumberPlayers = 0;
                 context.UserTeam.Add(team);
                 context.SaveChanges();
 
@@ -128,25 +154,32 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        private void GetLeagueSeason()
+        private void GetComboBoxData()
         {
             using (FootballContext context = new FootballContext())
             {
                 var leagues = context.League;
                 var seasons = context.Season;
+                var teams = context.Team;
 
-                foreach (var item in leagues)
+                foreach (var l in leagues)
                 {
                     League temp = new League();
-                    temp = item;
+                    temp = l;
                     LeagueList.Add(temp);
                 }
 
-                foreach (var item in seasons)
+                foreach (var s in seasons)
                 {
                     Season temp = new Season();
-                    temp = item;
+                    temp = s;
                     SeasonList.Add(temp);
+                }
+
+                foreach (var t in teams)
+                {
+                    TeamLogo temp = new TeamLogo(Get.Image(t.TeamLogo), t.TeamLogo, t.TeamName);
+                    LogoList.Add(temp);
                 }
             }
         }

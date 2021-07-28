@@ -7,55 +7,216 @@
         mc:Ignorable="d"
         Title="UserHomeWindow" Height="700" Width="600"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+    
+    <Grid Background="BlanchedAlmond">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
-            <RowDefinition Height="324"/>
-            <RowDefinition/>
+            <RowDefinition Height="450"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.ColumnSpan="2">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_FFM">
-                    <MenuItem Header="Zur Anmeldung"/>
-                </MenuItem>
-            </Menu>
-        </DockPanel>
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0"
-                   FontSize="20" Height="26" Width="0">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}Hallo {0}!">
-                    <Binding Path="User.UserName"/>
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
 
-        <GroupBox Header="Team wählen" Grid.Column="0" Grid.Row="1">
-            <StackPanel>
+        <Border Grid.Column="1"
+                CornerRadius="4 4 0 0"
+                BorderBrush="DarkBlue" BorderThickness="2 5 5 0" Margin="3,3,3,0">
+            
+            <Button Style="{StaticResource Button}" Content="Zur Anmeldung" Command="{Binding LoginCommand}"
+                Grid.Column="1"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0" 
+                Height="20" Width="200"/>
+        </Border>
+
+        <Border CornerRadius="4 4 0 0"
+                BorderBrush="DarkBlue" BorderThickness="5 5 2 0" Margin="3,3,3,0">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
+                           TextAlignment="Center"
+                           Width="250"
+                           FontSize="28" FontWeight="DemiBold" Foreground="DarkBlue" FontFamily="Bauhaus 93">
+
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}Hallo {0}">
+                            <Binding Path="User.UserName"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <Label Content="Erstelle oder wähle ein Team!"
+                       Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25 0 0 0"
+                       FontSize="16" FontWeight="DemiBold" Foreground="DarkBlue"/>
+            </Grid>
+
+    </Border>
+
+
+        <Border Grid.ColumnSpan="2" Grid.Row="1" Margin="3,0,3,0"
+                  BorderBrush="DarkBlue" BorderThickness="5 0 5 0">
+
+            <Grid>
+
+                <Border VerticalAlignment="Top" HorizontalAlignment="Center"
+                        CornerRadius="4 4 4 4"
+                        Height="40" Width="120"
+                        Background="LightBlue"
+                        BorderBrush="DarkBlue" BorderThickness="2">
+                    
+                    <Label Content="Teams"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           Padding="0"
+                           FontSize="24" FontWeight="Bold" Foreground="DarkBlue" FontFamily="Bauhaus 93"/>
+                    
+                </Border>
+                
                 <Button Style="{StaticResource Button}" Content="Neues Team" Command="{Binding NewTeamCommand}"
-                        Margin="0,40,0,0" Height="20" Width="200"/>
-                <DataGrid ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}"
-                          AutoGenerateColumns="False"
-                          Margin="0,20,0,0" Height="150" Width="200">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Name}" Header="Teamname" 
-                                            Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Button Style="{StaticResource Button}" Content="Team löschen" Command="{Binding}"
-                        Margin="0,20,0,0" Height="20" Width="200"/>
-            </StackPanel>
-        </GroupBox>
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,80,0,0" 
+                        Height="20" Width="150"/>
+                
+                <ListView ItemsSource="{Binding ActiveTeamList}" SelectedItem="{Binding SelectedActiveTeam}"
+                          BorderThickness="0"
+                          HorizontalAlignment="Left" Margin="20,0,0,0"
+                          Background="BlanchedAlmond"
+                          Height="200" Width="120">
 
-        <GroupBox Header="Neues Spiel" Grid.Column="0" Grid.Row="2" Height="250" VerticalAlignment="Center">
-            <StackPanel>
-                <Button Style="{StaticResource Button}" Content="Saison spielen" Command="{Binding GameCommand}"
-                        Margin="0,40,0,0" Height="20" Width="200"/>
-            </StackPanel>
-        </GroupBox>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border CornerRadius="4 4 4 4"
+                                                Background="LightBlue"
+                                                BorderBrush="DarkBlue" BorderThickness="2">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Source="{Binding Logo}"
+                                                   Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Height="20" Width="20"/>
+
+                                                <TextBlock Text="{Binding Name}"
+                                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="DarkBlue" FontSize="12"/>
+                                            </Grid>
+                                    </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+
+                <ListView ItemsSource="{Binding ClassicTeamList}" SelectedItem="{Binding SelectedClassicTeam}"
+                          BorderThickness="0"
+                          HorizontalAlignment="Left" Margin="150,0,0,0"
+                          Background="Transparent"
+                          Height="200" Width="120">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border CornerRadius="4 4 4 4"
+                                                Background="LightBlue"
+                                                BorderBrush="DarkBlue" BorderThickness="2">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Source="{Binding Images.Star}"
+                                                   Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Height="20" Width="20"/>
+
+                                            <TextBlock Text="{Binding Name}"
+                                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="DarkBlue" FontSize="12"/>
+                                        </Grid>
+                                    </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+
+                <Button Style="{StaticResource Button}" Content="Save (Pdf)" Command="{Binding PdfCommand}"
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="70,0,0,80" 
+                        Height="20" Width="150"/>
+
+                <Canvas HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
+                        Height="400" Width="250">
+
+                    <Image Source="{Binding SelectedActiveTeam.Logo}"
+                           Canvas.Top="60"
+                           Height="250" Width="250"
+                           Opacity="0.3"/>
+
+                    <Label Content="{Binding SelectedActiveTeam.Name}"
+                           Canvas.Top="60"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           Width="250"
+                           Foreground="DarkBlue" FontSize="25" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
+
+                    <Image Source="{Binding SelectedActiveTeam.League}"
+                           Canvas.Top="270" Canvas.Left="10"
+                           Height="50" Width="50"/>
+
+                    <TextBlock Text="{Binding SelectedActiveTeam.Season}"
+                               Canvas.Top="320" Canvas.Left="17"
+                               FontSize="13" FontWeight="DemiBold"/>
+
+                    <TextBlock Canvas.Top="280" Canvas.Left="70"
+                               Foreground="DarkBlue" FontSize="16" FontWeight="DemiBold">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Aktueller Spieltag: {0}&#x0a;Anzahl Spieler: {1}">
+                                <Binding Path="SelectedActiveTeam.Playday"/>
+                                <Binding Path="SelectedActiveTeam.Players"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Canvas>
+
+                <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                        CornerRadius="4 4 4 4"
+                        Height="40" Width="120"
+                        Background="LightBlue"
+                        BorderBrush="DarkBlue" BorderThickness="2">
+
+                    <Label Content="Optionen"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           Padding="0"
+                           FontSize="24" FontWeight="Bold" Foreground="DarkBlue" FontFamily="Bauhaus 93"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2"
+                CornerRadius="0 0 4 4"
+                BorderBrush="DarkBlue" BorderThickness="5 0 2 5" Margin="3,0,3,3">
+
+            <Grid>
+            <Button Style="{StaticResource Button}" Content="Team löschen" Command="{Binding}"
+                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 30 0 0" 
+                        Height="20" Width="200"/>
+
+            <Button Content="Saison fortsetzen"
+                    Style="{StaticResource Button}" Command="{Binding GameCommand}"
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 60 0 0"
+                    Height="20" Width="200"/>
+            </Grid>
+        </Border>
 
         <TextBlock Text="{Binding SelectedTeam.Name}"
                    Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" 
@@ -71,34 +232,15 @@
             </TextBlock.Text>
         </TextBlock>
 
-        <GroupBox Header="Teamdaten" Grid.Column="1" Grid.Row="1">
-            <StackPanel>
-                <TextBlock Text="{Binding SelectedTeam.Name}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,20,0,0"
-                           FontSize="20"/>
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,40,0,0"
-                           FontSize="16">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}Aktueller Spieltag: {0}&#x0a;Anzahl Spieler: {1}&#x0a;">
-                            <Binding Path="SelectedTeam.Playday"/>
-                            <Binding Path="SelectedTeam.Players"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-                <Image Source="{Binding SelectedTeam.League}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,40,0,0"
-                       Height="50" Width="50"/>
-                <TextBlock Text="{Binding SelectedTeam.Season}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
-                           FontSize="20"/>
-            </StackPanel>
-        </GroupBox>
+        <Border Grid.Column="1" Grid.Row="2"
+                CornerRadius="0 0 4 4"
+                BorderBrush="DarkBlue" BorderThickness="2 0 5 5" Margin="3,0,3,3">
 
-        <GroupBox Header="Teamoptionen" Grid.Column="1" Grid.Row="2" Height="250" VerticalAlignment="Center">
-            <StackPanel>
-                <Button Style="{StaticResource Button}" Content="Team draften" Command="{Binding DraftCommand}"
-                        Margin="0,40,0,0" Height="20" Width="200"/>
-            </StackPanel>
-        </GroupBox>
+            <Grid>
+            <Button Style="{StaticResource Button}" Content="Team draften" Command="{Binding DraftCommand}"
+                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"
+                        Height="20" Width="200"/>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

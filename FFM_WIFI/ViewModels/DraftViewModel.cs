@@ -1,18 +1,13 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using FFM_WIFI.Views;
-using FFM_WIFI.Models.Utility;
 
 namespace FFM_WIFI.ViewModels
 {
@@ -253,7 +248,7 @@ namespace FFM_WIFI.ViewModels
                                                        p.TeaPlaPlayerFkNavigation.PlayerImage, p.TeaPlaPlayerFkNavigation.PlayerPosition, p.TeaPlaPlayerValue / 1000000);
 
                         if (!_allPlayers.Contains(temp))
-                        _allPlayers.Add(temp);
+                            _allPlayers.Add(temp);
                     }
                 }
             }
@@ -264,7 +259,7 @@ namespace FFM_WIFI.ViewModels
                     PlayerList.Add(player);
             }
             // PlayerList.BubbleSort();
-        } 
+        }
 
         private void SetDraftText()
         {

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FFM_WIFI.Commands;
+using FFM_WIFI.Models.DataContext;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using FFM_WIFI.Commands;
-using FFM_WIFI.Models.DataContext;
-using Microsoft.EntityFrameworkCore;
 
 namespace FFM_WIFI.ViewModels
 {
-    class EditDatabaseViewModel: BaseViewModel
+    class EditDatabaseViewModel : BaseViewModel
     {
         // Properties
         // Properties für Image
@@ -76,7 +73,7 @@ namespace FFM_WIFI.ViewModels
 
         // Commands
         public ICommand ShowClubsCommand { get; set; }
-        public ICommand EditClubCommand { get; set; } 
+        public ICommand EditClubCommand { get; set; }
         public ICommand EditPlayerCommand { get; set; }
 
         // Konstruktor
@@ -151,7 +148,7 @@ namespace FFM_WIFI.ViewModels
             {
                 // Teaminfo ausgeben
                 ClubImage = GetImage(SelectedTeam.TeamLogo);
-               
+
                 using (FootballContext context = new FootballContext())
                 {
                     var teamPk = context.SeasonLeagueTeamAssignment.Where(t => t.SeaLeaTeaTeamFk == SelectedTeam.TeamPk).Select(t => t.SeaLeaTeaPk).FirstOrDefault();

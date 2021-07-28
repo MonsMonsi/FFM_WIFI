@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="DraftWindow" Height="700" Width="600">
     
     <Grid Background="BlanchedAlmond">
@@ -174,13 +175,15 @@
             </DataGrid.Columns>
         </DataGrid>
         
-        <Button Content="kaufen" Command="{Binding DraftCommand}"
+        <Button Style="{StaticResource Button}" Command="{Binding DraftCommand}"
+                Content="kaufen"
                 Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"
-                Height="24" Width="100"/>
+                Height="24" Width="120"/>
 
-        <Button Content="Team speichern" Command="{Binding SaveCommand}"
-                Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0"
-                Height="24" Width="100"/>
+        <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
+                Content="Team speichern" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0"
+                Height="24" Width="120"/>
+        
         <ProgressBar Value="{Binding MoneyMax, Mode=OneWay}" Minimum="0" Maximum="300"
                      Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" 
                      Height="10" Width="250"/>

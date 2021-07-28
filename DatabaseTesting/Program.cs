@@ -1,11 +1,11 @@
 ﻿using DatabaseTesting.Models;
 using FFM_WIFI.Models.DataJson;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace DatabaseTesting
 {
@@ -24,7 +24,7 @@ namespace DatabaseTesting
                 FileStream stream = new FileStream(doc, FileMode.Open, FileAccess.Read);
                 StreamReader reader = new StreamReader(stream, Encoding.UTF8);
 
-                var players = JsonConvert.DeserializeObject<JsonPlayer.Root>(reader.ReadToEnd());
+                var players = JsonSerializer.Deserialize<JsonPlayer.Root>(reader.ReadToEnd());
                 pages = players.paging.total;
 
                 using (FootballContext context = new FootballContext())
@@ -197,10 +197,31 @@ namespace DatabaseTesting
             }
         }
 
+
+        public class Images
+        {
+            public string Self { get; set; }
+            public string Star { get; set; }
+            public Images (string self = null, string star = null)
+            {
+                Self = self;
+                Star = star;
+            }
+        }
         static void Main(string[] args)
         {
-            // SetValue();
-            ShowPlayers();
+            string path = @"D:\VS_Projects\FFM_WIFI\JsonFiles\Images\";
+            string star = "https://thumbs.dreamstime.com/z/goldener-stern-8482955.jpg";
+
+            Images starImg = new Images(path, star);
+
+            var jsonObject = JsonSerializer.Serialize<Images>(starImg);
+
+            File.WriteAllText(path + "Images.json", jsonObject);
+
+            
+
+
         }
     }
 }

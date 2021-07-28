@@ -1,18 +1,5 @@
-﻿using FFM_WIFI.Models.DataContext;
-using FFM_WIFI.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FFM_WIFI.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FFM_WIFI.Views
 {
@@ -22,10 +9,10 @@ namespace FFM_WIFI.Views
     public partial class ResultWindow : Window
     {
         private ResultViewModel rvm;
-        public ResultWindow()
+        public ResultWindow(TeamInfo teamData, PlayerInfo[] playerData)
         {
             InitializeComponent();
-            rvm = new ResultViewModel();
+            rvm = new ResultViewModel(this, teamData, playerData);
             this.DataContext = rvm;
         }
     }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FFM_WIFI.ViewModels
 {
@@ -13,7 +9,7 @@ namespace FFM_WIFI.ViewModels
 
         protected virtual void OnPropertyChanged(
             // Der Parameter der Methode soll der Name eines Properties sein, das verändert wird
-            string propName = "")
+            [CallerMemberName] string propName = "")
         {
             if (PropertyChanged != null)
             {

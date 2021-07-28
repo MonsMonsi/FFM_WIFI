@@ -1,34 +1,49 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace FFM_WIFI.ViewModels
 {
+    public class Images
+    {
+        public string Star { get; set; }
+        public Images(string star = null)
+        {
+            Star = star;
+        }
+    }
     #region InfoClasses
     public class TeamInfo
     {
-        public int Id { get; set; }
+        public int TeamId { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
+        public BitmapImage Logo { get; set; }
         public int Playday { get; set; }
         public int? Players { get; set; }
-        public string League { get; set; }
+        public BitmapImage League { get; set; }
         public string Season { get; set; }
         public int Points { get; set; }
         public UserTeam Team { get; set; }
         public UserTeamPerformance Performance { get; set; }
+        public Images Images { get; set; }
 
-        public TeamInfo(int id, string name, int day, int? players, string league, string season, int points, UserTeam team, UserTeamPerformance performance)
+        public TeamInfo(int teamId, int userId, string name, BitmapImage logo, int day, int? players, BitmapImage league, string season, int points, UserTeam team, UserTeamPerformance performance, Images images)
         {
-            Id = id;
+            TeamId = teamId;
+            UserId = userId;
             Name = name;
+            Logo = logo;
             Playday = day;
             Players = players;
             League = league;
@@ -36,6 +51,7 @@ namespace FFM_WIFI.ViewModels
             Points = points;
             Team = team;
             Performance = performance;
+            Images = images;
         }
 
         public TeamInfo()
@@ -47,18 +63,56 @@ namespace FFM_WIFI.ViewModels
     class UserHomeViewModel : BaseViewModel
     {
         #region Properties
-        // Property für Team Datagrids
-        public ObservableCollection<TeamInfo> TeamList { get; set; }
-        private TeamInfo _selectedTeam;
-        public TeamInfo SelectedTeam
+
+        // User
+        private User _user;
+        public User User
         {
-            get { return _selectedTeam; }
+            get { return _user; }
             set
             {
-                _selectedTeam = value;
+                _user = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Images
+        private Images _images;
+        public Images Images
+        {
+            get { return _images; }
+            set 
+            {
+                _images = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Team Datagrids
+        public ObservableCollection<TeamInfo> ActiveTeamList { get; set; }
+        private TeamInfo _selectedActiveTeam;
+        public TeamInfo SelectedActiveTeam
+        {
+            get { return _selectedActiveTeam; }
+            set
+            {
+                _selectedActiveTeam = value;
                 _draft.RaiseCanExecuteChanged();
                 _game.RaiseCanExecuteChanged();
-                OnPropertyChanged("SelectedTeam");
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TeamInfo> ClassicTeamList { get; set; }
+        private TeamInfo _selectedClassicTeam;
+        public TeamInfo SelectedClassicTeam
+        {
+            get { return _selectedClassicTeam; }
+            set
+            {
+                _selectedClassicTeam = value;
+                _pdf.RaiseCanExecuteChanged();
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -70,25 +124,30 @@ namespace FFM_WIFI.ViewModels
         public ICommand DraftCommand { get { return _draft; } }
         private RelayCommand _game;
         public ICommand GameCommand { get { return _game; } }
+        private RelayCommand _pdf;
+        public ICommand PdfCommand { get { return _pdf; } }
         #endregion
 
 
         #region Attributes
 
-        private User _user;
+        private Window _window;  
         #endregion
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
         {
-            // User
+            _window = window;
             _user = user;
+            SetImages();
             // Commands
             //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
-            _draft = new RelayCommand(GoToDraft, () => SelectedTeam != null && SelectedTeam.Players != 17);
-            _game = new RelayCommand(GoToGameHome, () => SelectedTeam != null && SelectedTeam.Players == 17);
+            _draft = new RelayCommand(GoToDraft, () => SelectedActiveTeam != null && SelectedActiveTeam.Players != 17);
+            _game = new RelayCommand(GoToGameHome, () => SelectedActiveTeam != null && SelectedActiveTeam.Players == 17);
+            _pdf = new RelayCommand(SaveAsPdf, () => SelectedClassicTeam != null);
             // Listen initialisieren und füllen
-            TeamList = new ObservableCollection<TeamInfo>();
+            ActiveTeamList = new ObservableCollection<TeamInfo>();
+            ClassicTeamList = new ObservableCollection<TeamInfo>();
             GetTeamInfo();
         }
 
@@ -96,27 +155,39 @@ namespace FFM_WIFI.ViewModels
         private void GoToNewTeam()
         {
             NewTeamWindow ntwindow = new NewTeamWindow(_user);
+            _window.Close();
             ntwindow.ShowDialog();
         }
 
         private void GoToDraft()
         {
-            DraftWindow dWindow = new DraftWindow(_selectedTeam.Team);
+            DraftWindow dWindow = new DraftWindow(_selectedActiveTeam.Team);
             dWindow.ShowDialog();
 
         }
 
+        private void ResetSelectedTeams()
+        {
+            SelectedActiveTeam = null;
+            SelectedClassicTeam = null;
+        }
+
         private void GoToGameHome()
         {
-            GameHomeWindow ghWindow = new GameHomeWindow(_selectedTeam);
+            GameHomeWindow ghWindow = new GameHomeWindow(_selectedActiveTeam);
             ghWindow.ShowDialog();
+        }
+
+        private void SaveAsPdf()
+        {
+
         }
 
         private void GetTeamInfo()
         {
             using (FootballContext context = new FootballContext())
             {
-                TeamList.Clear();
+                ActiveTeamList.Clear();
                 var userTeam = context.UserTeam.Where(t => t.UserTeamUserFk == _user.UserPk).Include(t => t.UserTeamUserFkNavigation);
 
                 if (userTeam != null)
@@ -128,15 +199,35 @@ namespace FFM_WIFI.ViewModels
                         var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == u.UserTeamPk).FirstOrDefault();
 
                         int points = performance.UserTeamPerformanceGk1 + performance.UserTeamPerformanceDf1 + performance.UserTeamPerformanceDf2 + performance.UserTeamPerformanceDf3
-                     + performance.UserTeamPerformanceDf4 + performance.UserTeamPerformanceMf1 + performance.UserTeamPerformanceMf2 + performance.UserTeamPerformanceMf3
-                      + performance.UserTeamPerformanceMf4 + performance.UserTeamPerformanceAt1 + performance.UserTeamPerformanceAt2 + performance.UserTeamPerformanceGk2
-                       + performance.UserTeamPerformanceDf5 + performance.UserTeamPerformanceMf5 + performance.UserTeamPerformanceMf6 + performance.UserTeamPerformanceAt3
-                        + performance.UserTeamPerformanceAt4;
+                                     + performance.UserTeamPerformanceDf4 + performance.UserTeamPerformanceMf1 + performance.UserTeamPerformanceMf2 + performance.UserTeamPerformanceMf3
+                                     + performance.UserTeamPerformanceMf4 + performance.UserTeamPerformanceAt1 + performance.UserTeamPerformanceAt2 + performance.UserTeamPerformanceGk2
+                                     + performance.UserTeamPerformanceDf5 + performance.UserTeamPerformanceMf5 + performance.UserTeamPerformanceMf6 + performance.UserTeamPerformanceAt3
+                                     + performance.UserTeamPerformanceAt4;
 
-                        TeamList.Add(new TeamInfo(u.UserTeamPk, u.UserTeamName, u.UserTeamPlayday, u.UserTeamNumberPlayers, league.LeagueLogo, season.SeasonName, points, u, performance));
+                        if (u.UserTeamPlayday < 35)
+                        {
+                            ActiveTeamList.Add(new TeamInfo(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, Get.Image(u.UserTeamLogo), u.UserTeamPlayday, u.UserTeamNumberPlayers, Get.Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
+                        }
+                        else
+                        {
+                            ClassicTeamList.Add(new TeamInfo(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, Get.Image(u.UserTeamLogo), u.UserTeamPlayday, u.UserTeamNumberPlayers, Get.Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
+                        }
                     }
                 }
             }
+        }
+
+        private void SetImages()
+        {
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string path = Path.Combine(docPath, @"JsonFiles\Images\Images.json");
+
+            string json = File.ReadAllText(path);
+
+            var jsonObject = JsonSerializer.Deserialize<Images>(json);
+
+            Images = jsonObject;
         }
         #endregion
 
