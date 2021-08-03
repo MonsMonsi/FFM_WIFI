@@ -2,7 +2,7 @@
 
 namespace FFM_WIFI.Models.DataJson
 {
-    class JsonFixture
+    public class JsonFixture
     {
         public class Root
         {

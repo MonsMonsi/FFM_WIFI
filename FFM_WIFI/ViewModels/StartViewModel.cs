@@ -90,7 +90,7 @@ namespace FFM_WIFI.ViewModels
                     _user = user;
                     context.SaveChanges();
 
-                    UserTeam team = new UserTeam();
+                    _userTeam team = new _userTeam();
                     team.UserTeamName = $"newTeam-User{user.UserName}";
                     team.UserTeamUserFk = user.UserPk;
                     context.UserTeam.Add(team);

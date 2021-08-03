@@ -6,187 +6,255 @@
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         Title="DraftWindow" Height="700" Width="600">
-    
-    <Grid Background="BlanchedAlmond">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="430"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding DraftText}"
-                   HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   FontSize="18"/>
+    <Border BorderThickness="0"
+                CornerRadius="50">
 
-        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0"
-                   HorizontalAlignment="Left" VerticalAlignment="Center"
-                   FontSize="18">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0} Mio">
-                    <Binding Path="MoneyMax"/>
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+        <Border.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="LightGray" Offset="0.0"/>
+                <GradientStop Color="Azure" Offset="0.5"/>
+                <GradientStop Color="DarkSlateGray" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid Background="Transparent">
 
-        <Canvas Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Height="400" Width="250" 
-                    Background="LightGreen">
-            <Line X1="0" Y1="200" X2="250" Y2="200" Stroke="White" StrokeThickness="8"/>
-            <Line X1="60" Y1="0" X2="60" Y2="70" Stroke="White" StrokeThickness="8"/>
-            <Line X1="60" Y1="70" X2="190" Y2="70" Stroke="White" StrokeThickness="8"/>
-            <Line X1="190" Y1="70" X2="190" Y2="0" Stroke="White" StrokeThickness="8"/>
-            <Line X1="60" Y1="400" X2="60" Y2="330" Stroke="White" StrokeThickness="8"/>
-            <Line X1="60" Y1="330" X2="190" Y2="330" Stroke="White" StrokeThickness="8"/>
-            <Line X1="190" Y1="330" X2="190" Y2="400" Stroke="White" StrokeThickness="8"/>
-            <Button Command="{Binding SubCommand}" CommandParameter="0" 
-                        Height="50" Width="50" Canvas.Bottom="10" Canvas.Right="99" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[0].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="1" 
-                        Height="50" Width="50" Canvas.Bottom="100" Canvas.Left="10" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[1].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="2" 
-                        Height="50" Width="50" Canvas.Bottom="80" Canvas.Left="70" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[2].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="3" 
-                        Height="50" Width="50" Canvas.Bottom="80" Canvas.Right="70" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[3].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="4" 
-                        Height="50" Width="50" Canvas.Bottom="100" Canvas.Right="10" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[4].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="5" 
-                        Height="50" Width="50" Canvas.Top="140" Canvas.Right="10" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[5].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="6" 
-                        Height="50" Width="50" Canvas.Top="180" Canvas.Right="99" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[6].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="7" 
-                        Height="50" Width="50" Canvas.Top="100" Canvas.Right="99" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[7].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="8" 
-                        Height="50" Width="50" Canvas.Top="140" Canvas.Left="10" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[8].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="9" 
-                        Height="50" Width="50" Canvas.Top="20" Canvas.Left="45" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[9].Image}"/>
-            </Button>
-            <Button Command="{Binding SubCommand}" CommandParameter="10" 
-                        Height="50" Width="50" Canvas.Top="20" Canvas.Right="45" Background="Transparent">
-                <Image Source="{Binding DraftedTeam[10].Image}"/>
-            </Button>
-        </Canvas>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
 
-        <GroupBox Header="Ersatzspieler" Grid.Column="0" Grid.Row="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Height="140">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border  BorderThickness="4" BorderBrush="DarkSlateGray"
+                         CornerRadius="40 100 40 100" Margin="10">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="DarkGray" Offset="0.8"/>
+                        <GradientStop Color="AliceBlue" Offset="0.0"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Image Source="{Binding UserTeam.UserTeamLogo}"
+                               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 10 0 0"
+                               Opacity="0.8"
+                               Height="80" Width="80"/>
+
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40 5 0 0"
+                                   TextAlignment="Center" TextWrapping="Wrap"
+                                   Height="70" Width="200"
+                                   FontSize="16" Foreground="Black">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Auf geht's {0}&#x0a;Wähle dein Team!">
+                                <Binding Path="UserTeam.UserTeamUserFkNavigation.UserName"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <Border CornerRadius="40" BorderThickness="6" BorderBrush="White"
+                                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10 0 0 30"
+                                Height="400" Width="250"
+                                Background="LightGreen">
+
+                        <Canvas>
+                            <Line X1="0" Y1="190" X2="240" Y2="190" Stroke="White" StrokeThickness="6"/>
+                            <Line X1="60" Y1="0" X2="60" Y2="60" Stroke="White" StrokeThickness="6"/>
+                            <Line X1="60" Y1="60" X2="180" Y2="60" Stroke="White" StrokeThickness="6"/>
+                            <Line X1="180" Y1="60" X2="180" Y2="0" Stroke="White" StrokeThickness="6"/>
+                            <Line X1="60" Y1="390" X2="60" Y2="330" Stroke="White" StrokeThickness="6"/>
+                            <Line X1="60" Y1="330" X2="180" Y2="330" Stroke="White" StrokeThickness="6"/>
+                            <Line X1="180" Y1="330" X2="180" Y2="390" Stroke="White" StrokeThickness="6"/>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="0" 
+                                        Height="50" Width="50" Canvas.Bottom="5" Canvas.Right="91" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[0].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="1" 
+                                        Height="50" Width="50" Canvas.Bottom="100" Canvas.Left="5" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[1].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="2" 
+                                        Height="50" Width="50" Canvas.Bottom="80" Canvas.Left="65" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[2].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="3" 
+                                        Height="50" Width="50" Canvas.Bottom="80" Canvas.Right="65" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[3].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="4" 
+                                        Height="50" Width="50" Canvas.Bottom="100" Canvas.Right="5" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[4].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="5" 
+                                        Height="50" Width="50" Canvas.Top="140" Canvas.Right="10" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[5].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="6" 
+                                        Height="50" Width="50" Canvas.Top="180" Canvas.Right="91" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[6].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="7" 
+                                        Height="50" Width="50" Canvas.Top="100" Canvas.Right="91" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[7].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="8" 
+                                        Height="50" Width="50" Canvas.Top="140" Canvas.Left="5" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[8].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="9" 
+                                        Height="50" Width="50" Canvas.Top="20" Canvas.Left="45" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[9].Image}"/>
+                            </Button>
+
+                            <Button Command="{Binding SubCommand}" CommandParameter="10" 
+                                        Height="50" Width="50" Canvas.Top="20" Canvas.Right="45" Background="Transparent">
+                                <Image Source="{Binding DraftedTeam[10].Image}"/>
+                            </Button>
+                        </Canvas>
+                    </Border>
+                </Grid>
+            </Border>
+
+
+            <Border Grid.Column="2"
+                        BorderThickness="4" BorderBrush="DarkSlateGray"
+                        CornerRadius="100 40 100 40" Margin="10">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="DarkGray" Offset="0.8"/>
+                        <GradientStop Color="AliceBlue" Offset="0.0"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <TextBlock Text="{Binding DraftText}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40 20 0 0"
+                                   TextAlignment="Center" TextWrapping="Wrap"
+                                   Height="70" Width="200"
+                                   FontSize="15" Foreground="Black">
+                    </TextBlock>
+
+                    <TextBlock Text="{Binding MoneyMax, StringFormat={}{0} Mio}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 60 0 0"
+                                   FontSize="14" Foreground="Red" FontWeight="Bold"/>
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 80 0 0"
+                                CornerRadius="4"
+                                BorderBrush="Red" BorderThickness="2"
+                                Height="12" Width="252"
+                                Background="Transparent">
+
+                        <ProgressBar Value="{Binding MoneyMax, Mode=OneWay}" Minimum="0" Maximum="300"
+                                         Height="10" Width="250"/>
+                    </Border>
+
+                    <ListView ItemsSource="{Binding PlayerList}" SelectedItem="{Binding SelectedPlayer}"
+                                  ItemContainerStyle="{StaticResource ListViewItemDraft}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 50 0 0"
+                                  BorderThickness="0"
+                                  Background="Transparent"
+                                  Height="320" MinHeight="40" Width="250" MinWidth="145"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2"
+                        BorderThickness="4" BorderBrush="DarkSlateGray"
+                        CornerRadius="100 40 100 40" Margin="10">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="DarkGray" Offset="0.8"/>
+                        <GradientStop Color="AliceBlue" Offset="0.0"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
                     <Button Command="{Binding SubCommand}" CommandParameter="11" 
-                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Height="40" Width="40" Background="Transparent">
+                            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 0 0 0"
+                            Height="35" Width="35" Background="Transparent">
+
                         <Image Source="{Binding DraftedTeam[11].Image}"/>
                     </Button>
+
                     <Button Command="{Binding SubCommand}" CommandParameter="12" 
-                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="0,5,0,0"
-                            Height="40" Width="40" Background="Transparent">
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 20"
+                            Height="35" Width="35" Background="Transparent">
+
                         <Image Source="{Binding DraftedTeam[12].Image}"/>
                     </Button>
+
                     <Button Command="{Binding SubCommand}" CommandParameter="13" 
-                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="0,5,0,0"
-                            Height="40" Width="40" Background="Transparent">
+                            HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5 0 0 20"
+                            Height="35" Width="35" Background="Transparent">
+
                         <Image Source="{Binding DraftedTeam[13].Image}"/>
                     </Button>
-                </StackPanel>
-                <StackPanel Grid.Column="1" Height="140">
+
                     <Button Command="{Binding SubCommand}" CommandParameter="14" 
-                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Height="40" Width="40" Background="Transparent">
+                            Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Height="35" Width="35" Background="Transparent">
+
                         <Image Source="{Binding DraftedTeam[14].Image}"/>
                     </Button>
+
                     <Button Command="{Binding SubCommand}" CommandParameter="15" 
-                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="0,5,0,0"
-                            Height="40" Width="40" Background="Transparent">
+                            Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 0 0 20"
+                            Height="35" Width="35" Background="Transparent">
+
                         <Image Source="{Binding DraftedTeam[15].Image}"/>
                     </Button>
+
                     <Button Command="{Binding SubCommand}" CommandParameter="16" 
-                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="0,5,0,0"
-                            Height="40" Width="40" Background="Transparent">
+                            Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0 0 0 20"
+                            Height="35" Width="35" Background="Transparent">
+
                         <Image Source="{Binding DraftedTeam[16].Image}"/>
                     </Button>
-                </StackPanel>
-            </Grid>
-        </GroupBox>
+                </Grid>
+            </Border>
 
-        <DataGrid ItemsSource="{Binding PlayerList}" SelectedItem="{Binding SelectedPlayer}" AutoGenerateColumns="False" HeadersVisibility="None"
-                  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
-                  Background="LightBlue"
-                  Height="380" Width="250">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Width="30">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Height="30" Width="30" Source="{Binding Image}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="150">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       FontWeight="DemiBold">
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       FontWeight="DemiBold">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}Mio">
-                                        <Binding Path="Value"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        
-        <Button Style="{StaticResource Button}" Command="{Binding DraftCommand}"
-                Content="kaufen"
-                Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"
-                Height="24" Width="120"/>
+            <Border Grid.Column="1" Grid.Row="1" 
+                        BorderThickness="4" BorderBrush="DarkSlateGray"
+                        CornerRadius="40 100 40 100" Margin="10">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="DarkGray" Offset="0.8"/>
+                        <GradientStop Color="AliceBlue" Offset="0.0"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Button Style="{StaticResource Button}" Command="{Binding DraftCommand}"
+                            Content="kaufen"
+                            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 20 0 0"
+                            Height="24" Width="120"/>
 
-        <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
-                Content="Team speichern" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0"
-                Height="24" Width="120"/>
-        
-        <ProgressBar Value="{Binding MoneyMax, Mode=OneWay}" Minimum="0" Maximum="300"
-                     Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" 
-                     Height="10" Width="250"/>
-
-    </Grid>
+                    <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
+                            Content="Team speichern" 
+                            Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 40"
+                            Height="24" Width="120"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

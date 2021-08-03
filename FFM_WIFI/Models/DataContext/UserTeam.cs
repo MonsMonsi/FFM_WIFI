@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace FFM_WIFI.Models.DataContext
 {
-    public partial class UserTeam
+    public partial class _userTeam
     {
         public int UserTeamPk { get; set; }
         public string UserTeamName { get; set; }

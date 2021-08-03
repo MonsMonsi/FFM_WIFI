@@ -1,6 +1,7 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
 using FFM_WIFI.Models.DataJson;
+using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
 using System.Collections.ObjectModel;
@@ -15,8 +16,8 @@ namespace FFM_WIFI.ViewModels
     {
         #region Propperties
         //Property für FixtureInfos
-        private ObservableCollection<FixtureInfo> _infoList;
-        public ObservableCollection<FixtureInfo> InfoList
+        private ObservableCollection<Info.Fixture> _infoList;
+        public ObservableCollection<Info.Fixture> InfoList
         {
             get { return _infoList; }
             set
@@ -27,10 +28,10 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Property für User Team und Performance
-        public PlayerInfo[] PlayerData { get; set; }
-        public ObservableCollection<PlayerInfo> DraftedPlayers { get; set; }
-        private PlayerInfo _selectedPlayer;
-        public PlayerInfo SelectedPlayer
+        public Info.Player[] PlayerData { get; set; }
+        public ObservableCollection<Info.Player> DraftedPlayers { get; set; }
+        private Info.Player _selectedPlayer;
+        public Info.Player SelectedPlayer
         {
             get { return _selectedPlayer; }
             set
@@ -41,8 +42,8 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Property für TextBlock und Image
-        private TeamInfo _teamData;
-        public TeamInfo TeamData
+        private Info.Team _teamData;
+        public Info.Team TeamData
         {
             get { return _teamData; }
             set
@@ -55,7 +56,7 @@ namespace FFM_WIFI.ViewModels
 
         #region Attributes
         private Window _window;
-        private UserTeam _userTeam;
+        private _userTeam _userTeam;
         private int _playday;
         private bool _back;
         #endregion
@@ -70,14 +71,14 @@ namespace FFM_WIFI.ViewModels
         #endregion
 
         // Konstruktor
-        public FixtureViewModel(Window window, TeamInfo teamData, PlayerInfo[] playerData)
+        public FixtureViewModel(Window window, Info.Team teamData, Info.Player[] playerData)
         {
             _window = window;
             TeamData = teamData;
-            _userTeam = _teamData.Team;
+            _userTeam = _teamData.UserTeam;
             PlayerData = playerData;
-            InfoList = new ObservableCollection<FixtureInfo>();
-            DraftedPlayers = new ObservableCollection<PlayerInfo>();
+            InfoList = new ObservableCollection<Info.Fixture>();
+            DraftedPlayers = new ObservableCollection<Info.Player>();
             SetDraftedPlayersList();
             _playday = _userTeam.UserTeamPlayday;
             _back = false;
@@ -89,7 +90,7 @@ namespace FFM_WIFI.ViewModels
         private void GoToGameHome()
         {
             _teamData.Playday++;
-            _teamData.Team.UserTeamPlayday++;
+            _teamData.UserTeam.UserTeamPlayday++;
             GameHomeWindow uhWindow = new GameHomeWindow(TeamData, PlayerData);
             _window.Close();
             uhWindow.ShowDialog();

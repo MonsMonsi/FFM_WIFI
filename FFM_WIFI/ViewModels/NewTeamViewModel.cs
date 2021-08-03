@@ -33,7 +33,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _newTeamName = value;
-                OnPropertyChanged("NewTeamName");
+                OnPropertyChanged();
             }
         }
 
@@ -47,7 +47,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedLeague = value;
-                OnPropertyChanged("SelectedLeague");
+                OnPropertyChanged();
                 _save.RaiseCanExecuteChanged();
             }
         }
@@ -60,7 +60,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedSeason = value;
-                OnPropertyChanged("SelectedSeason");
+                OnPropertyChanged();
                 _save.RaiseCanExecuteChanged();
             }
         }
@@ -73,7 +73,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedLogo = value;
-                OnPropertyChanged("SelectedLogo");
+                OnPropertyChanged();
                 _save.RaiseCanExecuteChanged();
             }
         }
@@ -128,7 +128,7 @@ namespace FFM_WIFI.ViewModels
 
 
                 // neues Team
-                UserTeam team = new UserTeam();
+                _userTeam team = new _userTeam();
                 team.UserTeamName = NewTeamName;
                 team.UserTeamLogo = _selectedLogo.LogoPath;
                 team.UserTeamLeague = _selectedLeague.LeaguePk;
@@ -178,7 +178,7 @@ namespace FFM_WIFI.ViewModels
 
                 foreach (var t in teams)
                 {
-                    TeamLogo temp = new TeamLogo(Get.Image(t.TeamLogo), t.TeamLogo, t.TeamName);
+                    TeamLogo temp = new TeamLogo(new GetFrom().Image(t.TeamLogo), t.TeamLogo, t.TeamName);
                     LogoList.Add(temp);
                 }
             }

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFM_WIFI", "FFM_WIFI\FFM_WI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseTesting", "DatabaseTesting\DatabaseTesting.csproj", "{A6AAFEE2-1194-432A-897C-0DB3C1B719E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragDropTest", "DragDropTest\DragDropTest.csproj", "{09256828-F849-47AF-9930-C729F50CBA67}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{A6AAFEE2-1194-432A-897C-0DB3C1B719E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6AAFEE2-1194-432A-897C-0DB3C1B719E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6AAFEE2-1194-432A-897C-0DB3C1B719E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09256828-F849-47AF-9930-C729F50CBA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09256828-F849-47AF-9930-C729F50CBA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09256828-F849-47AF-9930-C729F50CBA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09256828-F849-47AF-9930-C729F50CBA67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,44 +14,90 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding TeamData.League}"
-               Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-               Height="100" Width="100"/>
+        <Image Source="{Binding TeamData.Logo}"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               Height="150" Width="150"/>
 
-        <DataGrid ItemsSource="{Binding DraftedPlayers}" SelectedItem="{Binding SelectedPlayer}"
-                  HeadersVisibility="None" AutoGenerateColumns="False" 
-                  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
-                  Height="450" Width="100">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Width="30">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding Image}"
-                                   Height="30" Width="30"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Points}" Header="Punkte"
-                                    Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Border CornerRadius="100 100 0 0"
+                BorderThickness="5 5 0 0" BorderBrush="DarkBlue" Margin="3 3 -70 0"
+                Grid.Row="1"
+                Background="DarkGray">
 
-        <Button Style="{StaticResource Button}" Content="GameHome" Command="{Binding HomeCommand}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,537,0,0"
-                    Height="25" Width="100"
-                    FontSize="15"/>
+            <ListView ItemsSource="{Binding DraftedPlayers}" SelectedItem="{Binding SelectedPlayer}"
+                      ItemContainerStyle="{StaticResource ListViewItemPlayer}"
+                      BorderThickness="0"
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 20 0 0"
+                      Background="Transparent"
+                      Width="150" MinWidth="145">
 
-        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
-                   FontSize="30" FontWeight="Bold">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}Spieltag: {0}">
-                    <Binding Path="TeamData.Playday"/>
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+                <!--<ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border CornerRadius="4"
+                                            BorderBrush="DarkBlue" BorderThickness="3"
+                                            Background="LightBlue">
+                                        
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Image Source="{Binding Image}"
+                                                   Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Height="32" Width="32"/>
+
+                                            <TextBlock Text="{Binding Points}"
+                                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       FontSize="20" FontWeight="Bold" Foreground="DarkBlue"/>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>-->
+            </ListView>
+        </Border>
+
+        <Button Style="{StaticResource Button}" Content="GameHome" Command="{Binding HomeCommand}"
+                Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 40"
+                Height="25" Width="100"
+                FontSize="15"/>
+
+        <Border CornerRadius="100 0 0 0"
+                BorderThickness="5 5 5 0" BorderBrush="DarkBlue" Margin="3 3 3 0"
+                Grid.Column="1"
+                Background="DarkGray">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="{Binding TeamData.League}"
+                       Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Height="70" Width="70"/>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 200 0"
+                           FontSize="40" FontWeight="Bold">
+
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}Spieltag: {0}">
+                            <Binding Path="TeamData.Playday"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+        </Border>
 
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -59,63 +105,156 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ListView ItemsSource="{Binding InfoList}" 
-                      BorderThickness="0"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
-                      Height="450" Width="300">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <Border CornerRadius="5" Background="LightBlue">
-                                        <Grid Background="Transparent">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="145"/>
-                                                <ColumnDefinition Width="145"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50"/>
-                                                <RowDefinition Height="300"/>
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding HomeName}"
-                                                       Grid.Column="0" Grid.Row="0"
-                                                       HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                       TextWrapping="Wrap" Margin="5 10 0 0"
-                                                       Height="50"
-                                                       FontSize="14" FontWeight="DemiBold"
-                                                       Foreground="DarkBlue"/>
+            <Border CornerRadius="0 4 4 0"
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0 0 0"
+                    BorderThickness="0 5 5 5" BorderBrush="DarkSlateGray"
+                    Background="LightGray"
+                    Height="350" Width="280">
 
-                                            <TextBlock Text="{Binding AwayName}"
-                                                       Grid.Column="2" Grid.Row="0"
-                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                       TextWrapping="Wrap" Margin="0 10 5 0"
-                                                       Height="50"
-                                                       FontSize="14" FontWeight="DemiBold"
-                                                       Foreground="DarkBlue"/>
+                <Canvas HorizontalAlignment="Right"
+                        Height="300" Width="250"
+                        Background="LightBlue">
 
-                                            <ListView ItemsSource="{Binding List}" BorderBrush="DarkBlue" BorderThickness="3"
-                                                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                                      Grid.Row="1" Grid.ColumnSpan="2"
-                                                      HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 10 0 0"
-                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                      Width="250"
-                                                      FontSize="12" FontWeight="ExtraBold"
-                                                      Background="AliceBlue" Foreground="DarkBlue"/>
-                                        </Grid>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+                    <Image Source="{Binding SelectedPlayer.Image}"
+                           Canvas.Left="10" Canvas.Top="20" 
+                           Height="100" Width="100"/>
 
-            <Button Style="{StaticResource Button}" Command="{Binding StartCommand}"
-                Content="Start"     
-                Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100 0 0 0"
-                Height="25" Width="100"/>
+                    <TextBlock Text="{Binding SelectedPlayer.Name}"
+                               Canvas.Left="115" Canvas.Top="40"
+                               TextAlignment="Center" TextWrapping="Wrap"
+                               Height="50" Width="120"
+                               FontSize="16" FontWeight="Bold"
+                               Foreground="DarkBlue"/>
+
+                    <TextBlock Canvas.Left="30" Canvas.Bottom="20"
+                               TextAlignment="Left" TextWrapping="Wrap"
+                               Height="140" Width="200"
+                               FontSize="16" FontWeight="DemiBold"
+                               Foreground="DarkBlue">
+
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}LineUp-Punkte:   {0}&#x0a;      Tor-Punkte:   {1}&#x0a;  Assist-Punkte:   {2}
+                                                        &#x0a;&#x0a;      Gelb-Strafe:   {3}&#x0a;        Rot-Strafe:   {4}">
+                                <Binding Path="SelectedPlayer.LineUp"/>
+                                <Binding Path="SelectedPlayer.Goals"/>
+                                <Binding Path="SelectedPlayer.Assists"/>
+                                <Binding Path="SelectedPlayer.YellowC"/>
+                                <Binding Path="SelectedPlayer.RedC"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Canvas>
+            </Border>
+
+            <Border CornerRadius="4 0 0 4"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 0"
+                    BorderThickness="5 5 0 5" BorderBrush="DarkSlateGray"
+                    Background="LightGray"
+                    Height="450" Width="330">
+
+                <ListView ItemsSource="{Binding InfoList}" 
+                          BorderThickness="0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                          HorizontalAlignment="Left"
+                          Height="400" Width="300"
+                          Background="Transparent">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border CornerRadius="4" Background="LightBlue">
+                                            <Grid Background="Transparent">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="80"/>
+                                                    <RowDefinition Height="320"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Image Source="{Binding HomeImage}"
+                                                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0 0 0"
+                                                       Height="45" Width="45"/>
+
+                                                <Label Content="VS"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       FontSize="26" FontWeight="Bold"/>
+
+                                                <Image Source="{Binding AwayImage}"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 30 0"
+                                                       Height="45" Width="45"/>
+
+                                                <Border CornerRadius="4"
+                                                        BorderThickness="3" BorderBrush="DarkBlue" Background="LightBlue"
+                                                        Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 20"
+                                                        Height="300" Width="270">
+
+                                                    <ListView ItemsSource="{Binding List}"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+                                                        <ListView.ItemContainerStyle>
+                                                            <Style TargetType="ListViewItem">
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="ListViewItem">
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="50"/>
+                                                                                    <ColumnDefinition Width="210"/>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <Grid.RowDefinitions>
+                                                                                    <RowDefinition Height="60"/>
+                                                                                </Grid.RowDefinitions>
+
+                                                                                <Image Source="{Binding Logo}"
+                                                                                       HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                                                       Height="40" Width="40"
+                                                                                       Opacity="0.4"/>
+
+                                                                                <TextBlock Text="{Binding Minute, StringFormat=Minute: {0}}"
+                                                                                           HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                                                                           TextAlignment="Center"
+                                                                                           Height="20" Width="50"
+                                                                                           FontSize="9" FontWeight="Bold"/>
+
+                                                                                <TextBlock Text="{Binding CommentHeader}"
+                                                                                           Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                                                           Padding="10 0 10 0" TextAlignment="Center"
+                                                                                           Height="20" Width="200"
+                                                                                           Foreground="DarkBlue" FontSize="19" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
+
+                                                                                <TextBlock Text="{Binding CommentText}"
+                                                                                           Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                                                                           Padding="0 0 0 15" TextWrapping="Wrap" TextAlignment="Center"
+                                                                                           Height="30" Width="200"
+                                                                                           Foreground="DarkBlue" FontSize="10" FontWeight="Bold"/>
+                                                                            </Grid>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ListView.ItemContainerStyle>
+                                                    </ListView>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </Border>
+
+            <Border CornerRadius="100 0 0 0"
+                    BorderThickness="5 5 5 0" BorderBrush="DarkBlue" Margin="3 3 3 0"
+                    Grid.Row="1"
+                    Background="DarkGray">
+
+                <Button Style="{StaticResource Button}" Command="{Binding StartCommand}"
+                        Content="Start"     
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100 0 0 0"
+                        Height="25" Width="100"/>
+            </Border>
         </Grid>
     </Grid>
 </Window>

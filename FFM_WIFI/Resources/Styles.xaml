@@ -4,85 +4,117 @@
     <Style BasedOn="{StaticResource {x:Type Button}}"
            TargetType="{x:Type Button}"
            x:Key="Button">
-        <Style.Setters>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                CornerRadius="7" BorderBrush="DarkBlue"  BorderThickness="2"
-                                Background="LightBlue" TextBlock.Foreground="DarkBlue">
 
-                            <TextBlock Text="{TemplateBinding Property=Content}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           FontSize="14" FontWeight="DemiBold" 
-                                           Background="Transparent">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="ButtonBorder"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            CornerRadius="7"
+                            BorderThickness="0.8" BorderBrush="Azure"
+                            Opacity="1"
+                            Background="DarkSlateGray" TextBlock.Foreground="Azure">
 
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Opacity" Value="0.3"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Border>
+                        <TextBlock Text="{TemplateBinding Property=Content}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       FontSize="14" FontWeight="DemiBold" 
+                                       Background="Transparent">
 
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.3"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Opacity" Value="1.1"/>
+                            <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="#FF032506"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
+    <Style TargetType="{x:Type PasswordBox}"
+           x:Key="PasswordBox">
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=PasswordBox}, Path=Height}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=PasswordBox}, Path=Width}"/>
+        <Setter Property="HorizontalContentAlignment" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=PasswordBox}, Path=HorizontalContentAlignment}"/>
+        <Setter Property="VerticalContentAlignment" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=PasswordBox}, Path=VerticalContentAlignment}"/>
+        <Setter Property="Foreground" Value="Azure"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}" >
+                    <Border CornerRadius="5" BorderThickness="2" BorderBrush="Azure"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            Background="DarkSlateGray" 
+                            TextBlock.Foreground="Azure" TextBlock.FontSize="12">
 
-                        <!--<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost"/>
 
-                                <TextBlock Text="{TemplateBinding Property=Content}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           FontSize="14" FontWeight="DemiBold" 
-                                           Background="Transparent" Foreground="DarkBlue">
-
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter Property="Opacity" Value="0.3"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>-->
-
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style.Setters>
+                            <TextBlock x:Name="Password"
+                                       Text="Password"
+                                       IsHitTestVisible="False"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       Focusable="False"
+                                       Padding="5 0 0 0"
+                                       Background="Transparent" FontWeight="Light"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True" >
+                            <Setter TargetName="Password" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type TextBox}"
            x:Key="TextBoxUserName">
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TextBox}, Path=Height}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TextBox}, Path=Width}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}" >
-                    <Border CornerRadius="5" BorderThickness="2" BorderBrush="DarkBlue"
-                            Height="25" Width="200"
-                            Background="LightBlue">
+                    <Border CornerRadius="5" BorderThickness="2" BorderBrush="Azure"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            Background="DarkSlateGray"
+                            TextBlock.Foreground="Azure">
 
                         <Grid>
-                            <TextBox x:Name="UserNameBox"
+                            <TextBox x:Name="UserName"
                                      BorderThickness="0"
                                      Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}, Path=Text, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                      HorizontalAlignment="Stretch" VerticalContentAlignment="Center"
                                      FontSize="14" FontWeight="DemiBold" 
-                                     Background="Transparent" Foreground="DarkBlue"/>
+                                     Background="Transparent"
+                                     Foreground="Azure"/>
 
                             <TextBlock IsHitTestVisible="False"
                                        Text="Username"
+                                       Padding="5 0 0 0"
                                        HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="12" FontWeight="Light" 
-                                       Background="Transparent" Foreground="MediumBlue">
+                                       Background="Transparent">
 
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=UserNameBox}" Value="">
+                                            <DataTrigger Binding="{Binding Text, ElementName=UserName}" Value="">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -98,69 +130,435 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type TextBox}"
-           x:Key="TextBoxPassword">
+    <!--Style für Teamlisten-->
+                        
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemTeam"
+           x:Name="TeamList">
+        <!--Setter für den gesamten Container-->
+                                         
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MinWidth}"/>
+        <Setter Property="BorderBrush" Value="AliceBlue"/>
+        <Setter Property="BorderThickness" Value="0.7"/>
+        <Setter Property="Opacity" Value="0.9"/>
+
+        <!--Template Settings-->
+                         
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border CornerRadius="5" BorderThickness="2" BorderBrush="DarkBlue"
-                            Height="25" Width="200"
-                            Background="LightBlue">
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="TeamListItemBorder"
+                            CornerRadius="4 4 4 4" Margin="1"
+                            Background="DarkSlateBlue"
+                            Opacity="{TemplateBinding Opacity}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height}"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Grid >
-                            <TextBox x:Name="PasswordBox"
-                                     BorderThickness="0"
-                                     Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}, Path=Text, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                     HorizontalAlignment="Stretch" VerticalContentAlignment="Center"
-                                     FontSize="14" FontWeight="DemiBold" 
-                                     Background="Transparent" Foreground="DarkBlue"/>
+                            <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Logo}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Height="{TemplateBinding Height}" Width="{TemplateBinding Height}"/>
 
-                            <TextBlock IsHitTestVisible="False"
-                                       Text="Password"
-                                       HorizontalAlignment="Left" VerticalAlignment="Center"
-                                       FontSize="12" FontWeight="Light" 
-                                       Background="Transparent" Foreground="MediumBlue">
-
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=PasswordBox}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </Style>
-                                </TextBlock.Style>
-
-                            </TextBlock>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Name}"
+                                       Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       Padding="5 0 5 0"
+                                       TextWrapping="Wrap" TextAlignment="Center"
+                                       Foreground="AliceBlue" FontSize="13" FontWeight="DemiBold" FontFamily="Bahnschrift Condensed"
+                                       MaxHeight="{TemplateBinding Height}"/>
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TeamListItemBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--Style Trigger für die Properties des Containers-->
+                                                       
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="true" />
+                    <Condition Property="Selector.IsSelectionActive" Value="true" />
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Opacity" Value="1"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--Style für Playerlisten-->
+    <!--                      -->
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemPlayer"
+           x:Name="PlayerList">
+        <!--Setter für den gesamten Container-->
+        <!--                                 -->
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MinWidth}"/>
+        <Setter Property="BorderBrush" Value="DarkBlue"/>
+        <Setter Property="BorderThickness" Value="0.7"/>
+        <Setter Property="Opacity" Value="0.9"/>
+
+        <!--Template Settings-->
+        <!--                 -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="PlayerListItemBorder"
+                            CornerRadius="4 4 4 4"
+                            Background="LightBlue"
+                            Opacity="{TemplateBinding Opacity}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height}"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Image}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Height="{TemplateBinding Height}" Width="{TemplateBinding Height}"/>
+
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Name}"
+                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Padding="0 0 5 0"
+                                       TextWrapping="Wrap" TextAlignment="Center"
+                                       Foreground="DarkBlue" FontSize="13" FontWeight="Bold" FontFamily="Bauhaus 93"
+                                       Height="{TemplateBinding Height}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PlayerListItemBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--Style Trigger für die Properties des Containers-->
+        <!--                                               -->
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="true" />
+                    <Condition Property="Selector.IsSelectionActive" Value="true" />
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Opacity" Value="1"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--Style für Draftlisten-->
+    <!--                      -->
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemDraft"
+           x:Name="DraftList">
+        <!--Setter für den gesamten Container-->
+        <!--                                 -->
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MinHeight}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=Width}"/>
+        <Setter Property="MinWidth" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MinWidth}"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="0.7"/>
+        <Setter Property="Opacity" Value="0.9"/>
+        <Setter Property="Padding" Value="10"/>
+
+        <!--Template Settings-->
+        <!--                 -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="PlayerListItemBorder"
+                            CornerRadius="4 4 4 4"
+                            Background="DarkSlateGray"
+                            Opacity="{TemplateBinding Opacity}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            TextBlock.Foreground="Azure" TextBlock.FontSize="13" TextBlock.FontWeight="DemiBold">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height}"/>
+                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinWidth}"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding Image}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Height="{TemplateBinding Height}" Width="{TemplateBinding Height}"/>
+
+                            <TextBlock Text="{Binding Name}"
+                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Padding="0 0 5 0"
+                                       TextWrapping="Wrap" TextAlignment="Center"
+                                       FontFamily="Bauhaus 93"
+                                       Height="{TemplateBinding Height}"/>
+
+                            <TextBlock Text="{Binding Value, StringFormat={}{0} Mio}"
+                                       Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       Padding="0 0 5 0"
+                                       TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PlayerListItemBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--Style Trigger für die Properties des Containers-->
+        <!--                                               -->
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="true" />
+                    <Condition Property="Selector.IsSelectionActive" Value="true" />
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Opacity" Value="1"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--Style für Playdaylisten-->
+    <!--                    -->
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemPlayday"
+           x:Name="PlaydayList">
+        <!--Setter für den gesamten Container-->
+        <!--                                 -->
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MinHeight}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MaxWidth}"/>
+        <Setter Property="MinWidth" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=MinWidth}"/>
+        <Setter Property="BorderBrush" Value="DarkGray"/>
+        <Setter Property="BorderThickness" Value="0.7"/>
+        <Setter Property="Opacity" Value="0.9"/>
+
+        <!--Template Settings-->
+        <!--                 -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="PlaydayListItemBorder"
+                            CornerRadius="4"
+                            Background="DarkSlateGray"
+                            Opacity="{TemplateBinding Opacity}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding HomeImage}"
+                                   Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 0 0 0"
+                                   Opacity="0.5"
+                                   Height="{TemplateBinding Height}" Width="{TemplateBinding Height}"/>
+
+                            <TextBlock Text="{Binding Home}"
+                                       Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25 0 0 0"
+                                       TextAlignment="Center" TextWrapping="Wrap"
+                                       Padding="3 0 3 0"
+                                       Width="{TemplateBinding MinWidth}"
+                                       Foreground="Azure" FontSize="10" FontWeight="DemiBold"/>
+
+                            <TextBlock Text="vs"
+                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Padding="3 0 3 0"
+                                       Foreground="Azure" FontSize="20" FontWeight="Bold"/>
+
+                            <Image Source="{Binding AwayImage}"
+                                   Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 0"
+                                   Opacity="0.5"
+                                   Height="{TemplateBinding Height}" Width="{TemplateBinding Height}"/>
+
+                            <TextBlock Text="{Binding Away}"
+                                       Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 25 0"
+                                       TextAlignment="Center" TextWrapping="Wrap"
+                                       Padding="3 0 3 0"
+                                       Width="{TemplateBinding MinWidth}"
+                                       Foreground="Azure" FontSize="10" FontWeight="DemiBold"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PlaydayListItemBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--Style Trigger für die Properties des Containers-->
+        <!--                                               -->
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="true" />
+                    <Condition Property="Selector.IsSelectionActive" Value="true" />
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Opacity" Value="1"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!--Style für ComboBoxen-->
+    <!--League - ComboBox-->
+    <Style TargetType="ComboBoxItem"
+           x:Key="ComboBoxItemLeague">
+
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MaxHeight}"/>
+        <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MinHeight}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=Width}"/>
+        <Setter Property="MinWidth" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MinWidth}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="InnerBorder"
+                            Opacity="0.8"
+                            CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="16" TextBlock.FontWeight="Bold">
+                        
+                        <Border.Background>
+                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                                <GradientStop Color="AliceBlue" Offset="0.05"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height}"/>
+                                <ColumnDefinition Width="{TemplateBinding MinWidth}"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding LeagueLogo}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"
+                                   Opacity="0.8"
+                                   Height="{TemplateBinding MinHeight}" Width="{TemplateBinding MinHeight}"/>
+
+                            <TextBlock Text="{Binding LeagueName}"
+                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Padding="0 0 3 0"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="BorderThickness" Value="2 0 0 2"/>
+                            <Setter TargetName="InnerBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <!--<Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}"
-           x:Key="DataGridCellPlayer">
+    <!--Season - ComboBox-->
+    <Style TargetType="ComboBoxItem"
+           x:Key="ComboBoxItemSeason">
+
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MaxHeight}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MinWidth}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="DataGridCell">
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="InnerBorder"
+                            Opacity="0.8"
+                            CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="18" TextBlock.FontWeight="Bold">
 
+                        <Border.Background>
+                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                                <GradientStop Color="AliceBlue" Offset="0.05"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="{Binding SeasonName}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="BorderThickness" Value="2 0 0 2"/>
+                            <Setter TargetName="InnerBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
 
-    <!--<Style BasedOn="{StaticResource x:Type ListView}"
-           x:Key="ListViewTest">
-        <Setter Property="Cont">
+    <!--Logo - ComboBox-->
+    
+    <Style TargetType="ComboBoxItem"
+           x:Key="ComboBoxItemLogo">
+
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MaxHeight}"/>
+        <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MinHeight}"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=Width}"/>
+        <Setter Property="MinWidth" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}, Path=MinWidth}"/>
+        <Setter Property="Template">
             <Setter.Value>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="LightBlue"/>
-                    <Setter Property="BorderThickness" Value="5"/>
-                    <Setter Property="BorderBrush" Value="DarkBlue"/>
-                </Style>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="InnerBorder"
+                            CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
+                            Opacity="0.8"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="12" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center">
+
+                        <Border.Background>
+                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                                <GradientStop Color="AliceBlue" Offset="0.05"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height}"/>
+                                <ColumnDefinition Width="{TemplateBinding MinWidth}"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding Logo}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0"
+                                   Opacity="0.8"
+                                   Height="{TemplateBinding MinHeight}" Width="{TemplateBinding MinHeight}"/>
+
+                            <TextBlock Text="{Binding Name}"
+                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       Padding="0 0 3 0"
+                                       Height="{TemplateBinding Height}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="BorderThickness" Value="2 0 0 2"/>
+                            <Setter TargetName="InnerBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
 </ResourceDictionary>

@@ -25,7 +25,7 @@ namespace FFM_WIFI.Models.DataContext
         public virtual DbSet<Team> Team { get; set; }
         public virtual DbSet<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserTeam> UserTeam { get; set; }
+        public virtual DbSet<_userTeam> UserTeam { get; set; }
         public virtual DbSet<UserTeamPerformance> UserTeamPerformance { get; set; }
         public virtual DbSet<Venue> Venue { get; set; }
 
@@ -223,7 +223,7 @@ namespace FFM_WIFI.Models.DataContext
                     .HasColumnName("User_Password");
             });
 
-            modelBuilder.Entity<UserTeam>(entity =>
+            modelBuilder.Entity<_userTeam>(entity =>
             {
                 entity.HasKey(e => e.UserTeamPk);
 

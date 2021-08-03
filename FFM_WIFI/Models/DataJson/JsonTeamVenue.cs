@@ -1,54 +1,54 @@
 ﻿namespace FFM_WIFI.Models.DataJson
 {
-    class JsonTeamVenue
+    public class JsonTeamVenue
     {
         public class Root
         {
-            public string get { get; set; }
-            public Parameters parameters { get; set; }
-            public object[] errors { get; set; }
-            public int results { get; set; }
-            public Paging paging { get; set; }
-            public Response[] response { get; set; }
+            public string Get { get; set; }
+            public Parameters Parameters { get; set; }
+            public object[] Errors { get; set; }
+            public int Results { get; set; }
+            public Paging Paging { get; set; }
+            public Response[] Response { get; set; }
         }
 
         public class Parameters
         {
-            public string league { get; set; }
-            public string season { get; set; }
+            public string League { get; set; }
+            public string Season { get; set; }
         }
 
         public class Paging
         {
-            public int current { get; set; }
-            public int total { get; set; }
+            public int Current { get; set; }
+            public int Total { get; set; }
         }
 
         public class Response
         {
-            public Team team { get; set; }
-            public Venue venue { get; set; }
+            public Team Team { get; set; }
+            public Venue Venue { get; set; }
         }
 
         public class Team
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string country { get; set; }
-            public int founded { get; set; }
-            public bool national { get; set; }
-            public string logo { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Country { get; set; }
+            public int Founded { get; set; }
+            public bool National { get; set; }
+            public string Logo { get; set; }
         }
 
         public class Venue
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string address { get; set; }
-            public string city { get; set; }
-            public int capacity { get; set; }
-            public string surface { get; set; }
-            public string image { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Address { get; set; }
+            public string City { get; set; }
+            public int Capacity { get; set; }
+            public string Surface { get; set; }
+            public string Image { get; set; }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Views;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,49 +11,9 @@ namespace FFM_WIFI.ViewModels
 {
     class ResultViewModel : BaseViewModel
     {
-        #region InfoClasses
-
-        public class ResultInfo
-        {
-            public TeamInfo Team { get; set; }
-            public PlayerInfo[] Players { get; set; }
-            public PlayerInfo Player1 { get; set; }
-            public PlayerInfo Player2 { get; set; }
-            public PlayerInfo Player3 { get; set; }
-
-            public ResultInfo(TeamInfo team, PlayerInfo[] players)
-            {
-                Team = team;
-                Players = players;
-                Player1 = GetBestPlayer(ref players);
-                Player2 = GetBestPlayer(ref players);
-                Player3 = GetBestPlayer(ref players);
-            }
-
-            private PlayerInfo GetBestPlayer(ref PlayerInfo[] temp)
-            {
-                PlayerInfo player = new PlayerInfo();
-                int index = 0;
-                player.Points = 0;
-
-                for (int i = 0; i < temp.Length; i++)
-                {
-                    if (temp[i] != null && temp[i].Points > player.Points)
-                    {
-                        player = temp[i];
-                        index = i;
-                    }
-                }
-                temp[index] = null;
-                return player;
-            }
-        }
-        #endregion
-
         #region Properties
-
-        private ResultInfo _resultData;
-        public ResultInfo ResultData
+        private Info.Result _resultData;
+        public Info.Result ResultData
         {
             get { return _resultData; }
             set
@@ -63,7 +24,7 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Property für ListView
-        public ObservableCollection<ResultInfo> InfoList { get; set; }
+        public ObservableCollection<Info.Result> InfoList { get; set; }
         #endregion
 
         #region Attributes
@@ -77,12 +38,12 @@ namespace FFM_WIFI.ViewModels
         public ICommand HomeCommand { get; set; }
         #endregion
 
-        public ResultViewModel(Window window, TeamInfo teamData, PlayerInfo[] playerData)
+        public ResultViewModel(Window window, Info.Team teamData, Info.Player[] playerData)
         {
             _window = window;
             _user = new User();
-            ResultData = new ResultInfo(teamData, playerData);
-            InfoList = new ObservableCollection<ResultInfo>();
+            ResultData = new Info.Result(teamData, playerData);
+            InfoList = new ObservableCollection<Info.Result>();
             HomeCommand = new RelayCommand(GoToUserHome);
             SetInfoList();
         }

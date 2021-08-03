@@ -1,4 +1,5 @@
-﻿using FFM_WIFI.ViewModels;
+﻿using FFM_WIFI.Models.DataViewModel;
+using FFM_WIFI.ViewModels;
 using System.Windows;
 
 namespace FFM_WIFI.Views
@@ -9,7 +10,7 @@ namespace FFM_WIFI.Views
     public partial class ResultWindow : Window
     {
         private ResultViewModel rvm;
-        public ResultWindow(TeamInfo teamData, PlayerInfo[] playerData)
+        public ResultWindow(Info.Team teamData, Info.Player[] playerData)
         {
             InitializeComponent();
             rvm = new ResultViewModel(this, teamData, playerData);

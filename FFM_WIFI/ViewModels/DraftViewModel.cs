@@ -1,5 +1,6 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,57 +12,26 @@ using System.Windows.Input;
 
 namespace FFM_WIFI.ViewModels
 {
-    #region InfoClasses
-    public class DraftInfo : IComparable
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Image { get; set; }
-        public string Position { get; set; }
-        public double Value { get; set; }
-
-        public DraftInfo(int id, string name, string image, string position, double value)
-        {
-            Id = id;
-            Name = name;
-            Image = image;
-            Position = position;
-            Value = (double)value;
-        }
-
-        public int CompareTo(object obj)
-        {
-            DraftInfo other = obj as DraftInfo;
-            if (other == null)
-            {
-                throw new ArgumentException("Object is not Preson");
-            }
-            return this.Value.CompareTo(other.Value);
-        }
-    }
-    #endregion
-
     class DraftViewModel : BaseViewModel
     {
         #region Properties
 
         // Properties für User
         // Datenstruktur überdenken
-        private UserTeam _userTeam;
-        public UserTeam UserTeam
+        private _userTeam _userTeam;
+        public _userTeam UserTeam
         {
             get { return _userTeam; }
             set
             {
                 _userTeam = value;
-                OnPropertyChanged("UserTeam");
+                OnPropertyChanged();
             }
         }
 
         // Properties für Draft
-        private List<DraftInfo> _allPlayers;
-        private DraftInfo[] _draftedTeam;
-        public DraftInfo[] DraftedTeam
+        private Info.Draft[] _draftedTeam;
+        public Info.Draft[] DraftedTeam
         {
             get { return _draftedTeam; }
             set
@@ -78,7 +48,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _moneyMax = value;
-                OnPropertyChanged("MoneyMax");
+                OnPropertyChanged();
             }
         }
 
@@ -90,20 +60,20 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _draftText = value;
-                OnPropertyChanged("DraftText");
+                OnPropertyChanged();
             }
         }
 
         // Properties für Datagrid
-        public ObservableCollection<DraftInfo> PlayerList { get; set; }
-        private DraftInfo _selectedPlayer;
-        public DraftInfo SelectedPlayer
+        public ObservableCollection<Info.Draft> PlayerList { get; set; }
+        private Info.Draft _selectedPlayer;
+        public Info.Draft SelectedPlayer
         {
             get { return _selectedPlayer; }
             set
             {
                 _selectedPlayer = value;
-                OnPropertyChanged("SelectedPlayer");
+                OnPropertyChanged();
                 _draft.RaiseCanExecuteChanged();
             }
         }
@@ -113,6 +83,7 @@ namespace FFM_WIFI.ViewModels
 
         private Season _season;
         private League _league;
+        private List<Info.Draft> _allPlayers;
         private string _position;
         private int _draftIndex;
         private int _draftCount;
@@ -130,14 +101,14 @@ namespace FFM_WIFI.ViewModels
         #endregion
 
         // Konstruktor
-        public DraftViewModel(Window window, UserTeam userTeam)
+        public DraftViewModel(Window window, _userTeam userTeam)
         {
             // Attribute setzen
             _window = window;
-            _userTeam = userTeam;
-            _moneyMax = 300;
-            _draftedTeam = new DraftInfo[17];
-            _allPlayers = new List<DraftInfo>();
+            UserTeam = userTeam;
+            MoneyMax = 300;
+            DraftedTeam = new Info.Draft[17];
+            _allPlayers = new List<Info.Draft>();
             _draftIndex = GetDraftIndex();
             _draftCount = GetDraftCount();
             SetPosition();
@@ -146,7 +117,7 @@ namespace FFM_WIFI.ViewModels
             _draft = new RelayCommand(DraftPlayer, () => SelectedPlayer != null && GetDraftIndex() < 17);
             _sub = new RelayCommand<object>(SubPlayer);
             _save = new RelayCommand(SetUserTeam, () => GetDraftIndex() == 17);
-            PlayerList = new ObservableCollection<DraftInfo>();
+            PlayerList = new ObservableCollection<Info.Draft>();
             ShowPlayers();
             SetDraftText();
         }
@@ -244,7 +215,7 @@ namespace FFM_WIFI.ViewModels
 
                     foreach (var p in players)
                     {
-                        DraftInfo temp = new DraftInfo(p.TeaPlaPlayerFkNavigation.PlayerPk, p.TeaPlaPlayerFkNavigation.PlayerFirstName + " " + p.TeaPlaPlayerFkNavigation.PlayerLastName,
+                        Info.Draft temp = new Info.Draft(p.TeaPlaPlayerFkNavigation.PlayerPk, p.TeaPlaPlayerFkNavigation.PlayerFirstName + " " + p.TeaPlaPlayerFkNavigation.PlayerLastName,
                                                        p.TeaPlaPlayerFkNavigation.PlayerImage, p.TeaPlaPlayerFkNavigation.PlayerPosition, p.TeaPlaPlayerValue / 1000000);
 
                         if (!_allPlayers.Contains(temp))
@@ -264,7 +235,7 @@ namespace FFM_WIFI.ViewModels
         private void SetDraftText()
         {
             if (_draftCount > 0)
-                DraftText = $"{UserTeam.UserTeamUserFkNavigation.UserName}, bitte wähle einen {_position}!\nDu hast noch {_draftCount} Drafts";
+                DraftText = $"Bitte wähle einen {_position}! Du hast noch {_draftCount} Drafts";
             else
                 DraftText = $"Dein Team ist komplett!\nDu kannst es nun speichern";
         }

@@ -4,46 +4,74 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI"
+        xmlns:converters="clr-namespace:FFM_WIFI.Models.Converters"
         mc:Ignorable="d"
         Title="Start-Menu" Height="500" Width="300"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
 
-    <Grid Background="BlanchedAlmond">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border BorderThickness="0"
+            CornerRadius="50"
+            Background="Transparent">
 
-        <Border CornerRadius="4 4 0 0"
-                Background="LightGray" BorderThickness="5 5 5 0" BorderBrush="DarkBlue" 
-                Margin="3 3 3 0">
-            
-            <TextBlock Text="Fantasy Football Manager"
-                   Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   TextAlignment="Center" TextWrapping="Wrap"
-                   Width="240"
-                   Foreground="DarkBlue" FontSize="30" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
-        </Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Border CornerRadius="0 0 4 4"
-                BorderThickness="5 0 5 5" BorderBrush="DarkBlue" 
-                Grid.Row="1" Margin="3 0 3 3">
+            <Border CornerRadius="100 100 100 100"
+                    BorderThickness="5 5 5 0" BorderBrush="DarkSlateGray" 
+                    Margin="3 3 3 0">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="LightGray" Offset="0.0"/>
+                        <GradientStop Color="Azure" Offset="0.5"/>
+                        <GradientStop Color="DarkSlateGray" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
 
-            <StackPanel>
+                <TextBlock Text="Fantasy Football Manager"
+                            Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            TextAlignment="Center" TextWrapping="Wrap"
+                            Width="240"
+                            Foreground="DarkSlateBlue" FontSize="30" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
+            </Border>
 
-                <TextBox Style="{StaticResource TextBoxUserName}" Text="{Binding UserName}"
-                         Margin="0,100,0,0"/>
+            <Border CornerRadius="100 100 40 40"
+                    BorderThickness="5 0 5 5" BorderBrush="DarkSlateBlue"
+                    Grid.Row="1" Margin="3 0 3 3">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="DarkSlateGray" Offset="0.2"/>
+                        <GradientStop Color="Azure" Offset="0.7"/>
+                        <GradientStop Color="DarkSlateBlue" Offset="1.1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <TextBox Style="{StaticResource TextBoxUserName}" Text="{Binding UserName}"
+                             HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 80 0 0"
+                             Height="25" Width="170"/>
 
-                <TextBox Style="{StaticResource TextBoxPassword}" Text="{Binding UserPassword}"
-                         Margin="0,10,0,0"/>
+                    <PasswordBox Style="{StaticResource PasswordBox}"
+                                 converters:PasswordBoxAssistant.BindPassword="True"
+                                 converters:PasswordBoxAssistant.BoundPassword="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 110 0 0"
+                                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                 Height=" 25" Width="170"/>
 
-                <Button Style="{StaticResource Button}" Content="Anmelden" Command="{Binding LoginCommand}"
-                        Margin="0,40,0,0" Height="25" Width="200"/>
+                    <Button Style="{StaticResource Button}" Content="Anmelden" Command="{Binding LoginCommand}"
+                            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                            Margin="0 0 0 110" Height="25" Width="200"/>
 
-                <Button Style="{StaticResource Button}" Content="Neuer Benutzer" Command="{Binding NewUserCommand}" 
-                        Margin="0,10,0,0" Height="25" Width="200"/>
-            </StackPanel>
-        </Border>
-    </Grid>
+                    <Button Style="{StaticResource Button}" Content="Neuer Benutzer" Command="{Binding NewUserCommand}" 
+                            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                            Margin="0 0 0 80" Height="25" Width="200"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

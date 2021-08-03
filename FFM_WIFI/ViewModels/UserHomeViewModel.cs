@@ -1,5 +1,6 @@
 ﻿using FFM_WIFI.Commands;
 using FFM_WIFI.Models.DataContext;
+using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
 using Microsoft.EntityFrameworkCore;
@@ -22,48 +23,10 @@ namespace FFM_WIFI.ViewModels
             Star = star;
         }
     }
-    #region InfoClasses
-    public class TeamInfo
-    {
-        public int TeamId { get; set; }
-        public int UserId { get; set; }
-        public string Name { get; set; }
-        public BitmapImage Logo { get; set; }
-        public int Playday { get; set; }
-        public int? Players { get; set; }
-        public BitmapImage League { get; set; }
-        public string Season { get; set; }
-        public int Points { get; set; }
-        public UserTeam Team { get; set; }
-        public UserTeamPerformance Performance { get; set; }
-        public Images Images { get; set; }
 
-        public TeamInfo(int teamId, int userId, string name, BitmapImage logo, int day, int? players, BitmapImage league, string season, int points, UserTeam team, UserTeamPerformance performance, Images images)
-        {
-            TeamId = teamId;
-            UserId = userId;
-            Name = name;
-            Logo = logo;
-            Playday = day;
-            Players = players;
-            League = league;
-            Season = season;
-            Points = points;
-            Team = team;
-            Performance = performance;
-            Images = images;
-        }
-
-        public TeamInfo()
-        {
-
-        }
-    }
-    #endregion
     class UserHomeViewModel : BaseViewModel
     {
         #region Properties
-
         // User
         private User _user;
         public User User
@@ -89,9 +52,9 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Team Datagrids
-        public ObservableCollection<TeamInfo> ActiveTeamList { get; set; }
-        private TeamInfo _selectedActiveTeam;
-        public TeamInfo SelectedActiveTeam
+        public ObservableCollection<Info.Team> ActiveTeamList { get; set; }
+        private Info.Team _selectedActiveTeam;
+        public Info.Team SelectedActiveTeam
         {
             get { return _selectedActiveTeam; }
             set
@@ -99,18 +62,21 @@ namespace FFM_WIFI.ViewModels
                 _selectedActiveTeam = value;
                 _draft.RaiseCanExecuteChanged();
                 _game.RaiseCanExecuteChanged();
+                _pdf.RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<TeamInfo> ClassicTeamList { get; set; }
-        private TeamInfo _selectedClassicTeam;
-        public TeamInfo SelectedClassicTeam
+        public ObservableCollection<Info.Team> ClassicTeamList { get; set; }
+        private Info.Team _selectedClassicTeam;
+        public Info.Team SelectedClassicTeam
         {
             get { return _selectedClassicTeam; }
             set
             {
                 _selectedClassicTeam = value;
+                _draft.RaiseCanExecuteChanged();
+                _game.RaiseCanExecuteChanged();
                 _pdf.RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
@@ -146,8 +112,8 @@ namespace FFM_WIFI.ViewModels
             _game = new RelayCommand(GoToGameHome, () => SelectedActiveTeam != null && SelectedActiveTeam.Players == 17);
             _pdf = new RelayCommand(SaveAsPdf, () => SelectedClassicTeam != null);
             // Listen initialisieren und füllen
-            ActiveTeamList = new ObservableCollection<TeamInfo>();
-            ClassicTeamList = new ObservableCollection<TeamInfo>();
+            ActiveTeamList = new ObservableCollection<Info.Team>();
+            ClassicTeamList = new ObservableCollection<Info.Team>();
             GetTeamInfo();
         }
 
@@ -161,15 +127,9 @@ namespace FFM_WIFI.ViewModels
 
         private void GoToDraft()
         {
-            DraftWindow dWindow = new DraftWindow(_selectedActiveTeam.Team);
+            DraftWindow dWindow = new DraftWindow(_selectedActiveTeam.UserTeam);
             dWindow.ShowDialog();
 
-        }
-
-        private void ResetSelectedTeams()
-        {
-            SelectedActiveTeam = null;
-            SelectedClassicTeam = null;
         }
 
         private void GoToGameHome()
@@ -206,11 +166,13 @@ namespace FFM_WIFI.ViewModels
 
                         if (u.UserTeamPlayday < 35)
                         {
-                            ActiveTeamList.Add(new TeamInfo(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, Get.Image(u.UserTeamLogo), u.UserTeamPlayday, u.UserTeamNumberPlayers, Get.Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
+                            ActiveTeamList.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(u.UserTeamLogo),
+                                u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
                         }
                         else
                         {
-                            ClassicTeamList.Add(new TeamInfo(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, Get.Image(u.UserTeamLogo), u.UserTeamPlayday, u.UserTeamNumberPlayers, Get.Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
+                            ClassicTeamList.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(Images.Star),
+                                u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
                         }
                     }
                 }

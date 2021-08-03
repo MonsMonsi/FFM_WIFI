@@ -16,8 +16,9 @@
         </Grid.ColumnDefinitions>
 
         <Border Margin="3 3 -70 3"
-                CornerRadius="4 4 4 4"
-                BorderBrush="DarkBlue" BorderThickness="3 3 3 3" Visibility="Visible">
+                CornerRadius="4 700 100 4"
+                BorderBrush="DarkBlue" BorderThickness="3 3 3 3" Visibility="Visible"
+                Background="LightGray">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -115,7 +116,7 @@
             <Border HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="3 3 3 3"
                     CornerRadius="4 4 4 4"
                     BorderBrush="DarkSlateGray" BorderThickness="3 3 3 3"
-                    Background="LightBlue"
+                    Background="DarkGray"
                     Height="500">
 
                 <Grid>
@@ -123,46 +124,18 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    
-                <ListView ItemsSource="{Binding DraftList}" SelectedItem="{Binding SelectedDraft}"
-                          Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 10"
-                          Background="Azure"
-                          Height="220" Width="150">
 
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListViewItem">
-                                        <Border CornerRadius="4" Background="LightBlue">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="35"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
+                    <ListView ItemsSource="{Binding DraftList}" SelectedItem="{Binding SelectedDraft}"
+                              ItemContainerStyle="{StaticResource ListViewItemPlayer}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                              BorderThickness="0"
+                              Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Background="Transparent"
+                              Width="150" MinWidth="145"/>
 
-                                                <Image Source="{Binding Image}"
-                                                       Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Height="35" Width="35"/>
-
-                                                <TextBlock Text="{Binding Name}"
-                                                           Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                           TextAlignment="Center" TextWrapping="Wrap"
-                                                           Padding="3 0 3 0"
-                                                           Height="30" Width="105"
-                                                           Foreground="DarkBlue" FontSize="10" FontWeight="DemiBold"/>
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
-
-                <Canvas Grid.Row="0"
+                    <Canvas Grid.Row="0"
                         Height="220" Width="150"
-                        Background="Azure">
+                        Background="LightGray">
 
                         <Border Canvas.Top="5" Canvas.Left="10"
                                 CornerRadius="4 4 4 4"
@@ -211,8 +184,9 @@
         </Grid>
 
         <Border Grid.Column="2" Margin="-70 3 3 3"
-                CornerRadius="4 4 4 4"
-                BorderBrush="DarkBlue" BorderThickness="3 3 3 3">
+                CornerRadius="700 4 4 100"
+                BorderBrush="DarkBlue" BorderThickness="3 3 3 3"
+                Background="LightGray">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -234,62 +208,12 @@
                            FontSize="22" FontWeight="Bold" Foreground="DarkBlue"/>
 
                 <ListView ItemsSource="{Binding PlaydayList}" SelectedItem="{Binding SelectedPlayday}"
+                          ItemContainerStyle="{StaticResource ListViewItemPlayday}"
                           ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
+                          BorderThickness="0"
                           Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 90 25 0"
-                          Background="Azure"
-                          Height="270" Width="300">
-
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListViewItem">
-                                        <Border CornerRadius="4"
-                                                BorderBrush="DarkSlateGray" BorderThickness="1.5"
-                                                Background="LightBlue">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="125"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="125"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <Image Source="{Binding HomeImage}"
-                                                       Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 0 0 0"
-                                                       Opacity="0.5"
-                                                       Height="26" Width="26"/>
-
-                                                <TextBlock Text="{Binding Home}"
-                                                           Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20 0 0 0"
-                                                           TextAlignment="Center" TextWrapping="Wrap"
-                                                           Padding="3 0 3 0"
-                                                           Width="95"
-                                                           Foreground="DarkBlue" FontSize="10" FontWeight="DemiBold"/>
-
-                                                <TextBlock Text="vs"
-                                                           Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                           Padding="3 0 3 0"
-                                                           Foreground="DarkBlue" FontSize="20" FontWeight="DemiBold"/>
-
-                                                <Image Source="{Binding AwayImage}"
-                                                       Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 0"
-                                                       Opacity="0.5"
-                                                       Height="26" Width="26"/>
-
-                                                <TextBlock Text="{Binding Away}"
-                                                           Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
-                                                           TextAlignment="Center" TextWrapping="Wrap"
-                                                           Padding="3 0 3 0"
-                                                           Width="95"
-                                                           Foreground="DarkBlue" FontSize="10" FontWeight="DemiBold"/>
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
+                          Background="Transparent"
+                          MinHeight="30" MaxWidth="290" Width="300" MinWidth="108"/>
 
                 <Canvas HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 330 25 0"
                         Background="LightBlue"
@@ -366,44 +290,6 @@
                             </TextBlock>
                         </Grid>
                     </Border>
-
-                    <!--<TextBlock Text="{Binding SelectedPlayday.Venue.VenueName}" 
-                           TextAlignment="Center" TextWrapping="Wrap"
-                           Canvas.Left="5" Canvas.Top="5"
-                           Height="45" Width="140" 
-                           FontSize="14" FontWeight="Bold"/>
-
-                    <TextBlock TextAlignment="Center" 
-                           Canvas.Left="5" Canvas.Top="50"
-                           Height="15" Width="140"
-                           FontSize="12" FontWeight="DemiBold">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}Zuschauer: {0}">
-                                <Binding Path=""/>
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-
-                    <Image Source="{Binding SelectedPlayday.Venue.VenueImage}"
-                       Canvas.Left="5" Canvas.Top="90"
-                       Height="140" Width="140"/>
-
-                    <TextBlock Text="{Binding SelectedPlayday.Date}"
-                           TextAlignment="Center" TextWrapping="Wrap"
-                           Canvas.Top="240" Canvas.Left="5"
-                           Height="15" Width="140"
-                           FontSize="11" FontWeight="DemiBold"/>
-
-                    <TextBlock TextAlignment="Center" TextWrapping="Wrap"
-                           Canvas.Left="5" Canvas.Top="260" 
-                           Height="15" Width="140"
-                           FontSize="11" FontWeight="DemiBold">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}Schiedsrichter: {0}">
-                                <Binding Path="SelectedPlayday.Referee"/>
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>-->
                 </Canvas>
 
                 <Button Style="{StaticResource Button}" Content="Nächster Spieltag" Command="{Binding PlayCommand}" 
