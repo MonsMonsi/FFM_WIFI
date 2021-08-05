@@ -19,54 +19,19 @@ namespace FFM_WIFI.ViewModels
     class GameHomeViewModel : BaseViewModel
     {
         #region Properties
-
-        // Property für User
-        private _userTeam _userTeam;
-        public _userTeam UserTeam
-        {
-            get { return _userTeam; }
-            set
-            {
-                _userTeam = value;
-                OnPropertyChanged("UserTeam");
-            }
-        }
-
         // Property für TextBlock und Image
-        private Info.Team _teamData;
-        public Info.Team TeamData
+        private Info.Team _teamInfo;
+        public Info.Team TeamInfo
         {
-            get { return _teamData; }
+            get { return _teamInfo; }
             set
             {
-                _teamData = value;
-                OnPropertyChanged("TeamData");
-            }
-        }
-
-        // Property für ListView
-        public ObservableCollection<string> DetailText { get; set; }
-
-        // Property für PlayerInfo
-        public Info.Player[] PlayerInfo { get; set; }
-
-        // Property für FixtureWindow
-        public int[] PlaydayFixtures { get; set; }
-
-        // Properties für Datagrids
-        public ObservableCollection<Info.Player> DataList { get; set; }
-        private Info.Player _selectedData;
-        public Info.Player SelectedData
-        {
-            get { return _selectedData; }
-            set
-            {
-                _selectedData = value;
+                _teamInfo = value;
                 OnPropertyChanged();
-                SetDetailText();
             }
         }
 
+        // Property für DraftList 
         public ObservableCollection<Info.Player> DraftList { get; set; }
         private Info.Player _selectedDraft;
         public Info.Player SelectedDraft
@@ -80,16 +45,8 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        private ObservableCollection<Info.Playday> _playdayList;
-        public ObservableCollection<Info.Playday> PlaydayList
-        {
-            get { return _playdayList; }
-            set
-            {
-                _playdayList = value;
-                OnPropertyChanged();
-            }
-        }
+        // Property für FixtureWindow
+        public ObservableCollection<Info.Playday> PlaydayList { get; set; }
 
         private Info.Playday _selectedPlayday;
         public Info.Playday SelectedPlayday
@@ -131,35 +88,36 @@ namespace FFM_WIFI.ViewModels
         #region Attributes
 
         private Window _window;
-        private User _user;
+        private GetFrom.Database _getFromDatabase;
+        private WriteTo.Database _writeToDatabase;
+        private Info.Player[] _playerInfo;
         private int _playday;
         private int _lineCount;
         private string _position;
 
         #endregion
         // Konstruktor
-        public GameHomeViewModel(Window window, Info.Team teamData, Info.Player[] playerData)
+        public GameHomeViewModel(Window window, Info.Team teamInfo, Info.Player[] playerInfo)
         {
-            // Daten setzen Listen initialisieren
-            _window = window;
-            _user = new User();
-            TeamData = teamData;
-            UserTeam = _teamData.UserTeam;
-            _playday = _userTeam.UserTeamPlayday;
-            DetailText = new ObservableCollection<string>();
+            TeamInfo = teamInfo;
             LineUp = new Info.Player[11];
+            _playerInfo = new Info.Player[17];
+            DraftList = new ObservableCollection<Info.Player>();
+            _getFromDatabase = new GetFrom.Database(null, TeamInfo.UserTeam);
+            _playday = TeamInfo.UserTeam.UserTeamPlayday;
             _lineCount = GetLineUpIndex();
             // Spielerdaten setzen oder updaten
-            PlayerInfo = new Info.Player[17];
-            DraftList = new ObservableCollection<Info.Player>();
-            if (playerData == null)
+            if (playerInfo == null)
+            {
                 SetPlayerInfo();
+            }
             else
-                ResetDrafted(playerData);
-            PlaydayFixtures = new int[9];
-            DataList = new ObservableCollection<Info.Player>();
+            {
+                _playerInfo = playerInfo;
+                ResetDrafted();
+            }
+            _writeToDatabase = new WriteTo.Database(TeamInfo.UserTeam, _playerInfo);
             PlaydayList = new ObservableCollection<Info.Playday>();
-            SetPlayerDataList();
             SetPlayerDraftList();
             SetPlaydayList();
             // Commands
@@ -169,12 +127,13 @@ namespace FFM_WIFI.ViewModels
             _play = new RelayCommand(GoToFixture, () => CheckComplete() && _playday < 35);
             _save = new RelayCommand(GoToUserHome);
             _play.RaiseCanExecuteChanged();
+            _window = window;
         }
 
         #region Methods
         private void GoToFixture()
         {
-            FixtureWindow fWindow = new FixtureWindow(TeamData, PlayerInfo);
+            FixtureWindow fWindow = new FixtureWindow(TeamInfo, LineUp);
             _window.Close();
             fWindow.ShowDialog();
         }
@@ -182,8 +141,7 @@ namespace FFM_WIFI.ViewModels
         private void GoToUserHome()
         {
             WriteData();
-            SetUser();
-            UserHomeWindow uhWindow = new UserHomeWindow(_user);
+            UserHomeWindow uhWindow = new UserHomeWindow(_getFromDatabase.User);
             _window.Close();
             uhWindow.ShowDialog();
         }
@@ -224,40 +182,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPlayerInfo()
         {
-            using (FootballContext context = new FootballContext())
-            {
-                int[] players = new int[17]
-                {
-                    UserTeam.UserTeamGk1, UserTeam.UserTeamDf1, UserTeam.UserTeamDf2, UserTeam.UserTeamDf3, UserTeam.UserTeamDf4, UserTeam.UserTeamMf1,
-                    UserTeam.UserTeamMf2, UserTeam.UserTeamMf3, UserTeam.UserTeamMf4, UserTeam.UserTeamAt1, UserTeam.UserTeamAt2, UserTeam.UserTeamGk2,
-                    UserTeam.UserTeamDf5, UserTeam.UserTeamMf5, UserTeam.UserTeamMf6, UserTeam.UserTeamAt3, UserTeam.UserTeamAt4
-                };
-
-                var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == UserTeam.UserTeamPk).FirstOrDefault();
-                int[] points = new int[17]
-                {
-                    performance.UserTeamPerformanceGk1, performance.UserTeamPerformanceDf1, performance.UserTeamPerformanceDf2, performance.UserTeamPerformanceDf3, performance.UserTeamPerformanceDf4, performance.UserTeamPerformanceMf1,
-                    performance.UserTeamPerformanceMf2, performance.UserTeamPerformanceMf3, performance.UserTeamPerformanceMf4, performance.UserTeamPerformanceAt1, performance.UserTeamPerformanceAt2, performance.UserTeamPerformanceGk2,
-                    performance.UserTeamPerformanceDf5, performance.UserTeamPerformanceMf5, performance.UserTeamPerformanceMf6, performance.UserTeamPerformanceAt3, performance.UserTeamPerformanceAt4
-                };
-
-                int poi = 0;
-                foreach (var p in points)
-                {
-                    poi += p;
-                }
-
-                _teamData.Points = poi;
-
-                for (int i = 0; i < 17; i++)
-                {
-                    var player = context.Player.Where(p => p.PlayerPk == players[i]).FirstOrDefault();
-                    Info.Player temp = new Info.Player(players[i], player.PlayerFirstName + " " + player.PlayerLastName,
-                                                       player.PlayerPosition, player.PlayerHeight, player.PlayerNationality, new GetFrom().Image(player.PlayerImage), points[i], false);
-
-                    PlayerInfo[i] = temp;
-                }
-            }
+            _playerInfo = _getFromDatabase.PlayerInfo();
         }
 
         private int GetLineUpIndex()
@@ -270,48 +195,22 @@ namespace FFM_WIFI.ViewModels
             return LineUp.Length;
         }
 
-        private void ResetDrafted(Info.Player[] playerData)
+        private void ResetDrafted()
         {
             int poi = 0;
-            PlayerInfo = playerData;
-            foreach (var p in PlayerInfo)
+            foreach (var p in _playerInfo)
             {
                 p.Drafted = false;
                 poi += p.Points;
             }
-            _teamData.Points = poi;
-        }
-
-        // noch schöner machen
-        private void SetDetailText()
-        {
-            DetailText.Clear();
-            DetailText.Add("");
-            DetailText.Add("Punkte: " + SelectedData.Points);
-            DetailText.Add("");
-            DetailText.Add("Letzer Spieltag");
-            DetailText.Add("");
-            DetailText.Add("  LineUp  +" + SelectedData.LineUp);
-            DetailText.Add("  Goal    +" + SelectedData.Goals);
-            DetailText.Add("  Assist  +" + SelectedData.Assists);
-            DetailText.Add("");
-            DetailText.Add("  Yellow  -" + SelectedData.YellowC);
-            DetailText.Add("  Red     -" + SelectedData.RedC);
-            DetailText.Add("  Subst   -" + SelectedData.Subst);
-        }
-        private void SetPlayerDataList()
-        {
-            foreach (var p in PlayerInfo)
-            {
-                DataList.Add(p);
-            }
+            TeamInfo.Points = poi;
         }
 
         private void SetPlayerDraftList()
         {
             SetPosition();
             DraftList.Clear();
-            foreach (var p in PlayerInfo)
+            foreach (var p in _playerInfo)
             {
                 if (p.Position == _position && !p.Drafted)
                     DraftList.Add(p);
@@ -341,7 +240,7 @@ namespace FFM_WIFI.ViewModels
                 switch (i)
                 {
                     case 0:
-                        foreach (var p in PlayerInfo)
+                        foreach (var p in _playerInfo)
                         {
                             if (p.Position == "Goalkeeper" && !p.Drafted)
                             {
@@ -356,7 +255,7 @@ namespace FFM_WIFI.ViewModels
                     case 2:
                     case 3:
                     case 4:
-                        foreach (var p in PlayerInfo)
+                        foreach (var p in _playerInfo)
                         {
                             if (p.Position == "Defender" && !p.Drafted)
                             {
@@ -371,7 +270,7 @@ namespace FFM_WIFI.ViewModels
                     case 6:
                     case 7:
                     case 8:
-                        foreach (var p in PlayerInfo)
+                        foreach (var p in _playerInfo)
                         {
                             if (p.Position == "Midfielder" && !p.Drafted)
                             {
@@ -384,7 +283,7 @@ namespace FFM_WIFI.ViewModels
                         break;
                     case 9:
                     case 10:
-                        foreach (var p in PlayerInfo)
+                        foreach (var p in _playerInfo)
                         {
                             if (p.Position == "Attacker" && !p.Drafted)
                             {
@@ -430,35 +329,7 @@ namespace FFM_WIFI.ViewModels
 
         private void WriteData()
         {
-            using (FootballContext context = new FootballContext())
-            {
-                var userTeam = context.UserTeam.Where(u => u.UserTeamPk == UserTeam.UserTeamPk).FirstOrDefault();
-
-                userTeam.UserTeamPlayday = UserTeam.UserTeamPlayday;
-
-                var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == UserTeam.UserTeamPk).FirstOrDefault();
-
-                performance.UserTeamPerformanceGk1 = PlayerInfo[0].Points; performance.UserTeamPerformanceAt1 = PlayerInfo[9].Points;
-                performance.UserTeamPerformanceDf1 = PlayerInfo[1].Points; performance.UserTeamPerformanceAt2 = PlayerInfo[10].Points;
-                performance.UserTeamPerformanceDf2 = PlayerInfo[2].Points; performance.UserTeamPerformanceGk2 = PlayerInfo[11].Points;
-                performance.UserTeamPerformanceDf3 = PlayerInfo[3].Points; performance.UserTeamPerformanceDf5 = PlayerInfo[12].Points;
-                performance.UserTeamPerformanceDf4 = PlayerInfo[4].Points; performance.UserTeamPerformanceMf5 = PlayerInfo[13].Points;
-                performance.UserTeamPerformanceMf1 = PlayerInfo[5].Points; performance.UserTeamPerformanceMf6 = PlayerInfo[14].Points;
-                performance.UserTeamPerformanceMf2 = PlayerInfo[6].Points; performance.UserTeamPerformanceAt3 = PlayerInfo[15].Points;
-                performance.UserTeamPerformanceMf3 = PlayerInfo[7].Points; performance.UserTeamPerformanceAt4 = PlayerInfo[16].Points;
-                performance.UserTeamPerformanceMf4 = PlayerInfo[8].Points;
-
-                context.SaveChanges();
-            }
-        }
-
-        private void SetUser()
-        {
-            using (FootballContext context = new FootballContext())
-            {
-                var user = context.User.Where(u => u.UserPk == UserTeam.UserTeamUserFk).FirstOrDefault();
-                _user = user;
-            }
+            _writeToDatabase.UserTeamPerformance();
         }
 
         private bool CheckComplete()

@@ -17,9 +17,9 @@ namespace FFM_WIFI.Models.Utility
     public class Calculate
     {
         #region Properties
-        public Info.Player[] TeamData { get; set; }
+        public Info.Player[] PlayerInfo { get; set; }
         public ObservableCollection<Info.Playday> PlaydayList { get; set; }
-        public ObservableCollection<Info.Fixture> InfoList { get; set; }
+        public ObservableCollection<Info.Fixture> FixtureList { get; set; }
         #endregion
 
         #region Attributes
@@ -33,8 +33,8 @@ namespace FFM_WIFI.Models.Utility
         #region Constructor
         public Calculate(int playday, Info.Player[] teamData = null)
         {
-            TeamData = teamData;
-            InfoList = new ObservableCollection<Info.Fixture>();
+            PlayerInfo = teamData;
+            FixtureList = new ObservableCollection<Info.Fixture>();
             PlaydayList = new ObservableCollection<Info.Playday>();
             _playday = playday;
             _iMin = 0;
@@ -63,7 +63,7 @@ namespace FFM_WIFI.Models.Utility
         private void ResetPlayerData()
         {
             // Werte auf 0 setzen
-            foreach (var p in TeamData)
+            foreach (var p in PlayerInfo)
             {
                 p.LineUp = 0;
                 p.Subst = 0;
@@ -110,7 +110,7 @@ namespace FFM_WIFI.Models.Utility
                 StreamReader reader = File.OpenText(filePath);
                 var fixture = JsonSerializer.Deserialize<JsonFixture.Root>(reader.ReadToEnd(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                if (TeamData == null)
+                if (PlayerInfo == null)
                 {
                     SetPlaydayList(fixture);
                 }
@@ -121,17 +121,18 @@ namespace FFM_WIFI.Models.Utility
 
                     _eventList.Clear();
                     SetEventList(fixture);
-                    Info.Fixture temp = new Info.Fixture(fixture.Response[0].Teams.Home.Name, new GetFrom().Image(fixture.Response[0].Teams.Home.Logo), 
-                                                         fixture.Response[0].Teams.Away.Name, new GetFrom().Image(fixture.Response[0].Teams.Away.Logo), 
+                    Info.Fixture temp = new Info.Fixture(fixture.Response[0].Teams.Home.Name, new GetFrom().Image(fixture.Response[0].Teams.Home.Logo),
+                                                         fixture.Response[0].Teams.Away.Name, new GetFrom().Image(fixture.Response[0].Teams.Away.Logo),
+                                                         $"Endstand  {fixture.Response[0].Score.Fulltime.Home} : {fixture.Response[0].Score.Fulltime.Away}",
                                                          new ObservableCollection<Info.Event>(_eventList));
-                    InfoList.Add(temp);
+                    FixtureList.Add(temp);
                 }
             }
         }
 
         private void SetLineUpPoints(JsonFixture.Root fixture)
         {
-            Info.Player[] temp = TeamData;
+            Info.Player[] temp = PlayerInfo;
             foreach (var s in fixture.Response[0].Lineups[0].StartXI)
             {
                 foreach (var p in temp)
@@ -182,12 +183,12 @@ namespace FFM_WIFI.Models.Utility
                 }
 
             }
-            TeamData = temp;
+            PlayerInfo = temp;
         }
 
         private void SetEventPoints(JsonFixture.Root fixture)
         {
-            Info.Player[] temp = TeamData;
+            Info.Player[] temp = PlayerInfo;
             foreach (var e in fixture.Response[0].Events)
             {
                 switch (e.Type)
@@ -234,7 +235,7 @@ namespace FFM_WIFI.Models.Utility
                         }
                         break;
                 }
-                TeamData = temp;
+                PlayerInfo = temp;
             }
         }
 

@@ -6,301 +6,350 @@
         xmlns:local="clr-namespace:FFM_WIFI.Views"
         mc:Ignorable="d"
         Title="GameWindow" Height="740" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
 
-    <Grid Background="BlanchedAlmond">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="350"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderThickness="0"
+                CornerRadius="50">
 
-        <Border Margin="3 3 -70 3"
-                CornerRadius="4 700 100 4"
-                BorderBrush="DarkBlue" BorderThickness="3 3 3 3" Visibility="Visible"
-                Background="LightGray">
+        <Border.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="DarkSlateBlue" Offset="0.0"/>
+                <GradientStop Color="Azure" Offset="0.2"/>
+                <GradientStop Color="DarkSlateGray" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="450"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
 
-                <Image Source="{Binding TeamData.Logo}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"
-                       Height="70" Width="70"/>
-
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="130,5,0,0"  
-                       Height="60"
-                       FontSize="22" FontWeight="DemiBold" Foreground="DarkSlateBlue">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}&#x0a;Punkte gesamt: {1}">
-                            <Binding Path="TeamData.Name"/>
-                            <Binding Path="TeamData.Points"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-
-                <Border Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
-                        CornerRadius="4 4 4 4"
-                        BorderBrush="DarkSlateGray"  BorderThickness="5" Visibility="Visible"
-                        Height="610" Width="410">
-                    
-                    <Canvas Grid.Row="1"
-                        
-                        Height="600" Width="400" 
-                        Background="LightGreen">
-
-                        <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
-                        <Line X1="100" Y1="0" X2="100" Y2="100" Stroke="White" StrokeThickness="8"/>
-                        <Line X1="300" Y1="0" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-                        <Line X1="100" Y1="100" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
-                        <Line X1="100" Y1="600" X2="100" Y2="500" Stroke="White" StrokeThickness="8"/>
-                        <Line X1="300" Y1="600" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-                        <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
-                        <Button Command="{Binding SubCommand}" CommandParameter="0" 
-                        Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Background="Transparent">
-                            <Image Source="{Binding LineUp[0].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="1" 
-                        Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Background="Transparent">
-                            <Image Source="{Binding LineUp[1].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="2" 
-                        Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Background="Transparent">
-                            <Image Source="{Binding LineUp[2].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="3" 
-                        Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Background="Transparent">
-                            <Image Source="{Binding LineUp[3].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="4" 
-                        Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Background="Transparent">
-                            <Image Source="{Binding LineUp[4].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="5" 
-                        Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Background="Transparent">
-                            <Image Source="{Binding LineUp[5].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="6" 
-                        Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Background="Transparent">
-                            <Image Source="{Binding LineUp[6].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="7" 
-                        Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Background="Transparent">
-                            <Image Source="{Binding LineUp[7].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="8" 
-                        Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Background="Transparent">
-                            <Image Source="{Binding LineUp[8].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="9" 
-                        Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Background="Transparent">
-                            <Image Source="{Binding LineUp[9].Image}"/>
-                        </Button>
-                        <Button Command="{Binding SubCommand}" CommandParameter="10" 
-                        Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Background="Transparent">
-                            <Image Source="{Binding LineUp[10].Image}"/>
-                        </Button>
-                    </Canvas>
-                </Border>
-            </Grid>
-        </Border>
-
-        <Grid Grid.Column="1" Panel.ZIndex="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="600"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Border HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="3 3 3 3"
-                    CornerRadius="4 4 4 4"
-                    BorderBrush="DarkSlateGray" BorderThickness="3 3 3 3"
-                    Background="DarkGray"
-                    Height="500">
+            <Border Margin="3 30 -70 10"
+                CornerRadius="100 500 100 50"
+                BorderBrush="DarkSlateGray" BorderThickness="3 3 3 3" Visibility="Visible">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="DarkGray" Offset="0.1"/>
+                        <GradientStop Color="Azure" Offset="0.6"/>
+                        <GradientStop Color="DarkGray" Offset="0.9"/>
+                    </LinearGradientBrush>
+                </Border.Background>
 
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="70"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-
-                    <ListView ItemsSource="{Binding DraftList}" SelectedItem="{Binding SelectedDraft}"
-                              ItemContainerStyle="{StaticResource ListViewItemPlayer}"
-                              ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                              BorderThickness="0"
-                              Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                              Background="Transparent"
-                              Width="150" MinWidth="145"/>
-
-                    <Canvas Grid.Row="0"
-                        Height="220" Width="150"
-                        Background="LightGray">
-
-                        <Border Canvas.Top="5" Canvas.Left="10"
-                                CornerRadius="4 4 4 4"
-                                BorderBrush="DarkSlateGray" BorderThickness="2 2 2 2"
-                                Height="210" Width="130">
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="70"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                
-                                <Image Source="{Binding SelectedDraft.Image}"
-                                       Grid.Row="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 0 0"
-                                       Height="60" Width="60"/>
-
-                                <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                           TextWrapping="Wrap" TextAlignment="Center"
-                                           Padding="3 0 3 0"
-                                           Height="130" Width="130"
-                                           FontSize="12" FontWeight="DemiBold" Foreground="DarkBlue">
-
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}&#x0a;&#x0a;{1}&#x0a;&#x0a;{2}&#x0a;&#x0a;{3}">
-                                            <Binding Path="SelectedDraft.Name"/>
-                                            <Binding Path="SelectedDraft.Position"/>
-                                            <Binding Path="SelectedDraft.Height"/>
-                                            <Binding Path="SelectedDraft.Nationality"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </Grid>
-                        </Border>
                     
-                </Canvas>
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40 15 0 0"  
+                               Height="60"
+                               FontSize="22" FontWeight="DemiBold" FontFamily="Bahnhof Condensed" Foreground="DarkSlateBlue">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}&#x0a;Punkte gesamt: {1}">
+                                <Binding Path="TeamData.Name"/>
+                                <Binding Path="TeamData.Points"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <Image Source="{Binding TeamInfo.Logo}"
+                           HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 90 0"
+                           Opacity="0.8"
+                           Height="100" Width="100"/>
+
+                    <Border Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
+                        CornerRadius="40"
+                        BorderBrush="White"  BorderThickness="5" Visibility="Visible"
+                        Height="610" Width="410"
+                        Background="LightGreen">
+
+                        <Canvas Height="600" Width="400" 
+                            Background="Transparent">
+
+                            <Line X1="0" Y1="300" X2="400" Y2="300" Stroke="White" StrokeThickness="8"/>
+                            <Line X1="100" Y1="0" X2="100" Y2="100" Stroke="White" StrokeThickness="8"/>
+                            <Line X1="300" Y1="0" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
+                            <Line X1="100" Y1="100" X2="300" Y2="100" Stroke="White" StrokeThickness="8"/>
+                            <Line X1="100" Y1="600" X2="100" Y2="500" Stroke="White" StrokeThickness="8"/>
+                            <Line X1="300" Y1="600" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
+                            <Line X1="100" Y1="500" X2="300" Y2="500" Stroke="White" StrokeThickness="8"/>
+                            <Button Command="{Binding SubCommand}" CommandParameter="0" 
+                        Height="75" Width="75" Canvas.Bottom="30" Canvas.Right="160" Background="Transparent">
+                                <Image Source="{Binding LineUp[0].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="1" 
+                        Height="75" Width="75" Canvas.Bottom="160" Canvas.Left="20" Background="Transparent">
+                                <Image Source="{Binding LineUp[1].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="2" 
+                        Height="75" Width="75" Canvas.Bottom="140" Canvas.Left="110" Background="Transparent">
+                                <Image Source="{Binding LineUp[2].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="3" 
+                        Height="75" Width="75" Canvas.Bottom="140" Canvas.Right="110" Background="Transparent">
+                                <Image Source="{Binding LineUp[3].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="4" 
+                        Height="75" Width="75" Canvas.Bottom="160" Canvas.Right="20" Background="Transparent">
+                                <Image Source="{Binding LineUp[4].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="5" 
+                        Height="75" Width="75" Canvas.Top="190" Canvas.Right="40" Background="Transparent">
+                                <Image Source="{Binding LineUp[5].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="6" 
+                        Height="75" Width="75" Canvas.Top="270" Canvas.Right="160" Background="Transparent">
+                                <Image Source="{Binding LineUp[6].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="7" 
+                        Height="75" Width="75" Canvas.Top="160" Canvas.Right="160" Background="Transparent">
+                                <Image Source="{Binding LineUp[7].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="8" 
+                        Height="75" Width="75" Canvas.Top="190" Canvas.Left="40" Background="Transparent">
+                                <Image Source="{Binding LineUp[8].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="9" 
+                        Height="75" Width="75" Canvas.Top="50" Canvas.Left="100" Background="Transparent">
+                                <Image Source="{Binding LineUp[9].Image}"/>
+                            </Button>
+                            <Button Command="{Binding SubCommand}" CommandParameter="10" 
+                        Height="75" Width="75" Canvas.Top="50" Canvas.Right="100" Background="Transparent">
+                                <Image Source="{Binding LineUp[10].Image}"/>
+                            </Button>
+                        </Canvas>
+                    </Border>
                 </Grid>
             </Border>
 
-            <Button Style="{StaticResource Button}" Content="aufstellen" Command="{Binding LineUpCommand}"
-                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 0 0 0"
-                    Height="25" Width="140"/>
-
-            <Button Style="{StaticResource Button}" Content="schnell" Command="{Binding FastCommand}"
-                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 40 0 0"
-                    Height="25" Width="140"/>
-        </Grid>
-
-        <Border Grid.Column="2" Margin="-70 3 3 3"
-                CornerRadius="700 4 4 100"
-                BorderBrush="DarkBlue" BorderThickness="3 3 3 3"
-                Background="LightGray">
-
-            <Grid>
+            <Grid Grid.Column="1" Panel.ZIndex="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="600"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Image Source="{Binding TeamData.League}"
+                <Border Style="{StaticResource GoldenInnerBorder}"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="3 3 3 3"
+                        Height="500">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <ListView ItemsSource="{Binding DraftList}" SelectedItem="{Binding SelectedDraft}"
+                                  ItemContainerStyle="{StaticResource ListViewItemPlayer}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                  BorderThickness="0"
+                                  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Background="Transparent"
+                                  Width="150" MinWidth="145"/>
+
+                        <Border Canvas.Top="5" Canvas.Left="10"
+                                CornerRadius="30"
+                                BorderBrush="DarkRed" BorderThickness="2 5 2 5"
+                                Height="230" Width="160">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding SelectedDraft.Image}" Stretch="None"
+                                            Opacity="0.7"/>
+                            </Border.Background>
+                            
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="70"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 2 0 0"
+                                        CornerRadius="25" 
+                                        BorderBrush="Darkred" BorderThickness="5 0 5 0"
+                                        Background="Azure"
+                                        Height="30" Width="140"
+                                        TextBlock.FontSize="18" TextBlock.FontWeight="DemiBold" TextBlock.Foreground="DarkRed">
+                                    
+                                    <TextBlock Text="{Binding SelectedDraft.Points, StringFormat={}Punkte: {0}}"
+                                               Background="Transparent" 
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Padding="3 3 3 0"/>
+                                </Border>
+
+                                <Border Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 24"
+                                        CornerRadius="25" 
+                                        BorderBrush="Darkred" BorderThickness="5 0 5 0"
+                                        Background="Azure"
+                                        Height="20" Width="140"
+                                        TextBlock.FontSize="13" TextBlock.FontWeight="DemiBold" TextBlock.Foreground="DarkRed">
+
+                                    <TextBlock Text="{Binding SelectedDraft.Position}"
+                                               Background="Transparent" 
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Padding="3 1 3 0"/>
+                                </Border>
+
+                                <Border Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 2"
+                                        CornerRadius="25" 
+                                        BorderBrush="Darkred" BorderThickness="5 0 5 0"
+                                        Background="Azure"
+                                        Height="20" Width="140"
+                                        TextBlock.FontSize="12" TextBlock.FontWeight="DemiBold" TextBlock.Foreground="DarkRed">
+
+                                    <TextBlock Background="Transparent" 
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Padding="3 1 3 0">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}     {1}">
+                                                <Binding Path="SelectedDraft.Height"/>
+                                                <Binding Path="SelectedDraft.Nationality"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Button Style="{StaticResource Button}" Content="aufstellen" Command="{Binding LineUpCommand}"
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 0 0 0"
+                    Height="25" Width="140"/>
+
+                <Button Style="{StaticResource Button}" Content="schnell" Command="{Binding FastCommand}"
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 40 0 0"
+                    Height="25" Width="140"/>
+            </Grid>
+
+            <Border Grid.Column="2" Margin="-70 30 3 10"
+                    CornerRadius="500 100 50 100"
+                    BorderBrush="DarkSlateGray" BorderThickness="3 3 3 3">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                        <GradientStop Color="DarkGray" Offset="0.1"/>
+                        <GradientStop Color="Azure" Offset="0.6"/>
+                        <GradientStop Color="DarkGray" Offset="0.9"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="600"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Image Source="{Binding TeamInfo.League}"
                        Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100 15 0 0"
                        Height="50" Width="50"/>
 
-                <TextBlock Text="{Binding TeamData.Season}"
+                    <TextBlock Text="{Binding TeamInfo.Season}"
                        Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,65,0,0"
                        FontSize="10" FontWeight="ExtraBold"
                        Height="20"/>
 
-                <TextBlock Text="{Binding TeamData.Playday, StringFormat=Spieltag: {0}}"
-                           Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190 30 0 0"
-                           FontSize="22" FontWeight="Bold" Foreground="DarkBlue"/>
+                    <TextBlock Text="{Binding TeamInfo.Playday, StringFormat=Spieltag: {0}}"
+                               Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190 30 0 0"
+                               FontSize="22" FontWeight="Bold" Foreground="DarkBlue"/>
 
-                <ListView ItemsSource="{Binding PlaydayList}" SelectedItem="{Binding SelectedPlayday}"
-                          ItemContainerStyle="{StaticResource ListViewItemPlayday}"
-                          ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
-                          BorderThickness="0"
-                          Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 90 25 0"
-                          Background="Transparent"
-                          MinHeight="30" MaxWidth="290" Width="300" MinWidth="108"/>
+                    <ListView x:Name="PlaydayList"
+                              ItemsSource="{Binding PlaydayList}" SelectedItem="{Binding SelectedPlayday}"
+                              ItemContainerStyle="{StaticResource ListViewItemPlayday}"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                              ScrollViewer.CanContentScroll="False"
+                              BorderThickness="0"
+                              Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 90 30 0"
+                              Background="Transparent"
+                              MinHeight="30" MaxWidth="290" Width="300" MinWidth="108"/>
 
-                <Canvas HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 330 25 0"
-                        Background="LightBlue"
-                        Height="200" Width="300">
+                    <Canvas HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 330 25 0"
+                            Height="200" Width="300">
+                        <Canvas.Background>
+                            <ImageBrush ImageSource="{Binding SelectedItem.Venue.VenueImage, ElementName=PlaydayList}" Opacity="0.7"/>
+                        </Canvas.Background>
 
-                    <Border Canvas.Top="5" Canvas.Left="5"
-                            BorderBrush="DarkSlateGray" BorderThickness="2"
-                            Height="70" Width="290">
+                        <Border Canvas.Top="5" Canvas.Left="5"
+                                BorderThickness="0"
+                                Height="70" Width="290"
+                                TextBlock.FontSize="11" TextBlock.Foreground="Black" TextBlock.FontWeight="DemiBold">
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="60"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Image Source="{Binding SelectedPlayday.HomeImage}"
-                                   Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Height="60" Width="60"/>
+                                <Image Source="{Binding SelectedPlayday.HomeImage}"
+                                       Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Height="60" Width="60"/>
 
-                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       TextAlignment="Center"
-                                       Height="60" Width="150"
-                                       Foreground="DarkBlue" FontSize="10" FontWeight="DemiBold">
+                                <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Height="60" Width="150">
 
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}&#x0a;&#x0a;Schiedsrichter:&#x0a;{1}">
-                                        <Binding Path="SelectedPlayday.Date"/>
-                                        <Binding Path="SelectedPlayday.Referee"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}&#x0a;&#x0a;Schiedsrichter:&#x0a;{1}">
+                                            <Binding Path="SelectedPlayday.Date"/>
+                                            <Binding Path="SelectedPlayday.Referee"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
 
-                            <Image Source="{Binding SelectedPlayday.AwayImage}"
+                                <Image Source="{Binding SelectedPlayday.AwayImage}"
                                    Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Height="60" Width="60"/>
-                        </Grid>
-                    </Border>
+                            </Grid>
+                        </Border>
 
-                    <Border Canvas.Top="75" Canvas.Left="5"
-                            BorderBrush="DarkSlateGray" BorderThickness="2 0 2 2"
-                            Height="120" Width="290">
+                        <Border Canvas.Top="75" Canvas.Left="5"
+                                BorderThickness="0"
+                                Height="120" Width="290"
+                                Background="Transparent"
+                                TextBlock.Foreground="Black" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="Bahnhof Condensed">
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                            <Image Source="{Binding SelectedPlayday.Venue.VenueImage}"
-                                   Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 0 0"
-                                   Height="110" Width="110"/>
+                                <TextBlock Text="{Binding SelectedPlayday.Venue.VenueName}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Top"
+                                           Padding="5 0 5 0"
+                                           TextAlignment="Center" TextWrapping="Wrap"
+                                           Height="40" Width="230"
+                                           FontSize="16"/>
 
-                            <TextBlock Text="{Binding SelectedPlayday.Venue.VenueName}"
-                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                       Padding="5 0 5 0"
-                                       TextAlignment="Center" TextWrapping="Wrap"
-                                       Height="40" Width="170"
-                                       FontSize="14" FontWeight="ExtraBold" FontFamily="Bauhaus 93"/>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 5"
+                                           TextAlignment="Center"
+                                           Padding="0 5 5 0"
+                                           Height="80" Width="230"
+                                           FontSize="12">
 
-                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 5"
-                                       TextAlignment="Center"
-                                       Padding="0 5 5 0"
-                                       Height="80" Width="150"
-                                       Foreground="DarkBlue" FontSize="10" FontWeight="DemiBold">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}Kapazität:&#x0a;{0}&#x0a;&#x0a;{1}&#x0a;{2}">
+                                            <Binding Path="SelectedPlayday.Venue.VenueCapacity"/>
+                                            <Binding Path="SelectedPlayday.Venue.VenueCity"/>
+                                            <Binding Path="SelectedPlayday.Venue.VenueAddress"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </Canvas>
 
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}Kapazität:&#x0a;{0}&#x0a;&#x0a;{1}&#x0a;{2}">
-                                        <Binding Path="SelectedPlayday.Venue.VenueCapacity"/>
-                                        <Binding Path="SelectedPlayday.Venue.VenueCity"/>
-                                        <Binding Path="SelectedPlayday.Venue.VenueAddress"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </Grid>
-                    </Border>
-                </Canvas>
-
-                <Button Style="{StaticResource Button}" Content="Nächster Spieltag" Command="{Binding PlayCommand}" 
+                    <Button Style="{StaticResource Button}" Content="Nächster Spieltag" Command="{Binding PlayCommand}" 
                     Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0 34 24 0" 
                     Height="25" Width="140"/>
 
-                <Button Style="{StaticResource Button}" Content="UserHome" Command="{Binding SaveCommand}" 
+                    <Button Style="{StaticResource Button}" Content="UserHome" Command="{Binding SaveCommand}" 
                     Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="83 34 0 0" 
                     Height="25" Width="140"/>
 
-            </Grid>
-        </Border>
-    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

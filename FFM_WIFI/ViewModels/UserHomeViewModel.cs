@@ -3,27 +3,12 @@ using FFM_WIFI.Models.DataContext;
 using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace FFM_WIFI.ViewModels
 {
-    public class Images
-    {
-        public string Star { get; set; }
-        public Images(string star = null)
-        {
-            Star = star;
-        }
-    }
-
     class UserHomeViewModel : BaseViewModel
     {
         #region Properties
@@ -39,19 +24,7 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        // Images
-        private Images _images;
-        public Images Images
-        {
-            get { return _images; }
-            set 
-            {
-                _images = value;
-                OnPropertyChanged();
-            }
-        }
-
-        // Team Datagrids
+        // Team ListViews
         public ObservableCollection<Info.Team> ActiveTeamList { get; set; }
         private Info.Team _selectedActiveTeam;
         public Info.Team SelectedActiveTeam
@@ -96,45 +69,43 @@ namespace FFM_WIFI.ViewModels
 
 
         #region Attributes
-
-        private Window _window;  
+        private Window _window;
+        private GetFrom.Database _getFromDatabase;
         #endregion
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
         {
+            ActiveTeamList = new ObservableCollection<Info.Team>();
+            ClassicTeamList = new ObservableCollection<Info.Team>();
+            User = user;
             _window = window;
-            _user = user;
-            SetImages();
-            // Commands
+            _getFromDatabase = new GetFrom.Database(_user);
             //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
             _draft = new RelayCommand(GoToDraft, () => SelectedActiveTeam != null && SelectedActiveTeam.Players != 17);
             _game = new RelayCommand(GoToGameHome, () => SelectedActiveTeam != null && SelectedActiveTeam.Players == 17);
             _pdf = new RelayCommand(SaveAsPdf, () => SelectedClassicTeam != null);
-            // Listen initialisieren und füllen
-            ActiveTeamList = new ObservableCollection<Info.Team>();
-            ClassicTeamList = new ObservableCollection<Info.Team>();
-            GetTeamInfo();
+            SetTeamLists();
         }
 
         #region Methods
         private void GoToNewTeam()
         {
-            NewTeamWindow ntwindow = new NewTeamWindow(_user);
+            NewTeamWindow ntwindow = new NewTeamWindow(User);
             _window.Close();
             ntwindow.ShowDialog();
         }
 
         private void GoToDraft()
         {
-            DraftWindow dWindow = new DraftWindow(_selectedActiveTeam.UserTeam);
+            DraftWindow dWindow = new DraftWindow(SelectedActiveTeam.UserTeam);
             dWindow.ShowDialog();
 
         }
 
         private void GoToGameHome()
         {
-            GameHomeWindow ghWindow = new GameHomeWindow(_selectedActiveTeam);
+            GameHomeWindow ghWindow = new GameHomeWindow(SelectedActiveTeam);
             ghWindow.ShowDialog();
         }
 
@@ -143,53 +114,20 @@ namespace FFM_WIFI.ViewModels
 
         }
 
-        private void GetTeamInfo()
+        private void SetTeamLists()
         {
-            using (FootballContext context = new FootballContext())
+            // ineffektiv?
+            foreach (var team in _getFromDatabase.TeamInfo())
             {
-                ActiveTeamList.Clear();
-                var userTeam = context.UserTeam.Where(t => t.UserTeamUserFk == _user.UserPk).Include(t => t.UserTeamUserFkNavigation);
-
-                if (userTeam != null)
+                if (team.Playday > 34)
                 {
-                    foreach (var u in userTeam)
-                    {
-                        var league = context.League.Where(l => l.LeaguePk == u.UserTeamLeague).FirstOrDefault();
-                        var season = context.Season.Where(s => s.SeasonPk == u.UserTeamSeason).FirstOrDefault();
-                        var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == u.UserTeamPk).FirstOrDefault();
-
-                        int points = performance.UserTeamPerformanceGk1 + performance.UserTeamPerformanceDf1 + performance.UserTeamPerformanceDf2 + performance.UserTeamPerformanceDf3
-                                     + performance.UserTeamPerformanceDf4 + performance.UserTeamPerformanceMf1 + performance.UserTeamPerformanceMf2 + performance.UserTeamPerformanceMf3
-                                     + performance.UserTeamPerformanceMf4 + performance.UserTeamPerformanceAt1 + performance.UserTeamPerformanceAt2 + performance.UserTeamPerformanceGk2
-                                     + performance.UserTeamPerformanceDf5 + performance.UserTeamPerformanceMf5 + performance.UserTeamPerformanceMf6 + performance.UserTeamPerformanceAt3
-                                     + performance.UserTeamPerformanceAt4;
-
-                        if (u.UserTeamPlayday < 35)
-                        {
-                            ActiveTeamList.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(u.UserTeamLogo),
-                                u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
-                        }
-                        else
-                        {
-                            ClassicTeamList.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(Images.Star),
-                                u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance, Images));
-                        }
-                    }
+                    ClassicTeamList.Add(team);
+                }
+                else
+                {
+                    ActiveTeamList.Add(team);
                 }
             }
-        }
-
-        private void SetImages()
-        {
-            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            string path = Path.Combine(docPath, @"JsonFiles\Images\Images.json");
-
-            string json = File.ReadAllText(path);
-
-            var jsonObject = JsonSerializer.Deserialize<Images>(json);
-
-            Images = jsonObject;
         }
         #endregion
 

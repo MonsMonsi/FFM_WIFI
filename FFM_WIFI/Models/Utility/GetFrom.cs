@@ -1,17 +1,23 @@
 ﻿using FFM_WIFI.Models.DataContext;
 using FFM_WIFI.Models.DataJson;
 using FFM_WIFI.Models.DataViewModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Input;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Windows.Media.Imaging;
+using static FFM_WIFI.Models.Libraries.Images;
+using FFM_WIFI.Models.Libraries;
 
 namespace FFM_WIFI.Models.Utility
 {
     public class GetFrom
     {
-        public class DataJson
+        public class Api
         {
             #region Properties
             public string LeagueId { get; set; }
@@ -39,7 +45,7 @@ namespace FFM_WIFI.Models.Utility
             #endregion
 
             #region Constructor
-            public DataJson(uint leagueId = 0, uint seasonId = 0, uint teamId = 0, uint playerId = 0, uint fixtureId = 0)
+            public Api(uint leagueId = 0, uint seasonId = 0, uint teamId = 0, uint playerId = 0, uint fixtureId = 0)
             {
                 LeagueId = leagueId.ToString();
                 SeasonId = seasonId.ToString();
@@ -131,15 +137,16 @@ namespace FFM_WIFI.Models.Utility
             }
             #endregion
         }
-
         public class Database
         {
             #region Properties
-            public Info.Player[] Players { get; set; }
+            public User User { get; set; }
+            public int TeamPoints { get; set; }
             #endregion
 
             #region Attributes
-            private _userTeam _userTeam { get; set; }
+            private UserTeam _userTeam;
+            private Images _images = new ConfigFile().Images;
             #endregion
 
             #region Constants
@@ -147,55 +154,131 @@ namespace FFM_WIFI.Models.Utility
             #endregion
 
             #region Constructor
-            public Database(_userTeam userTeam = null)
+            public Database(User user = null, UserTeam userTeam = null)
             {
-                Players = new Info.Player[17];
+                User = user;
+                if (User == null)
+                {
+                    User = userTeam.UserTeamUserFkNavigation;
+                }
                 _userTeam = userTeam;
             }
             #endregion
 
             #region Methods
-            public void PlayerInfo()
+            public Info.Player[] PlayerInfo()
             {
+                Info.Player[] _players = new Info.Player[17];
+
                 using (FootballContext context = new FootballContext())
                 {
                     int[] players = new int[17]
                     {
-                        DataContext._userTeam.UserTeamGk1, DataContext._userTeam.UserTeamDf1, DataContext._userTeam.UserTeamDf2, DataContext._userTeam.UserTeamDf3, DataContext._userTeam.UserTeamDf4, DataContext._userTeam.UserTeamMf1,
-                        DataContext._userTeam.UserTeamMf2, DataContext._userTeam.UserTeamMf3, DataContext._userTeam.UserTeamMf4, DataContext._userTeam.UserTeamAt1, DataContext._userTeam.UserTeamAt2, DataContext._userTeam.UserTeamGk2,
-                        DataContext._userTeam.UserTeamDf5, DataContext._userTeam.UserTeamMf5, DataContext._userTeam.UserTeamMf6, DataContext._userTeam.UserTeamAt3, DataContext._userTeam.UserTeamAt4
+                        _userTeam.UserTeamGk1, _userTeam.UserTeamDf1, _userTeam.UserTeamDf2, _userTeam.UserTeamDf3, _userTeam.UserTeamDf4, _userTeam.UserTeamMf1,
+                        _userTeam.UserTeamMf2, _userTeam.UserTeamMf3, _userTeam.UserTeamMf4, _userTeam.UserTeamAt1, _userTeam.UserTeamAt2, _userTeam.UserTeamGk2,
+                        _userTeam.UserTeamDf5, _userTeam.UserTeamMf5, _userTeam.UserTeamMf6, _userTeam.UserTeamAt3, _userTeam.UserTeamAt4
                     };
 
-                    var performance = context.UserTeamPerformance.Where((object p) => p.UserTeamPerformanceUserTeamFk == DataContext._userTeam.UserTeamPk).FirstOrDefault();
+                    var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == _userTeam.UserTeamPk).FirstOrDefault();
                     int[] points = new int[17]
                     {
-                    performance.UserTeamPerformanceGk1, performance.UserTeamPerformanceDf1, performance.UserTeamPerformanceDf2, performance.UserTeamPerformanceDf3, performance.UserTeamPerformanceDf4, performance.UserTeamPerformanceMf1,
-                    performance.UserTeamPerformanceMf2, performance.UserTeamPerformanceMf3, performance.UserTeamPerformanceMf4, performance.UserTeamPerformanceAt1, performance.UserTeamPerformanceAt2, performance.UserTeamPerformanceGk2,
-                    performance.UserTeamPerformanceDf5, performance.UserTeamPerformanceMf5, performance.UserTeamPerformanceMf6, performance.UserTeamPerformanceAt3, performance.UserTeamPerformanceAt4
+                        performance.UserTeamPerformanceGk1, performance.UserTeamPerformanceDf1, performance.UserTeamPerformanceDf2, performance.UserTeamPerformanceDf3, performance.UserTeamPerformanceDf4, performance.UserTeamPerformanceMf1,
+                        performance.UserTeamPerformanceMf2, performance.UserTeamPerformanceMf3, performance.UserTeamPerformanceMf4, performance.UserTeamPerformanceAt1, performance.UserTeamPerformanceAt2, performance.UserTeamPerformanceGk2,
+                        performance.UserTeamPerformanceDf5, performance.UserTeamPerformanceMf5, performance.UserTeamPerformanceMf6, performance.UserTeamPerformanceAt3, performance.UserTeamPerformanceAt4
                     };
 
-                    int poi = 0;
+                    TeamPoints = 0;
                     foreach (var p in points)
                     {
-                        poi += p;
+                        TeamPoints += p;
                     }
-
-                    _teamData.Points = poi;
 
                     for (int i = 0; i < 17; i++)
                     {
                         var player = context.Player.Where(p => p.PlayerPk == players[i]).FirstOrDefault();
                         Info.Player temp = new Info.Player(players[i], player.PlayerFirstName + " " + player.PlayerLastName,
-                                                           player.PlayerPosition, player.PlayerHeight, player.PlayerNationality, Get.Image(player.PlayerImage), points[i], false);
+                                                           player.PlayerPosition, player.PlayerHeight, player.PlayerNationality, new GetFrom().Image(player.PlayerImage), points[i], false);
 
-                        PlayerData[i] = temp;
+                        _players[i] = temp;
                     }
                 }
+
+                return _players;
             }
-            public BitmapImage Image(string path)
+
+            public List<Info.Team> TeamInfo()
+            {
+                List<Info.Team> _teams = new List<Info.Team>();
+                using (FootballContext context = new FootballContext())
+                {
+                    var userTeams = context.UserTeam.Where(t => t.UserTeamUserFk == User.UserPk).Include(t => t.UserTeamUserFkNavigation);
+
+                    if (userTeams != null)
+                    {
+                        foreach (var u in userTeams)
+                        {
+                            var league = context.League.Where(l => l.LeaguePk == u.UserTeamLeague).FirstOrDefault();
+                            var season = context.Season.Where(s => s.SeasonPk == u.UserTeamSeason).FirstOrDefault();
+                            var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == u.UserTeamPk).FirstOrDefault();
+
+                            int points = performance.UserTeamPerformanceGk1 + performance.UserTeamPerformanceDf1 + performance.UserTeamPerformanceDf2 + performance.UserTeamPerformanceDf3
+                                         + performance.UserTeamPerformanceDf4 + performance.UserTeamPerformanceMf1 + performance.UserTeamPerformanceMf2 + performance.UserTeamPerformanceMf3
+                                         + performance.UserTeamPerformanceMf4 + performance.UserTeamPerformanceAt1 + performance.UserTeamPerformanceAt2 + performance.UserTeamPerformanceGk2
+                                         + performance.UserTeamPerformanceDf5 + performance.UserTeamPerformanceMf5 + performance.UserTeamPerformanceMf6 + performance.UserTeamPerformanceAt3
+                                         + performance.UserTeamPerformanceAt4;
+
+                            if (u.UserTeamPlayday > 34)
+                            {
+                                _teams.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(_images.Star),
+                                u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance));
+                            }
+                            else
+                            {
+                                _teams.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(u.UserTeamLogo),
+                                    u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance));
+                            }
+                        }
+                    }
+                }
+                return _teams;
+            }
+            #endregion
+        }
+        public class ConfigFile
         {
-            Uri url = new Uri(path);
-            BitmapImage image = new BitmapImage(url);
+            #region Properties
+            public Images Images { get; set; }
+            #endregion
+
+            #region Attributes
+
+            #endregion
+
+            #region Constructor
+            public ConfigFile()
+            {
+                SetProperties();
+            }
+            #endregion
+
+            #region Methods
+            private void SetProperties()
+            {
+                string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string path = Path.Combine(docPath, @"JsonFiles\Images\Images.Json");
+
+                var jsonObject = JsonSerializer.Deserialize<Images>(File.ReadAllText(path));
+
+                Images = jsonObject;
+            }
+            #endregion
+        }
+        public BitmapImage Image(string path)
+        {
+            Uri uri= new Uri(path);
+            BitmapImage image = new BitmapImage(uri);
+            image.DecodePixelHeight = 100;
+            image.DecodePixelWidth = 100;
             return image;
         }
     }

@@ -77,29 +77,26 @@ namespace FFM_WIFI.ViewModels
 
         private void CheckNewUser()
         {
-            using (FootballContext context = new FootballContext())
+            if (UserName != null && UserPassword != null)
             {
-                var existingUserName = context.User.Where(u => u.UserName == UserName).FirstOrDefault();
-
-                if (existingUserName == null) // Name noch nicht vergeben -> neuen Nutzer anlegen
+                using (FootballContext context = new FootballContext())
                 {
-                    User user = new User();
-                    user.UserName = UserName;
-                    user.UserPassword = UserPassword;
-                    context.User.Add(user);
-                    _user = user;
-                    context.SaveChanges();
+                    var existingUserName = context.User.Where(u => u.UserName == UserName).FirstOrDefault();
 
-                    _userTeam team = new _userTeam();
-                    team.UserTeamName = $"newTeam-User{user.UserName}";
-                    team.UserTeamUserFk = user.UserPk;
-                    context.UserTeam.Add(team);
-                    context.SaveChanges();
-                    GoToUserHome();
-                }
-                else
-                {
-                    MessageBox.Show("Benutzername ist bereits vergeben");
+                    if (existingUserName == null) // Name noch nicht vergeben -> neuen Nutzer anlegen
+                    {
+                        User user = new User();
+                        user.UserName = UserName;
+                        user.UserPassword = UserPassword;
+                        context.User.Add(user);
+                        _user = user;
+                        context.SaveChanges();
+                        GoToUserHome();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Benutzername ist bereits vergeben");
+                    }
                 }
             }
         }

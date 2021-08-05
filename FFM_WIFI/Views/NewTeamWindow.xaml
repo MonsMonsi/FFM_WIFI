@@ -11,14 +11,7 @@
         Background="Transparent"
         WindowStartupLocation="CenterScreen">
 
-    <Border CornerRadius="100">
-        <Border.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="DarkSlateBlue" Offset="0.1"/>
-                <GradientStop Color="AliceBlue" Offset="0.5"/>
-                <GradientStop Color="DarkSlateBlue" Offset="0.9"/>
-            </LinearGradientBrush>
-        </Border.Background>
+    <Border Style="{StaticResource WindowBorder}">
 
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
@@ -28,15 +21,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Border CornerRadius="100" Margin="20 10 20 10"
-                    BorderBrush="DarkSlateBlue" BorderThickness="5 5 5 2">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="0.1"/>
-                        <GradientStop Color="AliceBlue" Offset="0.7"/>
-                        <GradientStop Color="DarkSlateGray" Offset="0.9"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderRight}"
+                    Margin="5 20 5 20">
 
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
@@ -46,24 +32,18 @@
 
                     <TextBlock Text="Wähle einen Namen"
                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Foreground="Azure" FontSize="18" FontWeight="DemiBold"/>
+                               Foreground="DarkRed" FontSize="22" FontWeight="DemiBold"/>
 
-                    <Border Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                            CornerRadius="10" BorderThickness="2 0 0 2" BorderBrush="DarkSlateGray">
-                        <Border.Background>
-                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
-                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
-                                <GradientStop Color="AliceBlue" Offset="0.05"/>
-                            </RadialGradientBrush>
-                        </Border.Background>
+                    <Border Style="{StaticResource TextBoxBorder}" 
+                            Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                         <TextBox Text="{Binding NewTeamName}"
                                  BorderThickness="0"
                                  TextAlignment="Center"
                                  Padding="5 3 5 0"
                                  Background="Transparent"
-                                 Width="170" Height="25"
-                                 Foreground="Black" FontSize="15" FontWeight="DemiBold"/>
+                                 Width="170" Height="30"
+                                 Foreground="Black" FontSize="20" FontWeight="DemiBold"/>
                     </Border>
                 </Grid>
             </Border>
@@ -80,18 +60,9 @@
                 </TextBlock>
             </StackPanel>
 
-            <Border CornerRadius="100" 
-                    Grid.Row="1" Margin="20 10 20 10"
-                    BorderBrush="DarkSlateBlue" BorderThickness="5 2 5 2"
-                    TextBlock.Foreground="Azure" TextBlock.FontSize="18" TextBlock.FontWeight="DemiBold">
-                
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="0.1"/>
-                        <GradientStop Color="AliceBlue" Offset="0.58"/>
-                        <GradientStop Color="DarkSlateGray" Offset="0.9"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderRight}"
+                    Grid.Row="1" Margin="5 10 5 10"
+                    TextBlock.Foreground="DarkRed" TextBlock.FontSize="22" TextBlock.FontWeight="DemiBold">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -100,66 +71,47 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Wähle die Liga" 
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 30"/>
-
-                    <TextBlock Text="Wähle die Saison" 
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0"/>
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
 
                     <ComboBox ItemsSource="{Binding LeagueList}" SelectedItem="{Binding SelectedLeague}" 
                               ItemContainerStyle="{StaticResource ComboBoxItemLeague}"
-                              Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 30" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10 0 0" 
                               Background="Transparent"
                               MaxHeight="30" Height="25" MinHeight="22" Width="150" MinWidth="120"/>
 
+                    <TextBlock Text="Wähle die Saison" 
+                               Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
+                    
                     <ComboBox ItemsSource="{Binding SeasonList}" SelectedItem="{Binding SelectedSeason}"
                               ItemContainerStyle="{StaticResource ComboBoxItemSeason}"
-                              Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 30 0 0"
+                              Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 10 0 0"
                               Background="Transparent"
                               MaxHeight="30" Height="25" Width="150" MinWidth="144"/>
                 </Grid>
             </Border>
 
-            <Border CornerRadius="100" 
-                    Grid.Row="2" Margin="20 10 20 10"
-                    BorderBrush="DarkSlateBlue" BorderThickness="5 2 5 2"
-                    TextBlock.Foreground="Azure" TextBlock.FontSize="18" TextBlock.FontWeight="DemiBold">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="0.1"/>
-                        <GradientStop Color="AliceBlue" Offset="0.46"/>
-                        <GradientStop Color="DarkSlateGray" Offset="0.9"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-
+            <Border Style="{StaticResource GroupBorderRight}"
+                    Grid.Row="2" Margin="30 10 30 10"
+                    TextBlock.Foreground="DarkRed" TextBlock.FontSize="22" TextBlock.FontWeight="DemiBold">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Wähle ein Logo"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
 
                     <ComboBox ItemsSource="{Binding LogoList}" SelectedItem="{Binding SelectedLogo}"
                               ItemContainerStyle="{StaticResource ComboBoxItemLogo}"
-                              Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"
+                              HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 10 0 0"
                               MaxHeight="30" Height="25" MinHeight="22" Width="150" MinWidth="120"/>
                 </Grid>
             </Border>
 
 
-            <Border CornerRadius="50" 
-                    Grid.Row="3" Margin="20 10 20 10"
-                    Height="100" Width="300"
-                    BorderBrush="DarkSlateGray" BorderThickness="5 2 5 5"
+            <Border Style="{StaticResource GroupBorderRight}" 
+                    Grid.Row="3" Margin="80 30 80 30"
                     TextBlock.Foreground="Azure" TextBlock.FontSize="18" TextBlock.FontWeight="DemiBold">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="0.1"/>
-                        <GradientStop Color="AliceBlue" Offset="0.24"/>
-                        <GradientStop Color="DarkSlateBlue" Offset="0.9"/>
-                    </LinearGradientBrush>
-                </Border.Background>
 
                 <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
                         Content="Team Speichern"

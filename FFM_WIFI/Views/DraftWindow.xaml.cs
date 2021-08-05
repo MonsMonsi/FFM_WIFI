@@ -10,7 +10,7 @@ namespace FFM_WIFI.Views
     public partial class DraftWindow : Window
     {
         private DraftViewModel dvm;
-        public DraftWindow(_userTeam userTeam = null)
+        public DraftWindow(UserTeam userTeam = null)
         {
             InitializeComponent();
             dvm = new DraftViewModel(this, userTeam);

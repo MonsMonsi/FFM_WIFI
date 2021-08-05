@@ -11,15 +11,7 @@
         AllowsTransparency="True"
         Background="Transparent">
 
-    <Border BorderThickness="0"
-                CornerRadius="50">
-        <Border.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="DarkSlateBlue" Offset="0.1"/>
-                <GradientStop Color="AliceBlue" Offset="0.5"/>
-                <GradientStop Color="DarkSlateBlue" Offset="0.9"/>
-            </LinearGradientBrush>
-        </Border.Background>
+    <Border Style="{StaticResource WindowBorder}">
 
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
@@ -32,27 +24,16 @@
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="1"
-                        CornerRadius="100"
-                        BorderBrush="DarkSlateBlue" BorderThickness="0 3 3 0" Margin="3,20,3,0">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="1.4"/>
-                        <GradientStop Color="AliceBlue" Offset="0.1"/>
-                    </RadialGradientBrush>
-                </Border.Background>
-
-
+            <Border Style="{StaticResource GroupBorderRight}"
+                    Grid.Column="1"
+                    Margin="5">
+                
+            <!-- TeamLogo einfügen-->
+                
             </Border>
 
-            <Border CornerRadius="100"
-                        BorderBrush="DarkSlateBlue" BorderThickness="3 3 0 0" Margin="3,15,3,0">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="1.4"/>
-                        <GradientStop Color="AliceBlue" Offset="0.1"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderLeft}"
+                    Margin="5">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -83,13 +64,8 @@
                 <Border VerticalAlignment="Top" HorizontalAlignment="Center"
                         CornerRadius="4 4 4 4"
                         Height="40" Width="120"
-                        BorderBrush="Black" BorderThickness="2">
-                    <Border.Background>
-                        <LinearGradientBrush>
-                            <GradientStop Color="DarkSlateBlue" Offset="0.1"/>
-                            <GradientStop Color="Azure" Offset="0.8"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
+                        Background="Azure"
+                        BorderBrush="DarkRed" BorderThickness="2">
 
                     <Label Content="Teams"
                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
@@ -129,20 +105,16 @@
                                 </Grid.ColumnDefinitions>
 
                                 <ListView ItemsSource="{Binding ActiveTeamList}" SelectedItem="{Binding SelectedActiveTeam}"
-                                                  ItemContainerStyle="{StaticResource ListViewItemTeam}"
-                                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                                  BorderThickness="0"
-                                                  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                  Background="Transparent"
-                                                  Height="200" Width="130" MinWidth="125"/>
+                                          ItemContainerStyle="{StaticResource ListViewItemTeam}"
+                                          Style="{StaticResource StandardListView}"
+                                          Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          Height="200" Width="130" MinWidth="125"/>
 
                                 <ListView ItemsSource="{Binding ClassicTeamList}" SelectedItem="{Binding SelectedClassicTeam}"
-                                                  ItemContainerStyle="{StaticResource ListViewItemTeam}"
-                                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                                  BorderThickness="0"
-                                                  Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                  Background="Transparent"
-                                                  Height="200" Width="130" MinWidth="125"/>
+                                          ItemContainerStyle="{StaticResource ListViewItemTeam}"
+                                          Style="{StaticResource StandardListView}"
+                                          Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                          Height="200" Width="130" MinWidth="125"/>
                             </Grid>
                         </Border>
 
@@ -193,14 +165,8 @@
                 <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
                         CornerRadius="4 4 4 4"
                         Height="40" Width="120"
-                        BorderBrush="Black" BorderThickness="2">
-                    <Border.Background>
-                        
-                        <LinearGradientBrush>
-                            <GradientStop Color="Azure" Offset="0.1"/>
-                            <GradientStop Color="DarkSlateBlue" Offset="0.8"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
+                        Background="Azure"
+                        BorderBrush="DarkRed" BorderThickness="2">
 
                     <Label Content="Optionen"
                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
@@ -209,15 +175,9 @@
                 </Border>
             </Grid>
 
-            <Border Grid.Row="2"
-                    CornerRadius="100"
-                    BorderBrush="DarkSlateBlue" BorderThickness="3 0 0 3" Margin="3,0,3,15">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="1.4"/>
-                        <GradientStop Color="AliceBlue" Offset="0.1"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderLeft}"
+                    Grid.Row="2"
+                    Margin="5 5 5 20">
 
                 <Grid>
                     <Button Style="{StaticResource Button}" Content="Team löschen" Command="{Binding}"
@@ -245,15 +205,9 @@
                 </TextBlock.Text>
             </TextBlock>
 
-            <Border Grid.Column="1" Grid.Row="2"
-                    CornerRadius="100"
-                    BorderBrush="DarkSlateBlue" BorderThickness="0 0 3 3" Margin="3,0,3,15">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="1.4"/>
-                        <GradientStop Color="AliceBlue" Offset="0.1"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderRight}"
+                    Grid.Column="1" Grid.Row="2"
+                    Margin="5 5 5 20">
 
                 <Grid>
                     <Button Style="{StaticResource Button}" Content="Team draften" Command="{Binding DraftCommand}"

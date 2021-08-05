@@ -25,7 +25,7 @@ namespace FFM_WIFI.Models.DataContext
         public virtual DbSet<Team> Team { get; set; }
         public virtual DbSet<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<_userTeam> UserTeam { get; set; }
+        public virtual DbSet<UserTeam> UserTeam { get; set; }
         public virtual DbSet<UserTeamPerformance> UserTeamPerformance { get; set; }
         public virtual DbSet<Venue> Venue { get; set; }
 
@@ -34,7 +34,7 @@ namespace FFM_WIFI.Models.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=localhost\\sqlexpress;Initial Catalog=WIFI_FootballAPI;Integrated Security=True;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("Data Source=localhost\\sqlexpress;Initial Catalog=WIFI_FootballAPI;Integrated Security=True;MultipleActiveResultSets=true");
             }
         }
 
@@ -223,7 +223,7 @@ namespace FFM_WIFI.Models.DataContext
                     .HasColumnName("User_Password");
             });
 
-            modelBuilder.Entity<_userTeam>(entity =>
+            modelBuilder.Entity<UserTeam>(entity =>
             {
                 entity.HasKey(e => e.UserTeamPk);
 

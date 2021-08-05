@@ -128,7 +128,7 @@ namespace FFM_WIFI.ViewModels
 
 
                 // neues Team
-                _userTeam team = new _userTeam();
+                UserTeam team = new UserTeam();
                 team.UserTeamName = NewTeamName;
                 team.UserTeamLogo = _selectedLogo.LogoPath;
                 team.UserTeamLeague = _selectedLeague.LeaguePk;

@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFM_WIFI"
-        xmlns:converters="clr-namespace:FFM_WIFI.Models.Converters"
+        xmlns:converters="clr-namespace:FFM_WIFI.Models.Converters" 
+        xmlns:viewmodels="clr-namespace:FFM_WIFI.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:StartViewModel}"
         mc:Ignorable="d"
         Title="Start-Menu" Height="500" Width="300"
         WindowStartupLocation="CenterScreen"
@@ -12,10 +13,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent">
-
-    <Border BorderThickness="0"
-            CornerRadius="50"
-            Background="Transparent">
+    
+    <Border Style="{StaticResource StartWindowBorder}">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -23,16 +22,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border CornerRadius="100 100 100 100"
-                    BorderThickness="5 5 5 0" BorderBrush="DarkSlateGray" 
+            <Border Style="{StaticResource StartWindowInnerBorder}"
+                    BorderThickness="5 5 5 0"
                     Margin="3 3 3 0">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="LightGray" Offset="0.0"/>
-                        <GradientStop Color="Azure" Offset="0.5"/>
-                        <GradientStop Color="DarkSlateGray" Offset="1.0"/>
-                    </LinearGradientBrush>
-                </Border.Background>
 
                 <TextBlock Text="Fantasy Football Manager"
                             Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -41,16 +33,10 @@
                             Foreground="DarkSlateBlue" FontSize="30" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
             </Border>
 
-            <Border CornerRadius="100 100 40 40"
-                    BorderThickness="5 0 5 5" BorderBrush="DarkSlateBlue"
-                    Grid.Row="1" Margin="3 0 3 3">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="DarkSlateGray" Offset="0.2"/>
-                        <GradientStop Color="Azure" Offset="0.7"/>
-                        <GradientStop Color="DarkSlateBlue" Offset="1.1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource StartWindowInnerBorder}"
+                    Grid.Row="1"
+                    BorderThickness="5 0 5 5"
+                    Margin="3 0 3 3">
                 <Grid>
                     <TextBox Style="{StaticResource TextBoxUserName}" Text="{Binding UserName}"
                              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 80 0 0"

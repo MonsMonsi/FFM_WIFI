@@ -18,8 +18,8 @@ namespace FFM_WIFI.ViewModels
 
         // Properties für User
         // Datenstruktur überdenken
-        private _userTeam _userTeam;
-        public _userTeam UserTeam
+        private UserTeam _userTeam;
+        public UserTeam UserTeam
         {
             get { return _userTeam; }
             set
@@ -101,7 +101,7 @@ namespace FFM_WIFI.ViewModels
         #endregion
 
         // Konstruktor
-        public DraftViewModel(Window window, _userTeam userTeam)
+        public DraftViewModel(Window window, UserTeam userTeam)
         {
             // Attribute setzen
             _window = window;

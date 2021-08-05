@@ -16,20 +16,19 @@ namespace FFM_WIFI.ViewModels
     {
         #region Propperties
         //Property für FixtureInfos
-        private ObservableCollection<Info.Fixture> _infoList;
-        public ObservableCollection<Info.Fixture> InfoList
+        private ObservableCollection<Info.Fixture> _fixtureList;
+        public ObservableCollection<Info.Fixture> FixtureList
         {
-            get { return _infoList; }
+            get { return _fixtureList; }
             set
             {
-                _infoList = value;
+                _fixtureList = value;
                 OnPropertyChanged();
             }
         }
 
-        // Property für User Team und Performance
-        public Info.Player[] PlayerData { get; set; }
-        public ObservableCollection<Info.Player> DraftedPlayers { get; set; }
+        // Property PlayerList
+        public ObservableCollection<Info.Player> PlayerList { get; set; }
         private Info.Player _selectedPlayer;
         public Info.Player SelectedPlayer
         {
@@ -42,13 +41,13 @@ namespace FFM_WIFI.ViewModels
         }
 
         // Property für TextBlock und Image
-        private Info.Team _teamData;
-        public Info.Team TeamData
+        private Info.Team _teamInfo;
+        public Info.Team TeamInfo
         {
-            get { return _teamData; }
+            get { return _teamInfo; }
             set
             {
-                _teamData = value;
+                _teamInfo = value;
                 OnPropertyChanged();
             }
         }
@@ -56,79 +55,116 @@ namespace FFM_WIFI.ViewModels
 
         #region Attributes
         private Window _window;
-        private _userTeam _userTeam;
+        private UserTeam _userTeam;
+        private Info.Player[] _playerInfo;
+        private Info.Fixture[] _fixtureInfo;
+        private Calculate calc;
+        private int _fixtureCount;
         private int _playday;
         private bool _back;
         #endregion
 
         #region Commands
-        private RelayCommand _start;
-        public ICommand StartCommand { get { return _start; } }
-        //private RelayCommand _detail;
-        //public ICommand DetailCommand { get { return _detail; } }
+        private RelayCommand _all;
+        public ICommand AllCommand { get { return _all; } }
+
+        private RelayCommand _next;
+        public ICommand NextCommand { get { return _next; } }
+
         private RelayCommand _home;
         public ICommand HomeCommand { get { return _home; } }
         #endregion
 
         // Konstruktor
-        public FixtureViewModel(Window window, Info.Team teamData, Info.Player[] playerData)
+        public FixtureViewModel(Window window, Info.Team teamInfo, Info.Player[] playerInfo)
         {
             _window = window;
-            TeamData = teamData;
-            _userTeam = _teamData.UserTeam;
-            PlayerData = playerData;
-            InfoList = new ObservableCollection<Info.Fixture>();
-            DraftedPlayers = new ObservableCollection<Info.Player>();
+            TeamInfo = teamInfo;
+            _fixtureCount = 0;
+            _userTeam = _teamInfo.UserTeam;
+            _playerInfo = playerInfo;
+            FixtureList = new ObservableCollection<Info.Fixture>();
+            PlayerList = new ObservableCollection<Info.Player>();
             SetDraftedPlayersList();
             _playday = _userTeam.UserTeamPlayday;
+            calc = new Calculate(_playday, _playerInfo);
+            calc.TeamPoints();
             _back = false;
-            _start = new RelayCommand(CalculatePlayday, () => _playday == _userTeam.UserTeamPlayday);
+            _all = new RelayCommand(ShowAll, () => _playday == _userTeam.UserTeamPlayday);
+            _next = new RelayCommand(ShowNext, () => _playday == _userTeam.UserTeamPlayday);
             _home = new RelayCommand(GoToGameHome, () => _back);
             _home.RaiseCanExecuteChanged();
         }
 
         private void GoToGameHome()
         {
-            _teamData.Playday++;
-            _teamData.UserTeam.UserTeamPlayday++;
-            GameHomeWindow uhWindow = new GameHomeWindow(TeamData, PlayerData);
+            _teamInfo.Playday++;
+            _teamInfo.UserTeam.UserTeamPlayday++;
+            GameHomeWindow uhWindow = new GameHomeWindow(TeamInfo, _playerInfo);
             _window.Close();
             uhWindow.ShowDialog();
         }
 
         private void GoToResult()
         {
-            ResultWindow rWindow = new ResultWindow(TeamData, PlayerData);
+            ResultWindow rWindow = new ResultWindow(TeamInfo, _playerInfo);
             _window.Close();
             rWindow.ShowDialog();
         }
 
-        private void CalculatePlayday()
+        private void ShowAll()
         {
-            // Punkte berechnen und PlaydayText setzen
-            Calculate calc = new Calculate(_playday, PlayerData);
-            calc.TeamPoints();
-
-            PlayerData = calc.TeamData;
-            InfoList = calc.InfoList;
+            _playerInfo = calc.PlayerInfo;
+            FixtureList = calc.FixtureList;
             SetDraftedPlayersList();
             _playday++;
             if (_playday > 34)
             {
                 GoToResult();
             }
-            _start.RaiseCanExecuteChanged();
+            _all.RaiseCanExecuteChanged();
+            _next.RaiseCanExecuteChanged();
             _back = true;
             _home.RaiseCanExecuteChanged();
         }
 
+        private void ShowNext()
+        {
+            if (_fixtureCount == 0)
+            {
+                _playerInfo = calc.PlayerInfo;
+                ListToArray();
+            }
+            FixtureList.Clear();
+            FixtureList.Add(_fixtureInfo[_fixtureCount]);
+            _fixtureCount++;
+            if (_fixtureCount == 9)
+            {
+                _playday++;
+                _all.RaiseCanExecuteChanged();
+                _next.RaiseCanExecuteChanged();
+                _back = true;
+                _home.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void ListToArray()
+        {
+            _fixtureInfo = new Info.Fixture[9];
+            foreach (var f in calc.FixtureList)
+            {
+                _fixtureInfo[_fixtureCount] = f;
+                _fixtureCount++;
+            }
+            _fixtureCount = 0;
+        }
+
         private void SetDraftedPlayersList()
         {
-            DraftedPlayers.Clear();
-            foreach (var p in PlayerData)
+            PlayerList.Clear();
+            foreach (var p in _playerInfo)
             {
-                if (p.Drafted)
-                    DraftedPlayers.Add(p);
+                PlayerList.Add(p);
             }
         }
     }

@@ -84,14 +84,16 @@ namespace FFM_WIFI.Models.DataViewModel
             public BitmapImage HomeImage { get; set; }
             public string AwayName { get; set; }
             public BitmapImage AwayImage { get; set; }
+            public string EndResult { get; set; }
             public ObservableCollection<Event> List { get; set; }
 
-            public Fixture(string hn, BitmapImage hImg, string an, BitmapImage aImg, ObservableCollection<Event> list)
+            public Fixture(string homeName, BitmapImage homeImg, string awayName, BitmapImage awayImg, string endResult, ObservableCollection<Event> list)
             {
-                HomeName = hn;
-                HomeImage = hImg;
-                AwayName = an;
-                AwayImage = aImg;
+                HomeName = homeName;
+                HomeImage = homeImg;
+                AwayName = awayName;
+                AwayImage = awayImg;
+                EndResult = endResult;
                 List = list;
             }
         }
@@ -200,11 +202,10 @@ namespace FFM_WIFI.Models.DataViewModel
             public BitmapImage League { get; set; }
             public string Season { get; set; }
             public int Points { get; set; }
-            public _userTeam UserTeam { get; set; }
+            public UserTeam UserTeam { get; set; }
             public UserTeamPerformance Performance { get; set; }
-            public Images Images { get; set; }
 
-            public Team(int teamId, int userId, string name, BitmapImage logo, int day, int? players, BitmapImage league, string season, int points, _userTeam userTeam, UserTeamPerformance performance, Images images)
+            public Team(int teamId, int userId, string name, BitmapImage logo, int day, int? players, BitmapImage league, string season, int points, UserTeam userTeam, UserTeamPerformance performance)
             {
                 TeamId = teamId;
                 UserId = userId;
@@ -217,7 +218,6 @@ namespace FFM_WIFI.Models.DataViewModel
                 Points = points;
                 UserTeam = userTeam;
                 Performance = performance;
-                Images = images;
             }
 
             public Team()

@@ -1,0 +1,144 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="Border"
+           x:Key="StartWindowBorder">
+
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="50"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="StartWindowInnerBorder">
+
+        <Setter Property="CornerRadius" Value="100"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Color="DarkGray" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.4"/>
+                    <GradientStop Color="DarkSlateGray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="WindowBorder">
+
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="50"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Color="LightGray" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.3"/>
+                    <GradientStop Color="DarkSlateBlue" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="GroupBorderRight">
+
+        <Setter Property="CornerRadius" Value="100"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Color="DarkGoldenrod" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.3"/>
+                    <GradientStop Color="DarkSlateGray" Offset="0.9"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="GroupBorderLeft">
+
+        <Setter Property="CornerRadius" Value="100"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Color="DarkSlateGray" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.3"/>
+                    <GradientStop Color="DarkGoldenRod" Offset="0.9"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="TextBoxBorder">
+
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="BorderThickness" Value="2 0 0 2"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                    <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                    <GradientStop Color="AliceBlue" Offset="0.05"/>
+                </RadialGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="GoldenInnerBorder">
+
+        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                    <GradientStop Color="DarkGoldenrod" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.7"/>
+                    <GradientStop Color="DarkGoldenrod" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="FixtureBorderLeft">
+
+        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                    <GradientStop Color="LightGray" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.7"/>
+                    <GradientStop Color="DarkSlateGray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="FixtureBorderRight">
+
+        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="LightGray" Offset="0.0"/>
+                    <GradientStop Color="Azure" Offset="0.7"/>
+                    <GradientStop Color="DarkSlateGray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

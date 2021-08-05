@@ -8,12 +8,12 @@ namespace FFM_WIFI.Views
     /// </summary>
     public partial class StartWindow : Window
     {
-        private StartViewModel mwvm;
+        private StartViewModel swvm;
         public StartWindow()
         {
             InitializeComponent();
-            mwvm = new StartViewModel();
-            this.DataContext = mwvm;
+            swvm = new StartViewModel();
+            this.DataContext = swvm;
         }
     }
 }
