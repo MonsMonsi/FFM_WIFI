@@ -52,8 +52,8 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Periods
         {
-            public int First { get; set; }
-            public int Second { get; set; }
+            public int? First { get; set; }
+            public int? Second { get; set; }
         }
 
         public class Venue
@@ -65,9 +65,9 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Status
         {
-            public string _long { get; set; }
-            public string _short { get; set; }
-            public int Elapsed { get; set; }
+            public string Long { get; set; }
+            public string Short { get; set; }
+            public int? Elapsed { get; set; }
         }
 
         public class League
@@ -105,8 +105,8 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Goals
         {
-            public int Home { get; set; }
-            public int Away { get; set; }
+            public int? Home { get; set; }
+            public int? Away { get; set; }
         }
 
         public class Score
@@ -119,14 +119,14 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Halftime
         {
-            public int Home { get; set; }
-            public int Away { get; set; }
+            public int? Home { get; set; }
+            public int? Away { get; set; }
         }
 
         public class Fulltime
         {
-            public int Home { get; set; }
-            public int Away { get; set; }
+            public int? Home { get; set; }
+            public int? Away { get; set; }
         }
 
         public class Extratime
@@ -154,7 +154,7 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Time
         {
-            public int Elapsed { get; set; }
+            public int? Elapsed { get; set; }
             public object Extra { get; set; }
         }
 
@@ -329,7 +329,7 @@ namespace FFM_WIFI.Models.DataJson
         public class Goals1
         {
             public int? Total { get; set; }
-            public int Conceded { get; set; }
+            public int? Conceded { get; set; }
             public int? Assists { get; set; }
             public int? Saves { get; set; }
         }
@@ -369,16 +369,16 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Cards
         {
-            public int Yellow { get; set; }
-            public int Red { get; set; }
+            public int? Yellow { get; set; }
+            public int? Red { get; set; }
         }
 
         public class Penalty1
         {
             public object Won { get; set; }
             public object Commited { get; set; }
-            public int Scored { get; set; }
-            public int Missed { get; set; }
+            public int? Scored { get; set; }
+            public int? Missed { get; set; }
             public int? Saved { get; set; }
         }
     }

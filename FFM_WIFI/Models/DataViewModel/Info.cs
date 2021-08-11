@@ -17,7 +17,7 @@ namespace FFM_WIFI.Models.DataViewModel
         public class Event
         {
             #region Properties
-            public int Minute { get; set; }
+            public int? Minute { get; set; }
             public int PlayerId { get; set; }
             public string PlayerName { get; set; }
             public BitmapImage Logo { get; set; }
@@ -84,17 +84,23 @@ namespace FFM_WIFI.Models.DataViewModel
             public BitmapImage HomeImage { get; set; }
             public string AwayName { get; set; }
             public BitmapImage AwayImage { get; set; }
+            public string HalftimeResult { get; set; }
             public string EndResult { get; set; }
-            public ObservableCollection<Event> List { get; set; }
+            public Detail.Team HomeDetail { get; set; }
+            public Detail.Team AwayDetail { get; set; }
+            public ObservableCollection<Event> EventList { get; set; }
 
-            public Fixture(string homeName, BitmapImage homeImg, string awayName, BitmapImage awayImg, string endResult, ObservableCollection<Event> list)
+            public Fixture(string homeName, BitmapImage homeImg, string awayName, BitmapImage awayImg, string halftimeresult, string endResult, Detail.Team homeDetail, Detail.Team awayDetail, ObservableCollection<Event> eventList)
             {
                 HomeName = homeName;
                 HomeImage = homeImg;
                 AwayName = awayName;
                 AwayImage = awayImg;
+                HalftimeResult = halftimeresult;
                 EndResult = endResult;
-                List = list;
+                HomeDetail = homeDetail;
+                AwayDetail = awayDetail;
+                EventList = eventList;
             }
         }
 
@@ -104,19 +110,21 @@ namespace FFM_WIFI.Models.DataViewModel
             public BitmapImage HomeImage { get; set; }
             public string Away { get; set; }
             public BitmapImage AwayImage { get; set; }
-            public string Date { get; set; }
+            public DateTime Date { get; set; }
             public string Referee { get; set; }
             public Venue Venue { get; set; }
+            public string Status { get; set; }
 
-            public Playday(string h, BitmapImage hI, string a, BitmapImage aI, DateTime date, string referee, Venue venue)
+            public Playday(string h, BitmapImage hI, string a, BitmapImage aI, DateTime date, string referee, Venue venue, string status)
             {
                 Home = h;
                 HomeImage = hI;
                 Away = a;
                 AwayImage = aI;
-                Date = date.ToShortDateString();
+                Date = date;
                 Referee = referee;
                 Venue = venue;
+                Status = status;
             }
         }
 
@@ -200,12 +208,14 @@ namespace FFM_WIFI.Models.DataViewModel
             public int Playday { get; set; }
             public int? Players { get; set; }
             public BitmapImage League { get; set; }
-            public string Season { get; set; }
+            public int Season { get; set; }
             public int Points { get; set; }
+            public Player[] BestPlayers { get; set; }
             public UserTeam UserTeam { get; set; }
             public UserTeamPerformance Performance { get; set; }
 
-            public Team(int teamId, int userId, string name, BitmapImage logo, int day, int? players, BitmapImage league, string season, int points, UserTeam userTeam, UserTeamPerformance performance)
+            public Team(int teamId, int userId, string name, BitmapImage logo, int day, int? players, BitmapImage league, int season, int points,
+                        Player[] bestPlayers, UserTeam userTeam, UserTeamPerformance performance)
             {
                 TeamId = teamId;
                 UserId = userId;
@@ -216,6 +226,7 @@ namespace FFM_WIFI.Models.DataViewModel
                 League = league;
                 Season = season;
                 Points = points;
+                BestPlayers = bestPlayers;
                 UserTeam = userTeam;
                 Performance = performance;
             }
@@ -228,19 +239,49 @@ namespace FFM_WIFI.Models.DataViewModel
 
         public class Result
         {
+            #region Properties
             public Team Team { get; set; }
-            public Player[] Players { get; set; }
-            public Player Player1 { get; set; }
-            public Player Player2 { get; set; }
-            public Player Player3 { get; set; }
+            public Player[] PlayerInfo { get; set; }
+            public List<Standings> StandingsInfo { get; set; }
+            #endregion
 
-            public Result(Team team, Player[] players)
+            #region Attributes
+            private GetFrom.Api _get;
+            private Create.Info _create;
+            private JsonStandings.Root _standings;
+            #endregion
+
+            #region Constructor
+            public Result(Team teamInfo, Player[] playerInfo)
             {
-                Team = team;
-                Players = players;
-                Player1 = GetBestPlayer(ref players);
-                Player2 = GetBestPlayer(ref players);
-                Player3 = GetBestPlayer(ref players);
+                Team = teamInfo;
+                PlayerInfo = playerInfo;
+                _get = new GetFrom.Api();
+                _create = new Create.Info();
+                StandingsInfo = new List<Standings>();
+                GetStandings();
+                SetProperties();
+            }
+            #endregion
+
+            #region Methods
+            private void GetStandings()
+            {
+                _get.LeagueId = Team.UserTeam.UserTeamLeague.ToString();
+                _get.SeasonId = Team.UserTeam.UserTeamSeason.ToString();
+
+                _standings = _get.Standings();
+            }
+
+            private void SetProperties()
+            {
+                foreach (var s in _standings.Response[0].League.Standings)
+                {
+                    foreach (var item in s)
+                    {
+                        StandingsInfo.Add(_create.StandingsInfo(item));
+                    }
+                }
             }
 
             private Player GetBestPlayer(ref Player[] temp)
@@ -260,6 +301,46 @@ namespace FFM_WIFI.Models.DataViewModel
                 temp[index] = null;
                 return player;
             }
+            #endregion
+        }
+        public class Standings
+        {
+            #region Properties
+            public int Rank { get; set; }
+            public string Name { get; set; }
+            public BitmapImage Logo { get; set; }
+            public int Points { get; set; }
+            public int Goals { get; set; }
+            public int GoalsAgainst { get; set; }
+            public int GoalsDiff { get; set; }
+            public int Wins { get; set; }
+            public int Draws { get; set; }
+            public int Loses { get; set; }
+            public DateTime Update { get; set; }
+            #endregion
+
+            #region Attributes;
+            #endregion
+
+            #region Constructor
+            public Standings(int rank, string name, BitmapImage logo, int points, int goals, int goalsAgainst, int goalsDiff, int wins, int draws, int loses, DateTime update)
+            {
+                Rank = rank;
+                Name = name;
+                Logo = logo;
+                Points = points;
+                Goals = goals;
+                GoalsAgainst = goalsAgainst;
+                GoalsDiff = goalsDiff;
+                Wins = wins;
+                Draws = draws;
+                Loses = loses;
+                Update = update;
+            }
+            #endregion
+
+            #region Methods
+            #endregion
         }
     }
 }

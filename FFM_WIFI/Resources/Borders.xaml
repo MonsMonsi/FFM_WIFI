@@ -26,6 +26,22 @@
     </Style>
 
     <Style TargetType="Border"
+           x:Key="ResultWindowBorder">
+
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="50"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Color="LightGray" Offset="0.2"/>
+                    <GradientStop Color="DarkSlateBlue" Offset="0.3"/>
+                    <GradientStop Color="DarkGray" Offset="0.7"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="Border"
            x:Key="WindowBorder">
 
         <Setter Property="BorderThickness" Value="0"/>
@@ -109,24 +125,45 @@
     </Style>
 
     <Style TargetType="Border"
-           x:Key="FixtureBorderLeft">
+           x:Key="GoldenGroupBorder">
 
-        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="CornerRadius" Value="100 40 100 40"/>
         <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="BorderThickness" Value="5 5 5 0"/>
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
-                    <GradientStop Color="LightGray" Offset="0.0"/>
+                    <GradientStop Color="DarkGoldenRod" Offset="0.9"/>
                     <GradientStop Color="Azure" Offset="0.7"/>
-                    <GradientStop Color="DarkSlateGray" Offset="1.0"/>
+                    <GradientStop Color="Azure" Offset="0.3"/>
+                    <GradientStop Color="DarkGoldenRod" Offset="0.1"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style TargetType="Border"
-           x:Key="FixtureBorderRight">
+           x:Key="GreenInnerBorderPlain">
+
+        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+        <Setter Property="BorderThickness" Value="3 0 0 3"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="LightGreen" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+        <!--Sieht cool aus, ist aber langsam: abwägen-->
+        <!--<Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="10" Color="DarkSlateGray" Direction="235" Opacity=".4"
+                                          RenderingBias="Quality" ShadowDepth="10" />
+            </Setter.Value>
+        </Setter>-->
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="GreenInnerBorderEffect">
 
         <Setter Property="CornerRadius" Value="40"/>
         <Setter Property="BorderBrush" Value="DarkSlateGray"/>
@@ -138,6 +175,129 @@
                     <GradientStop Color="Azure" Offset="0.7"/>
                     <GradientStop Color="DarkSlateGray" Offset="1.0"/>
                 </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="StatisticBorderTop">
+
+        <Setter Property="CornerRadius" Value="0 40 0 40"/>
+        <Setter Property="BorderBrush" Value="SlateGray"/>
+        <Setter Property="BorderThickness" Value="0 4 4 0"/>
+        <Setter Property="TextBlock.Foreground" Value="DarkRed"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0" Opacity="0.7">
+                    <GradientStop Color="LightGreen" Offset="-1"/>
+                    <GradientStop Color="Azure" Offset="0.8"/>
+                    <GradientStop Color="SlateGray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="StatisticBorderBottom">
+
+        <Setter Property="CornerRadius" Value="0 40 0 40"/>
+        <Setter Property="BorderBrush" Value="SlateGray"/>
+        <Setter Property="BorderThickness" Value="4 0 0 4"/>
+        <Setter Property="TextBlock.Foreground" Value="DarkRed"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1" Opacity="0.7">
+                    <GradientStop Color="LightGreen" Offset="-1"/>
+                    <GradientStop Color="Azure" Offset="0.8"/>
+                    <GradientStop Color="SlateGray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="ResultInnerBorder">
+
+        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="BorderBrush" Value="DarkRed"/>
+        <Setter Property="BorderThickness" Value="4 0 0 4"/>
+        <Setter Property="TextBlock.Foreground" Value="DarkRed"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1" Opacity="0.7">
+                    <GradientStop Color="DarkGoldenrod" Offset="0.2"/>
+                    <GradientStop Color="Azure" Offset="0.8"/>
+                    <GradientStop Color="DarkGoldenrod" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="RedInnerBorder">
+
+        <Setter Property="CornerRadius" Value="40"/>
+        <Setter Property="BorderBrush" Value="DarkGoldenRod"/>
+        <Setter Property="BorderThickness" Value="4 0 0 4"/>
+        <Setter Property="TextBlock.Foreground" Value="DarkRed"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1" Opacity="0.7">
+                    <GradientStop Color="DarkRed" Offset="0.2"/>
+                    <GradientStop Color="Azure" Offset="0.8"/>
+                    <GradientStop Color="DarkRed" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border"
+           x:Key="BlackInnerBorder">
+
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="BorderBrush" Value="DarkGoldenRod"/>
+        <Setter Property="BorderThickness" Value="1 0 0 1"/>
+        <Setter Property="TextBlock.Foreground" Value="Azure"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="Black" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="GroupBox"
+           x:Key="BlackInnerGroupBox">
+
+        <Setter Property="BorderBrush" Value="DarkGoldenRod"/>
+        <Setter Property="BorderThickness" Value="1 0 0 1"/>
+        <Setter Property="TextBlock.Foreground" Value="Azure"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="Black" Opacity="0.7"/>
             </Setter.Value>
         </Setter>
     </Style>

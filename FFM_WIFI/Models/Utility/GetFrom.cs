@@ -12,6 +12,10 @@ using System.Text.Json;
 using System.Windows.Media.Imaging;
 using static FFM_WIFI.Models.Libraries.Images;
 using FFM_WIFI.Models.Libraries;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows;
+using System.Threading.Tasks;
 
 namespace FFM_WIFI.Models.Utility
 {
@@ -36,6 +40,7 @@ namespace FFM_WIFI.Models.Utility
             const string _apiBase = "https://v3.football.api-sports.io";
             const string _apiFixture = "/fixtures?";
             const string _apiPlayers = "/players?";
+            const string _apiStandings = "/standings?";
             const string _apiTeamVenue = "/teams?";
             const string _id = "id=";
             const string _page = "page=";
@@ -121,6 +126,17 @@ namespace FFM_WIFI.Models.Utility
                 return null;
             }
 
+            public JsonStandings.Root Standings()
+            {
+                WebClient client = new WebClient();
+                client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+
+                var standings = JsonSerializer.Deserialize<JsonStandings.Root>(client.DownloadString($"{_apiBase}{_apiStandings}{_league}{LeagueId}&{_season}{SeasonId}"),
+                                                                           new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                Count++;
+                return standings;
+            }
+
             public JsonTeamVenue.Root TeamVenue()
             {
                 if (LeagueId != "0" && SeasonId != "0")
@@ -146,7 +162,7 @@ namespace FFM_WIFI.Models.Utility
 
             #region Attributes
             private UserTeam _userTeam;
-            private Images _images = new ConfigFile().Images;
+            private Create.Info _create;
             #endregion
 
             #region Constants
@@ -156,11 +172,15 @@ namespace FFM_WIFI.Models.Utility
             #region Constructor
             public Database(User user = null, UserTeam userTeam = null)
             {
-                User = user;
-                if (User == null)
+                if (user == null)
                 {
                     User = userTeam.UserTeamUserFkNavigation;
                 }
+                else
+                {
+                    User = user;
+                }
+                _create = new Create.Info();
                 _userTeam = userTeam;
             }
             #endregion
@@ -196,8 +216,7 @@ namespace FFM_WIFI.Models.Utility
                     for (int i = 0; i < 17; i++)
                     {
                         var player = context.Player.Where(p => p.PlayerPk == players[i]).FirstOrDefault();
-                        Info.Player temp = new Info.Player(players[i], player.PlayerFirstName + " " + player.PlayerLastName,
-                                                           player.PlayerPosition, player.PlayerHeight, player.PlayerNationality, new GetFrom().Image(player.PlayerImage), points[i], false);
+                        Info.Player temp = _create.PlayerInfo(player, points[i]);
 
                         _players[i] = temp;
                     }
@@ -227,16 +246,7 @@ namespace FFM_WIFI.Models.Utility
                                          + performance.UserTeamPerformanceDf5 + performance.UserTeamPerformanceMf5 + performance.UserTeamPerformanceMf6 + performance.UserTeamPerformanceAt3
                                          + performance.UserTeamPerformanceAt4;
 
-                            if (u.UserTeamPlayday > 34)
-                            {
-                                _teams.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(_images.Star),
-                                u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance));
-                            }
-                            else
-                            {
-                                _teams.Add(new Info.Team(u.UserTeamPk, u.UserTeamUserFkNavigation.UserPk, u.UserTeamName, new GetFrom().Image(u.UserTeamLogo),
-                                    u.UserTeamPlayday, u.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonName, points, u, performance));
-                            }
+                            _teams.Add(_create.TeamInfo(u, league, season, performance, points));
                         }
                     }
                 }
@@ -275,11 +285,16 @@ namespace FFM_WIFI.Models.Utility
         }
         public BitmapImage Image(string path)
         {
-            Uri uri= new Uri(path);
-            BitmapImage image = new BitmapImage(uri);
-            image.DecodePixelHeight = 100;
-            image.DecodePixelWidth = 100;
-            return image;
+            BitmapImage bI = new BitmapImage();
+
+            bI.BeginInit();
+            bI.CacheOption = BitmapCacheOption.OnDemand;
+            bI.DecodePixelHeight = 100;
+            bI.DecodePixelWidth = 100;
+            bI.UriSource = new Uri(path);
+            bI.EndInit();
+
+            return bI;
         }
     }
 }

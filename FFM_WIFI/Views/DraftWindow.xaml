@@ -33,14 +33,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border  BorderThickness="4" BorderBrush="DarkSlateGray"
-                         CornerRadius="40 100 40 100" Margin="10">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkGray" Offset="0.8"/>
-                        <GradientStop Color="AliceBlue" Offset="0.0"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GreenInnerBorderEffect}"
+                    Margin="10">
 
                 <Grid>
                     <Image Source="{Binding UserTeam.UserTeamLogo}"
@@ -133,31 +127,24 @@
             </Border>
 
 
-            <Border Grid.Column="2"
-                        BorderThickness="4" BorderBrush="DarkSlateGray"
-                        CornerRadius="100 40 100 40" Margin="10">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkGray" Offset="0.8"/>
-                        <GradientStop Color="AliceBlue" Offset="0.0"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GoldenInnerBorder}"
+                    Grid.Column="2" Margin="10">
 
                 <Grid>
                     <TextBlock Text="{Binding DraftText}"
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40 20 0 0"
                                    TextAlignment="Center" TextWrapping="Wrap"
                                    Height="70" Width="200"
-                                   FontSize="15" Foreground="Black">
+                                   FontSize="15" Foreground="Black" FontWeight="Bold" FontFamily="Bahnhof Condensed">
                     </TextBlock>
 
                     <TextBlock Text="{Binding MoneyMax, StringFormat={}{0} Mio}"
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 60 0 0"
-                                   FontSize="14" Foreground="Red" FontWeight="Bold"/>
+                                   FontSize="14" Foreground="DarkRed" FontWeight="Bold"/>
 
                     <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 80 0 0"
                                 CornerRadius="4"
-                                BorderBrush="Red" BorderThickness="2"
+                                BorderBrush="DarkRed" BorderThickness="2"
                                 Height="12" Width="252"
                                 Background="Transparent">
 
@@ -171,19 +158,13 @@
                                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 50 0 0"
                                   BorderThickness="0"
                                   Background="Transparent"
-                                  Height="320" MinHeight="40" Width="250" MinWidth="145"/>
+                                  Height="320" Width="250"/>
                 </Grid>
             </Border>
 
-            <Border Grid.Row="2"
-                        BorderThickness="4" BorderBrush="DarkSlateGray"
-                        CornerRadius="100 40 100 40" Margin="10">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkGray" Offset="0.8"/>
-                        <GradientStop Color="AliceBlue" Offset="0.0"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderLeft}"
+                    Grid.Row="2">
+                
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -234,19 +215,13 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1" Grid.Row="1" 
-                        BorderThickness="4" BorderBrush="DarkSlateGray"
-                        CornerRadius="40 100 40 100" Margin="10">
-                <Border.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="DarkGray" Offset="0.8"/>
-                        <GradientStop Color="AliceBlue" Offset="0.0"/>
-                    </RadialGradientBrush>
-                </Border.Background>
+            <Border Style="{StaticResource GroupBorderRight}"
+                    Grid.Column="1" Grid.Row="1">
+                
                 <Grid>
                     <Button Style="{StaticResource Button}" Command="{Binding DraftCommand}"
                             Content="kaufen"
-                            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 20 0 0"
+                            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 40 0 0"
                             Height="24" Width="120"/>
 
                     <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"

@@ -49,8 +49,8 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Periods
         {
-            public int first { get; set; }
-            public int second { get; set; }
+            public int? first { get; set; }
+            public int? second { get; set; }
         }
 
         public class Venue
@@ -64,7 +64,7 @@ namespace FFM_WIFI.Models.DataJson
         {
             public string _long { get; set; }
             public string _short { get; set; }
-            public int elapsed { get; set; }
+            public int? elapsed { get; set; }
         }
 
         public class League
@@ -102,8 +102,8 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Goals
         {
-            public int home { get; set; }
-            public int away { get; set; }
+            public int? home { get; set; }
+            public int? away { get; set; }
         }
 
         public class Score
@@ -116,14 +116,14 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Halftime
         {
-            public int home { get; set; }
-            public int away { get; set; }
+            public int? home { get; set; }
+            public int? away { get; set; }
         }
 
         public class Fulltime
         {
-            public int home { get; set; }
-            public int away { get; set; }
+            public int? home { get; set; }
+            public int? away { get; set; }
         }
 
         public class Extratime

@@ -1,6 +1,6 @@
 ﻿namespace FFM_WIFI.Models.DataJson
 {
-    class JsonPlayer
+    class JsonPlayers
     {
         public class Root
         {

@@ -4,6 +4,7 @@ using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -70,7 +71,8 @@ namespace FFM_WIFI.ViewModels
 
         #region Attributes
         private Window _window;
-        private GetFrom.Database _getFromDatabase;
+        private GetFrom.Database _get;
+        //private Task _task;
         #endregion
         // Konstruktor
         public UserHomeViewModel(UserHomeWindow window, User user)
@@ -79,7 +81,7 @@ namespace FFM_WIFI.ViewModels
             ClassicTeamList = new ObservableCollection<Info.Team>();
             User = user;
             _window = window;
-            _getFromDatabase = new GetFrom.Database(_user);
+            _get = new GetFrom.Database(_user);
             //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
             _draft = new RelayCommand(GoToDraft, () => SelectedActiveTeam != null && SelectedActiveTeam.Players != 17);
@@ -117,7 +119,7 @@ namespace FFM_WIFI.ViewModels
         private void SetTeamLists()
         {
             // ineffektiv?
-            foreach (var team in _getFromDatabase.TeamInfo())
+            foreach (var team in _get.TeamInfo())
             {
                 if (team.Playday > 34)
                 {

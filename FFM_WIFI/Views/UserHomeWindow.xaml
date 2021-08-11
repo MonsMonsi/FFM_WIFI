@@ -27,9 +27,11 @@
             <Border Style="{StaticResource GroupBorderRight}"
                     Grid.Column="1"
                     Margin="5">
-                
-            <!-- TeamLogo einfügen-->
-                
+
+                <Image Source="{Binding SelectedActiveTeam.Logo}"
+                       HorizontalAlignment="Left" Margin="20 0 0 0"
+                       Height="90" Width="90"/>
+
             </Border>
 
             <Border Style="{StaticResource GroupBorderLeft}"
@@ -108,7 +110,7 @@
                                           ItemContainerStyle="{StaticResource ListViewItemTeam}"
                                           Style="{StaticResource StandardListView}"
                                           Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                          Height="200" Width="130" MinWidth="125"/>
+                                          Height="200" Width="130"/>
 
                                 <ListView ItemsSource="{Binding ClassicTeamList}" SelectedItem="{Binding SelectedClassicTeam}"
                                           ItemContainerStyle="{StaticResource ListViewItemTeam}"
@@ -130,10 +132,7 @@
                                 Background="LightGray">
 
                     <Canvas TextBlock.Foreground="Black" TextBlock.FontWeight="DemiBold">
-                        <Image Source="{Binding SelectedActiveTeam.Logo}"
-                                       Canvas.Top="60"
-                                       Height="250" Width="250"
-                                       Opacity="0.3"/>
+                        
 
                         <Label Content="{Binding SelectedActiveTeam.Name}"
                                        Canvas.Top="60"

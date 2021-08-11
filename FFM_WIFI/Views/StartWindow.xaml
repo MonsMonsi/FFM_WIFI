@@ -38,15 +38,18 @@
                     BorderThickness="5 0 5 5"
                     Margin="3 0 3 3">
                 <Grid>
+                    
                     <TextBox Style="{StaticResource TextBoxUserName}" Text="{Binding UserName}"
                              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 80 0 0"
+                             Padding="3 1 0 0"
                              Height="25" Width="170"/>
 
                     <PasswordBox Style="{StaticResource PasswordBox}"
                                  converters:PasswordBoxAssistant.BindPassword="True"
-                                 converters:PasswordBoxAssistant.BoundPassword="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 converters:PasswordBoxAssistant.BoundPassword="{Binding UserPassword, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 110 0 0"
                                  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                 Padding="3 1 0 0"
                                  Height=" 25" Width="170"/>
 
                     <Button Style="{StaticResource Button}" Content="Anmelden" Command="{Binding LoginCommand}"

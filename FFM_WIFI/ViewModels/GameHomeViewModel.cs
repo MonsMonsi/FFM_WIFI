@@ -69,6 +69,18 @@ namespace FFM_WIFI.ViewModels
                 _lineUp = value;
             }
         }
+
+        // Property für Zeitangabe
+        private string _untilPlayday;
+        public string UntilPlayday
+        {
+            get { return _untilPlayday; }
+            set
+            {
+                _untilPlayday = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Commands
@@ -92,6 +104,7 @@ namespace FFM_WIFI.ViewModels
         private WriteTo.Database _writeToDatabase;
         private Info.Player[] _playerInfo;
         private int _playday;
+        private TimeSpan _time;
         private int _lineCount;
         private string _position;
 
@@ -120,11 +133,15 @@ namespace FFM_WIFI.ViewModels
             PlaydayList = new ObservableCollection<Info.Playday>();
             SetPlayerDraftList();
             SetPlaydayList();
+            if (!CheckPlaydayComplete())
+            {
+                SetPlaydayDate();
+            }
             // Commands
             _sub = new RelayCommand<object>(SubPlayer);
-            _line = new RelayCommand(LineUpPlayer, () => !CheckComplete() && SelectedDraft != null);
+            _line = new RelayCommand(LineUpPlayer, () => !CheckLineUpComplete() && SelectedDraft != null);
             FastCommand = new RelayCommand(FastLineUp);
-            _play = new RelayCommand(GoToFixture, () => CheckComplete() && _playday < 35);
+            _play = new RelayCommand(GoToFixture, () => CheckLineUpComplete() && CheckPlaydayComplete());
             _save = new RelayCommand(GoToUserHome);
             _play.RaiseCanExecuteChanged();
             _window = window;
@@ -133,7 +150,7 @@ namespace FFM_WIFI.ViewModels
         #region Methods
         private void GoToFixture()
         {
-            FixtureWindow fWindow = new FixtureWindow(TeamInfo, LineUp);
+            FixtureWindow fWindow = new FixtureWindow(TeamInfo, _playerInfo);
             _window.Close();
             fWindow.ShowDialog();
         }
@@ -219,7 +236,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPlaydayList()
         {
-            Calculate calc = new Calculate(_playday);
+            Calculate calc = new Calculate(_playday, TeamInfo.UserTeam.UserTeamLeague, TeamInfo.Season);
             calc.PlaydayInfo();
             PlaydayList = calc.PlaydayList;
         }
@@ -332,7 +349,30 @@ namespace FFM_WIFI.ViewModels
             _writeToDatabase.UserTeamPerformance();
         }
 
-        private bool CheckComplete()
+        private void SetPlaydayDate()
+        {
+            var playday = PlaydayList.Last();
+            var now = DateTime.Now;
+            _time = playday.Date - now;
+
+            if (_time.Days > 0 && _time.Hours > 0 && _time.Minutes > 0)
+            {
+                UntilPlayday = $"Noch {_time.Days} Tage und {_time.Hours} Stunden!";
+            }
+        }
+
+        private bool CheckPlaydayComplete()
+        {
+            foreach (var p in PlaydayList)
+            {
+                if (p.Status != "Match Finished")
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private bool CheckLineUpComplete()
         {
             for (int i = 0; i < 11; i++)
             {

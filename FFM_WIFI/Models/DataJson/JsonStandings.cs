@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FFM_WIFI.Models.DataJson
 {
-    public class JsonStanding
+    public class JsonStandings
     {
+
         public class Root
         {
             public string Get { get; set; }
@@ -76,7 +81,7 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Goals
         {
-            public int _for { get; set; }
+            public int For { get; set; }
             public int Against { get; set; }
         }
 
@@ -109,5 +114,6 @@ namespace FFM_WIFI.Models.DataJson
             public int _for { get; set; }
             public int Against { get; set; }
         }
+
     }
 }

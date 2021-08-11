@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,23 +25,29 @@ namespace FFM_WIFI.Models.Utility
 
         #region Attributes
         private int _playday;
+        private int _league;
+        private int _season;
         private int _iMin;
         private int _iMax;
+        private GetFrom _get;
+        private Create.Info _create;
         private List<int> _fixtures;
-        private List<Info.Event> _eventList { get; set; }
         #endregion
 
         #region Constructor
-        public Calculate(int playday, Info.Player[] teamData = null)
+        public Calculate(int playday, int league, int season, Info.Player[] teamInfo = null)
         {
-            PlayerInfo = teamData;
+            PlayerInfo = teamInfo;
             FixtureList = new ObservableCollection<Info.Fixture>();
             PlaydayList = new ObservableCollection<Info.Playday>();
+            _get = new GetFrom();
+            _create = new Create.Info();
             _playday = playday;
+            _league = league;
+            _season = season;
             _iMin = 0;
             _iMax = 0;
             _fixtures = new List<int>();
-            _eventList = new List<Info.Event>();
         }
         #endregion
 
@@ -90,15 +97,18 @@ namespace FFM_WIFI.Models.Utility
 
         private void GetFixtures()
         {
-            // _fixtures.Clear();
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string path = Path.Combine(docPath, @$"JsonFiles\AllFixtures\AllFixtures_L{_league}S{_season}.json");
 
-            string filePath = @"D:\VS_Projects\FFM_WIFI\JsonFiles\AllFixturesBULI2020\AllFixturesBULI2020.json";
-            StreamReader reader = File.OpenText(filePath);
-            var fixtures = JsonSerializer.Deserialize<JsonAllFixtures.Root>(reader.ReadToEnd(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            for (int i = _iMin; i < _iMax; i++)
+            if (File.Exists(path))
             {
-                _fixtures.Add(fixtures.Response[i].Fixture.Id);
+                StreamReader reader = File.OpenText(path);
+                var fixtures = JsonSerializer.Deserialize<JsonAllFixtures.Root>(reader.ReadToEnd(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                for (int i = _iMin; i < _iMax; i++)
+                {
+                    _fixtures.Add(fixtures.Response[i].Fixture.Id);
+                }
             }
         }
 
@@ -106,9 +116,34 @@ namespace FFM_WIFI.Models.Utility
         {
             foreach (var id in _fixtures)
             {
-                string filePath = @$"D:\VS_Projects\FFM_WIFI\JsonFiles\FixtureDetailsBULI2020\BULI2020_Fixture{id}.json";
-                StreamReader reader = File.OpenText(filePath);
-                var fixture = JsonSerializer.Deserialize<JsonFixture.Root>(reader.ReadToEnd(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                JsonFixture.Response fixture;
+
+                string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string path = Path.Combine(docPath, @$"JsonFiles\Fixture\Fixture_L{_league}S{_season}I{id}.json");
+
+                bool exists = File.Exists(path);
+                // wenn ein File existiert, soll er es lesen
+                if (File.Exists(path))
+                {
+                    fixture = JsonSerializer.Deserialize<JsonFixture.Response>(File.ReadAllText(path));
+                }
+                // wenn kein File existiert, ruft er die API
+                else
+                {
+                    WebClient client = new ();
+                    client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+
+                    fixture = JsonSerializer.Deserialize<JsonFixture.Root>(client.DownloadString($"https://v3.football.api-sports.io/fixtures?id={id}"),
+                                                                                   new JsonSerializerOptions { PropertyNameCaseInsensitive = true }).Response[0];
+
+                    // wenn das Spiel schon vorbei ist, schreibt er ein File
+                    if (fixture.Fixture.Status.Long == "Match Finished")
+                    {
+                        path = Path.Combine(docPath, @$"JsonFiles\Fixture\Fixture_L{_league}S{_season}I{id}.json");
+
+                        File.WriteAllText(path, JsonSerializer.Serialize(fixture));
+                    }
+                }
 
                 if (PlayerInfo == null)
                 {
@@ -119,21 +154,17 @@ namespace FFM_WIFI.Models.Utility
                     SetLineUpPoints(fixture);
                     SetEventPoints(fixture);
 
-                    _eventList.Clear();
-                    SetEventList(fixture);
-                    Info.Fixture temp = new Info.Fixture(fixture.Response[0].Teams.Home.Name, new GetFrom().Image(fixture.Response[0].Teams.Home.Logo),
-                                                         fixture.Response[0].Teams.Away.Name, new GetFrom().Image(fixture.Response[0].Teams.Away.Logo),
-                                                         $"Endstand  {fixture.Response[0].Score.Fulltime.Home} : {fixture.Response[0].Score.Fulltime.Away}",
-                                                         new ObservableCollection<Info.Event>(_eventList));
+                    Info.Fixture temp = _create.FixtureInfo(fixture);
+
                     FixtureList.Add(temp);
                 }
             }
         }
 
-        private void SetLineUpPoints(JsonFixture.Root fixture)
+        private void SetLineUpPoints(JsonFixture.Response fixture)
         {
             Info.Player[] temp = PlayerInfo;
-            foreach (var s in fixture.Response[0].Lineups[0].StartXI)
+            foreach (var s in fixture.Lineups[0].StartXI)
             {
                 foreach (var p in temp)
                 {
@@ -145,7 +176,7 @@ namespace FFM_WIFI.Models.Utility
                 }
             }
 
-            foreach (var s in fixture.Response[0].Lineups[1].StartXI)
+            foreach (var s in fixture.Lineups[1].StartXI)
             {
                 foreach (var p in temp)
                 {
@@ -158,7 +189,7 @@ namespace FFM_WIFI.Models.Utility
 
             }
 
-            foreach (var s in fixture.Response[0].Lineups[0].Substitutes)
+            foreach (var s in fixture.Lineups[0].Substitutes)
             {
                 foreach (var p in temp)
                 {
@@ -171,7 +202,7 @@ namespace FFM_WIFI.Models.Utility
 
             }
 
-            foreach (var s in fixture.Response[0].Lineups[1].Substitutes)
+            foreach (var s in fixture.Lineups[1].Substitutes)
             {
                 foreach (var p in temp)
                 {
@@ -186,10 +217,10 @@ namespace FFM_WIFI.Models.Utility
             PlayerInfo = temp;
         }
 
-        private void SetEventPoints(JsonFixture.Root fixture)
+        private void SetEventPoints(JsonFixture.Response fixture)
         {
             Info.Player[] temp = PlayerInfo;
-            foreach (var e in fixture.Response[0].Events)
+            foreach (var e in fixture.Events)
             {
                 switch (e.Type)
                 {
@@ -239,39 +270,13 @@ namespace FFM_WIFI.Models.Utility
             }
         }
 
-        private void SetEventList(JsonFixture.Root fixture)
-        {
-            Info.Event temp;
-            foreach (var e in fixture.Response[0].Events)
-            {
-                switch (e.Type)
-                {
-                    case "Goal":
-                        temp = new Info.Event(e);
-                        break;
-                    case "subst":
-                        temp = new Info.Event(e);
-                        break;
-                    case "Card":
-                        temp = new Info.Event(e);
-                        break;
-                    default:
-                        temp = new Info.Event(e);
-                        break;
-                }
-                _eventList.Add(temp);
-              }
-        }
-
-        private void SetPlaydayList(JsonFixture.Root fixture)
+        private void SetPlaydayList(JsonFixture.Response fixture)
         {
             using (FootballContext context = new FootballContext())
             {
-                var venue = context.Venue.Where(v => v.VenuePk == fixture.Response[0].Fixture.Venue.Id).FirstOrDefault();
+                var venue = context.Venue.Where(v => v.VenuePk == fixture.Fixture.Venue.Id).FirstOrDefault();
 
-                PlaydayList.Add(new Info.Playday(fixture.Response[0].Teams.Home.Name, new GetFrom().Image(fixture.Response[0].Teams.Home.Logo),
-                                                 fixture.Response[0].Teams.Away.Name, new GetFrom().Image(fixture.Response[0].Teams.Away.Logo),
-                                                 fixture.Response[0].Fixture.Date, fixture.Response[0].Fixture.Referee, venue));
+                PlaydayList.Add(_create.PlaydayInfo(fixture, venue));
             }
         }
         #endregion

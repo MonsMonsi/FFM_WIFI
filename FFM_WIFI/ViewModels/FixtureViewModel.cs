@@ -15,14 +15,14 @@ namespace FFM_WIFI.ViewModels
     class FixtureViewModel : BaseViewModel
     {
         #region Propperties
-        //Property für FixtureInfos
-        private ObservableCollection<Info.Fixture> _fixtureList;
-        public ObservableCollection<Info.Fixture> FixtureList
+        // Property für DetailBorder
+        private Info.Fixture _currentFixture;
+        public Info.Fixture CurrentFixture
         {
-            get { return _fixtureList; }
+            get { return _currentFixture; }
             set
             {
-                _fixtureList = value;
+                _currentFixture = value;
                 OnPropertyChanged();
             }
         }
@@ -65,8 +65,8 @@ namespace FFM_WIFI.ViewModels
         #endregion
 
         #region Commands
-        private RelayCommand _all;
-        public ICommand AllCommand { get { return _all; } }
+        private RelayCommand _previous;
+        public ICommand PreviousCommand { get { return _previous; } }
 
         private RelayCommand _next;
         public ICommand NextCommand { get { return _next; } }
@@ -78,19 +78,18 @@ namespace FFM_WIFI.ViewModels
         // Konstruktor
         public FixtureViewModel(Window window, Info.Team teamInfo, Info.Player[] playerInfo)
         {
-            _window = window;
             TeamInfo = teamInfo;
+            PlayerList = new ObservableCollection<Info.Player>();
+            _window = window;
             _fixtureCount = 0;
             _userTeam = _teamInfo.UserTeam;
             _playerInfo = playerInfo;
-            FixtureList = new ObservableCollection<Info.Fixture>();
-            PlayerList = new ObservableCollection<Info.Player>();
             SetDraftedPlayersList();
             _playday = _userTeam.UserTeamPlayday;
-            calc = new Calculate(_playday, _playerInfo);
+            calc = new Calculate(_playday, TeamInfo.UserTeam.UserTeamLeague, TeamInfo.Season, _playerInfo);
             calc.TeamPoints();
             _back = false;
-            _all = new RelayCommand(ShowAll, () => _playday == _userTeam.UserTeamPlayday);
+            _previous = new RelayCommand(ShowPrevious, () => _playday == _userTeam.UserTeamPlayday);
             _next = new RelayCommand(ShowNext, () => _playday == _userTeam.UserTeamPlayday);
             _home = new RelayCommand(GoToGameHome, () => _back);
             _home.RaiseCanExecuteChanged();
@@ -98,8 +97,11 @@ namespace FFM_WIFI.ViewModels
 
         private void GoToGameHome()
         {
-            _teamInfo.Playday++;
-            _teamInfo.UserTeam.UserTeamPlayday++;
+            UpdateTeamInfo();
+            if (_playday > 34)
+            {
+                GoToResult();
+            }
             GameHomeWindow uhWindow = new GameHomeWindow(TeamInfo, _playerInfo);
             _window.Close();
             uhWindow.ShowDialog();
@@ -112,20 +114,32 @@ namespace FFM_WIFI.ViewModels
             rWindow.ShowDialog();
         }
 
-        private void ShowAll()
+        private void UpdateTeamInfo()
         {
-            _playerInfo = calc.PlayerInfo;
-            FixtureList = calc.FixtureList;
-            SetDraftedPlayersList();
-            _playday++;
-            if (_playday > 34)
+            TeamInfo.Playday++;
+            TeamInfo.UserTeam.UserTeamPlayday++;
+            var create = new Create.Info();
+
+            TeamInfo.BestPlayers = create.GetBestPlayers(_playerInfo);
+        }
+
+        private void ShowPrevious()
+        {
+            if (_fixtureCount == 0)
             {
-                GoToResult();
+                _playerInfo = calc.PlayerInfo;
+                ListToArray();
             }
-            _all.RaiseCanExecuteChanged();
-            _next.RaiseCanExecuteChanged();
-            _back = true;
-            _home.RaiseCanExecuteChanged();
+            CurrentFixture = _fixtureInfo[_fixtureCount];
+            _fixtureCount++;
+            if (_fixtureCount == 9)
+            {
+                _playday++;
+                _previous.RaiseCanExecuteChanged();
+                _next.RaiseCanExecuteChanged();
+                _back = true;
+                _home.RaiseCanExecuteChanged();
+            }
         }
 
         private void ShowNext()
@@ -135,13 +149,12 @@ namespace FFM_WIFI.ViewModels
                 _playerInfo = calc.PlayerInfo;
                 ListToArray();
             }
-            FixtureList.Clear();
-            FixtureList.Add(_fixtureInfo[_fixtureCount]);
+            CurrentFixture = _fixtureInfo[_fixtureCount];
             _fixtureCount++;
             if (_fixtureCount == 9)
             {
                 _playday++;
-                _all.RaiseCanExecuteChanged();
+                _previous.RaiseCanExecuteChanged();
                 _next.RaiseCanExecuteChanged();
                 _back = true;
                 _home.RaiseCanExecuteChanged();
@@ -164,7 +177,10 @@ namespace FFM_WIFI.ViewModels
             PlayerList.Clear();
             foreach (var p in _playerInfo)
             {
-                PlayerList.Add(p);
+                if (p.Drafted)
+                {
+                    PlayerList.Add(p);
+                }
             }
         }
     }
