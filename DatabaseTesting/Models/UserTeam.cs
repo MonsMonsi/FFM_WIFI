@@ -10,10 +10,12 @@ namespace DatabaseTesting.Models
     {
         public int UserTeamPk { get; set; }
         public string UserTeamName { get; set; }
+        public string UserTeamLogo { get; set; }
         public int UserTeamLeague { get; set; }
         public int UserTeamSeason { get; set; }
         public int UserTeamUserFk { get; set; }
         public int UserTeamPlayday { get; set; }
+        public int UserTeamPoints { get; set; }
         public int UserTeamGk1 { get; set; }
         public int UserTeamDf1 { get; set; }
         public int UserTeamDf2 { get; set; }

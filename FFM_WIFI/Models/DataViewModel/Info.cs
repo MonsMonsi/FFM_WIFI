@@ -35,7 +35,14 @@ namespace FFM_WIFI.Models.DataViewModel
             public Event(JsonFixture.Event e)
             {
                 Minute = e.Time.Elapsed;
-                PlayerId = e.Player.Id;
+                if (e.Player.Id != null)
+                {
+                    PlayerId = int.Parse(e.Player.Id.ToString());
+                }
+                else
+                {
+                    PlayerId = 0;
+                }
                 PlayerName = e.Player.Name;
                 Logo = new GetFrom().Image(e.Team.Logo);
                 AssistId = e.Assist.Id;

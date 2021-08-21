@@ -225,20 +225,7 @@ namespace DatabaseTesting
             File.WriteAllText(path + "Images.json", jsonObject);
         }
 
-        static void WriteAllFixturesToFile()
-        {
-            WebClient client = new WebClient();
-            client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
-
-            var allFixtures = JsonSerializer.Deserialize<JsonAllFixtures.Root>(client.DownloadString($"https://v3.football.api-sports.io/fixtures?league=78&season=2021"),
-                                                                               new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string path = Path.Combine(docPath, @"JsonFiles\AllFixtures\L78S2021.json");
-
-            File.WriteAllText(path, JsonSerializer.Serialize(allFixtures));
-        }
-
-        static void WriteToJsonSquads(int leagueId, List<int> teamIds, int seasonId)
+        static void WriteToJsonSquads(int leagueId, int seasonId, List<int> teamIds)
         {
             foreach (var teamId in teamIds)
             {
@@ -260,7 +247,7 @@ namespace DatabaseTesting
                         string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                         string path = Path.Combine(docPath, @$"JsonFiles\Players\Players_L{leagueId}S{seasonId}T{teamId}P{page}.json");
 
-                        Console.WriteLine(squad.response[0].statistics[0].team.name + squad.paging.current + squad.paging.total);
+                        // Console.WriteLine(squad.response[0].statistics[0].team.name + squad.paging.current + squad.paging.total);
 
                         File.WriteAllText(path, JsonSerializer.Serialize(squad));
                         page++;
@@ -270,20 +257,20 @@ namespace DatabaseTesting
             }
         } 
 
-        static List<int> GetTeamIds(int season)
+        static List<int> GetTeamIds(int league, int season)
         {
             List<int> idList = new List<int>();
 
             WebClient client = new WebClient();
             client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
 
-            var teamIds = JsonSerializer.Deserialize<JsonTeamVenue.Root>(client.DownloadString($"https://v3.football.api-sports.io/teams?league=78&season={season}"),
+            var teamIds = JsonSerializer.Deserialize<JsonTeamVenue.Root>(client.DownloadString($"https://v3.football.api-sports.io/teams?league={league}&season={season}"),
                                                                                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            //string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //string path = Path.Combine(docPath, @$"JsonFiles\TeamVenue\TeamVenue_L78S2021.json");
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string path = Path.Combine(docPath, @$"JsonFiles\TeamVenue\TeamVenue_L{league}S{season}.json");
 
-            //File.WriteAllText(path, JsonSerializer.Serialize(teamIds));
+            File.WriteAllText(path, JsonSerializer.Serialize(teamIds));
 
             foreach (var teamId in teamIds.response)
             {
@@ -408,13 +395,18 @@ namespace DatabaseTesting
             }
         }
 
-        static void Main(string[] args)
+        static void WriteToFileFixtureDetails(int league, int season)
         {
             WebClient client = new WebClient();
             client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
 
-            var allFixtures = JsonSerializer.Deserialize<JsonAllFixtures.Root>(client.DownloadString($"https://v3.football.api-sports.io/fixtures?league=78&season=2020"),
+            var allFixtures = JsonSerializer.Deserialize<JsonAllFixtures.Root>(client.DownloadString($"https://v3.football.api-sports.io/fixtures?league={league}&season={season}"),
                                                                                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string path = Path.Combine(docPath, @$"JsonFiles\AllFixtures\AllFixtures_L{league}S{season}.json");
+
+            File.WriteAllText(path, JsonSerializer.Serialize(allFixtures));
 
             List<int> ids = new List<int>();
 
@@ -433,15 +425,40 @@ namespace DatabaseTesting
                 var fixture = JsonSerializer.Deserialize<JsonFixture.Root>(client.DownloadString($"https://v3.football.api-sports.io/fixtures?id={id}"),
                                                                                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }).Response[0];
 
-                string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string path = Path.Combine(docPath, @$"JsonFiles\Fixture\Fixture_L78S2020I{id}.json");
+                docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                path = Path.Combine(docPath, @$"JsonFiles\Fixture\Fixture_L{league}S{season}I{id}.json");
 
                 Console.WriteLine(i);
                 i++;
 
                 File.WriteAllText(path, JsonSerializer.Serialize(fixture));
-                Thread.Sleep(50);
+                Thread.Sleep(300);
             }
+        }
+
+        static void Main(string[] args)
+        {
+            // get Ids and Values
+            var values = new SortedDictionary<int, int>();
+            var idList = new List<int>();
+
+            using (FootballContext context = new FootballContext())
+            {
+                var playerValues = context.TeamPlayerAssignment.Where(p => p.TeaPlaSeasonFk == 2020);
+
+                foreach (var p in playerValues)
+                {
+                    if (!idList.Contains(p.TeaPlaPlayerFk))
+                    {
+                        values.Add(p.TeaPlaPlayerFk, p.TeaPlaPlayerValue);
+                        idList.Add(p.TeaPlaPlayerFk);
+                    }
+                }
+            }
+
+            // write new values
+
+
         }
     }
 }

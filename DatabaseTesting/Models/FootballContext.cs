@@ -34,7 +34,7 @@ namespace DatabaseTesting.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=localhost\\sqlexpress;Initial Catalog=WIFI_FootballAPI;Integrated Security=True;MultipleActiveResultSets=true"); 
+                optionsBuilder.UseSqlServer("Data Source=localhost\\sqlexpress;Initial Catalog=WIFI_FootballAPI;Integrated Security=True");
             }
         }
 
@@ -193,11 +193,19 @@ namespace DatabaseTesting.Models
 
                 entity.Property(e => e.TeaPlaPlayerValue).HasColumnName("TeaPla_PlayerValue");
 
+                entity.Property(e => e.TeaPlaSeasonFk).HasColumnName("TeaPla_Season_FK");
+
                 entity.HasOne(d => d.TeaPlaPlayerFkNavigation)
                     .WithMany(p => p.TeamPlayerAssignment)
                     .HasForeignKey(d => d.TeaPlaPlayerFk)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("TeaPla_Player_FK");
+
+                entity.HasOne(d => d.TeaPlaSeasonFkNavigation)
+                    .WithMany(p => p.TeamPlayerAssignment)
+                    .HasForeignKey(d => d.TeaPlaSeasonFk)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TeamPlayer_Assignment_Season");
 
                 entity.HasOne(d => d.TeaPlaTeamFkNavigation)
                     .WithMany(p => p.TeamPlayerAssignment)
@@ -253,6 +261,8 @@ namespace DatabaseTesting.Models
 
                 entity.Property(e => e.UserTeamLeague).HasColumnName("UserTeam_League");
 
+                entity.Property(e => e.UserTeamLogo).HasColumnName("UserTeam_Logo");
+
                 entity.Property(e => e.UserTeamMf1).HasColumnName("UserTeam_MF1");
 
                 entity.Property(e => e.UserTeamMf2).HasColumnName("UserTeam_MF2");
@@ -273,6 +283,8 @@ namespace DatabaseTesting.Models
                 entity.Property(e => e.UserTeamNumberPlayers).HasColumnName("UserTeam_NumberPlayers");
 
                 entity.Property(e => e.UserTeamPlayday).HasColumnName("UserTeam_Playday");
+
+                entity.Property(e => e.UserTeamPoints).HasColumnName("UserTeam_Points");
 
                 entity.Property(e => e.UserTeamSeason).HasColumnName("UserTeam_Season");
 

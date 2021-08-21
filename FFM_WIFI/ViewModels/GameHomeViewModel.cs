@@ -100,8 +100,8 @@ namespace FFM_WIFI.ViewModels
         #region Attributes
 
         private Window _window;
-        private GetFrom.Database _getFromDatabase;
-        private WriteTo.Database _writeToDatabase;
+        private GetFrom.Database _get;
+        private WriteTo.Database _write;
         private Info.Player[] _playerInfo;
         private int _playday;
         private TimeSpan _time;
@@ -116,7 +116,7 @@ namespace FFM_WIFI.ViewModels
             LineUp = new Info.Player[11];
             _playerInfo = new Info.Player[17];
             DraftList = new ObservableCollection<Info.Player>();
-            _getFromDatabase = new GetFrom.Database(null, TeamInfo.UserTeam);
+            _get = new GetFrom.Database(null, TeamInfo.UserTeam);
             _playday = TeamInfo.UserTeam.UserTeamPlayday;
             _lineCount = GetLineUpIndex();
             // Spielerdaten setzen oder updaten
@@ -129,7 +129,7 @@ namespace FFM_WIFI.ViewModels
                 _playerInfo = playerInfo;
                 ResetDrafted();
             }
-            _writeToDatabase = new WriteTo.Database(TeamInfo.UserTeam, _playerInfo);
+            _write = new WriteTo.Database(TeamInfo.UserTeam, _playerInfo);
             PlaydayList = new ObservableCollection<Info.Playday>();
             SetPlayerDraftList();
             SetPlaydayList();
@@ -158,7 +158,7 @@ namespace FFM_WIFI.ViewModels
         private void GoToUserHome()
         {
             WriteData();
-            UserHomeWindow uhWindow = new UserHomeWindow(_getFromDatabase.User);
+            UserHomeWindow uhWindow = new UserHomeWindow(_get.User);
             _window.Close();
             uhWindow.ShowDialog();
         }
@@ -199,7 +199,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPlayerInfo()
         {
-            _playerInfo = _getFromDatabase.PlayerInfo();
+            _playerInfo = _get.PlayerInfo();
         }
 
         private int GetLineUpIndex()
@@ -346,7 +346,7 @@ namespace FFM_WIFI.ViewModels
 
         private void WriteData()
         {
-            _writeToDatabase.UserTeamPerformance();
+            _write.UserTeamPerformance();
         }
 
         private void SetPlaydayDate()

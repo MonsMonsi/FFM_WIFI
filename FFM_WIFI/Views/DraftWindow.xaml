@@ -42,10 +42,10 @@
                                Opacity="0.8"
                                Height="80" Width="80"/>
 
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40 5 0 0"
-                                   TextAlignment="Center" TextWrapping="Wrap"
-                                   Height="70" Width="200"
-                                   FontSize="16" Foreground="Black">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50 15 0 0"
+                               TextAlignment="Center" TextWrapping="Wrap"
+                               Height="70" Width="200"
+                               FontSize="16" Foreground="Black">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}Auf geht's {0}&#x0a;Wähle dein Team!">
                                 <Binding Path="UserTeam.UserTeamUserFkNavigation.UserName"/>

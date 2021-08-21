@@ -158,10 +158,10 @@ namespace FFM_WIFI.Models.Utility
             #region Properties
             public User User { get; set; }
             public int TeamPoints { get; set; }
+            public UserTeam UserTeam { get; set; }
             #endregion
 
             #region Attributes
-            private UserTeam _userTeam;
             private Create.Info _create;
             #endregion
 
@@ -181,7 +181,7 @@ namespace FFM_WIFI.Models.Utility
                     User = user;
                 }
                 _create = new Create.Info();
-                _userTeam = userTeam;
+                UserTeam = userTeam;
             }
             #endregion
 
@@ -194,12 +194,12 @@ namespace FFM_WIFI.Models.Utility
                 {
                     int[] players = new int[17]
                     {
-                        _userTeam.UserTeamGk1, _userTeam.UserTeamDf1, _userTeam.UserTeamDf2, _userTeam.UserTeamDf3, _userTeam.UserTeamDf4, _userTeam.UserTeamMf1,
-                        _userTeam.UserTeamMf2, _userTeam.UserTeamMf3, _userTeam.UserTeamMf4, _userTeam.UserTeamAt1, _userTeam.UserTeamAt2, _userTeam.UserTeamGk2,
-                        _userTeam.UserTeamDf5, _userTeam.UserTeamMf5, _userTeam.UserTeamMf6, _userTeam.UserTeamAt3, _userTeam.UserTeamAt4
+                        UserTeam.UserTeamGk1, UserTeam.UserTeamDf1, UserTeam.UserTeamDf2, UserTeam.UserTeamDf3, UserTeam.UserTeamDf4, UserTeam.UserTeamMf1,
+                        UserTeam.UserTeamMf2, UserTeam.UserTeamMf3, UserTeam.UserTeamMf4, UserTeam.UserTeamAt1, UserTeam.UserTeamAt2, UserTeam.UserTeamGk2,
+                        UserTeam.UserTeamDf5, UserTeam.UserTeamMf5, UserTeam.UserTeamMf6, UserTeam.UserTeamAt3, UserTeam.UserTeamAt4
                     };
 
-                    var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == _userTeam.UserTeamPk).FirstOrDefault();
+                    var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == UserTeam.UserTeamPk).FirstOrDefault();
                     int[] points = new int[17]
                     {
                         performance.UserTeamPerformanceGk1, performance.UserTeamPerformanceDf1, performance.UserTeamPerformanceDf2, performance.UserTeamPerformanceDf3, performance.UserTeamPerformanceDf4, performance.UserTeamPerformanceMf1,
@@ -240,17 +240,83 @@ namespace FFM_WIFI.Models.Utility
                             var season = context.Season.Where(s => s.SeasonPk == u.UserTeamSeason).FirstOrDefault();
                             var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == u.UserTeamPk).FirstOrDefault();
 
-                            int points = performance.UserTeamPerformanceGk1 + performance.UserTeamPerformanceDf1 + performance.UserTeamPerformanceDf2 + performance.UserTeamPerformanceDf3
-                                         + performance.UserTeamPerformanceDf4 + performance.UserTeamPerformanceMf1 + performance.UserTeamPerformanceMf2 + performance.UserTeamPerformanceMf3
-                                         + performance.UserTeamPerformanceMf4 + performance.UserTeamPerformanceAt1 + performance.UserTeamPerformanceAt2 + performance.UserTeamPerformanceGk2
-                                         + performance.UserTeamPerformanceDf5 + performance.UserTeamPerformanceMf5 + performance.UserTeamPerformanceMf6 + performance.UserTeamPerformanceAt3
-                                         + performance.UserTeamPerformanceAt4;
-
-                            _teams.Add(_create.TeamInfo(u, league, season, performance, points));
+                            _teams.Add(_create.TeamInfo(u, league, season, performance));
                         }
                     }
                 }
                 return _teams;
+            }
+
+            public List<League> LeagueList()
+            {
+                var list = new List<League>();
+
+                using (FootballContext context = new FootballContext())
+                {
+                    var leagues = context.League;
+
+                    foreach (var l in leagues)
+                    {
+                        list.Add(l);
+                    }
+                }
+
+                return list;
+            }
+
+            public List<Season> SeasonList()
+            {
+                var list = new List<Season>();
+
+                using (FootballContext context = new FootballContext())
+                {
+                    var seasons = context.Season;
+
+                    foreach (var s in seasons)
+                    {
+                        list.Add(s);
+                    }
+                }
+
+                return list;
+            }
+
+            public List<string> LogoList()
+            {
+                var list = new List<string>();
+
+                using (FootballContext context = new FootballContext())
+                {
+                    var teams = context.Team;
+
+                    foreach (var t in teams)
+                    {
+                        list.Add(t.TeamLogo);
+                    }
+                }
+
+                return list;
+            }
+
+            public List<UserTeam> UserRank()
+            {
+                var _userTeams = new List<UserTeam>();
+
+                using (FootballContext context = new FootballContext())
+                {
+                    var userTeams = context.UserTeam.Where(u => u.UserTeamLeague == UserTeam.UserTeamLeague && u.UserTeamSeason == UserTeam.UserTeamSeason && u.UserTeamPlayday < 35).Include(u => u.UserTeamUserFkNavigation);
+
+                    if (userTeams != null)
+                    {
+                        foreach (var u in userTeams)
+                        {
+                            _userTeams.Add(u);
+                        }
+
+                        return _userTeams;
+                    }
+                }
+                return null;
             }
             #endregion
         }
@@ -285,16 +351,20 @@ namespace FFM_WIFI.Models.Utility
         }
         public BitmapImage Image(string path)
         {
-            BitmapImage bI = new BitmapImage();
+            if (path != null)
+            {
+                BitmapImage bI = new BitmapImage();
 
-            bI.BeginInit();
-            bI.CacheOption = BitmapCacheOption.OnDemand;
-            bI.DecodePixelHeight = 100;
-            bI.DecodePixelWidth = 100;
-            bI.UriSource = new Uri(path);
-            bI.EndInit();
+                bI.BeginInit();
+                bI.CacheOption = BitmapCacheOption.OnDemand;
+                bI.DecodePixelHeight = 100;
+                bI.DecodePixelWidth = 100;
+                bI.UriSource = new Uri(path);
+                bI.EndInit();
 
-            return bI;
+                return bI;
+            }
+            return null;
         }
     }
 }

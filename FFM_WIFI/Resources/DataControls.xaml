@@ -12,6 +12,147 @@
         
     </Style>
 
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemLeague">
+
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=Width, Converter={converters:Resize}, ConverterParameter=95}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="InnerBorder"
+                            Opacity="0.8"
+                            Margin="1"
+                            CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width, Converter={converters:Resize}, ConverterParameter=90}"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="13" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center">
+
+                        <Border.Background>
+                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                                <GradientStop Color="AliceBlue" Offset="0.05"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding LeagueLogo}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"
+                                   Opacity="0.8"
+                                   Height="28" Width="28"/>
+
+                            <TextBlock Text="{Binding LeagueName}"
+                                       Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Padding="0 0 3 0"
+                                       Width="95"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="BorderThickness" Value="2 0 0 2"/>
+                            <Setter TargetName="InnerBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemSeason">
+
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=Width, Converter={converters:Resize}, ConverterParameter=95}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="InnerBorder"
+                            Opacity="0.8"
+                            Margin="1"
+                            CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width, Converter={converters:Resize}, ConverterParameter=90}"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="18" TextBlock.FontWeight="Bold">
+
+                        <Border.Background>
+                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                                <GradientStop Color="AliceBlue" Offset="0.05"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding SeasonName}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="BorderThickness" Value="2 0 0 2"/>
+                            <Setter TargetName="InnerBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListViewItem"
+           x:Key="ListViewItemLogo">
+
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=Width, Converter={converters:Resize}, ConverterParameter=95}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="InnerBorder"
+                            CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
+                            Opacity="0.8"
+                            Margin="1"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width, Converter={converters:Resize}, ConverterParameter=60}"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="9" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center">
+
+                        <Border.Background>
+                            <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
+                                <GradientStop Color="DarkGoldenRod" Offset="0.4"/>
+                                <GradientStop Color="AliceBlue" Offset="0.05"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+
+                        <Grid>
+
+                            <Image Source="{Binding}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Opacity="0.8"
+                                   Height="25" Width="25"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="BorderThickness" Value="2 0 0 2"/>
+                            <Setter TargetName="InnerBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+
+
+
+
+
+
     <!--ListViewItems-->
     <!--Style für Teamlisten-->
     <Style TargetType="ListViewItem"
@@ -161,6 +302,7 @@
                     <Border x:Name="PlayerListItemBorder"
                             CornerRadius="4 4 4 4"
                             Background="Azure"
+                            Margin="1 1 8 1"
                             Opacity="{TemplateBinding Opacity}"
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                             TextBlock.Foreground="DarkRed" TextBlock.FontSize="13" TextBlock.FontWeight="DemiBold">
@@ -177,7 +319,7 @@
 
                             <TextBlock Text="{Binding Name}"
                                        Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       Padding="0 0 5 0"
+                                       Padding="0 5 5 0"
                                        TextWrapping="Wrap" TextAlignment="Center"
                                        FontFamily="Bahnhof Condensed"
                                        Height="{TemplateBinding Height}"/>
@@ -539,5 +681,42 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="DataGrid"
+           x:Key="StandardDataGrid">
+
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="GridLinesVisibility" Value="Vertical"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader"
+           x:Key="StandardDataGridColumnHeader">
+
+        <Setter Property="Background" Value="Azure"/>
+        <Setter Property="Foreground" Value="DarkSlateGray"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="Padding" Value="5 0 0 0"/>
+        <Setter Property="Margin" Value="0 5 0 5"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
+    <Style TargetType="DataGridRow"
+           x:Key="StandardDataGridRow">
+
+        <Setter Property="Background" Value="Azure"/>
+        <Setter Property="Foreground" Value="DarkSlateGray"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Bahnhof Condensed"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Height" Value="25"/>
+        <!--<Setter Property="Padding" Value="5 0 0 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>-->
     </Style>
 </ResourceDictionary>

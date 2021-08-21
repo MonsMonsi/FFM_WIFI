@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FFM_WIFI.Views"
+        xmlns:local="clr-namespace:FFM_WIFI.Views" xmlns:viewmodels="clr-namespace:FFM_WIFI.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:UserHomeViewModel}"
         mc:Ignorable="d"
         Title="UserHomeWindow" Height="700" Width="600"
         WindowStartupLocation="CenterScreen"
@@ -28,10 +29,17 @@
                     Grid.Column="1"
                     Margin="5">
 
-                <Image Source="{Binding SelectedActiveTeam.Logo}"
-                       HorizontalAlignment="Left" Margin="20 0 0 0"
-                       Height="90" Width="90"/>
+                <Grid>
+                    <Image Source="{Binding SelectedActiveTeam.Logo}"
+                           HorizontalAlignment="Left" Margin="20 0 0 0"
+                           Height="60" Width="60"/>
 
+                    <TextBlock Text="{Binding SelectedActiveTeam.Name}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 20 0 0"
+                               TextWrapping="Wrap" TextAlignment="Center"
+                               Width="180" Height="50"
+                               Foreground="DarkRed" FontSize="20" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
+                </Grid>
             </Border>
 
             <Border Style="{StaticResource GroupBorderLeft}"
@@ -43,9 +51,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0"
-                                   TextAlignment="Center"
-                                   Width="250"
-                                   FontSize="28" FontWeight="DemiBold" Foreground="Black" FontFamily="Bauhaus 93" Height="41">
+                               TextAlignment="Center"
+                               Width="250"
+                               FontSize="28" FontWeight="DemiBold" Foreground="Black" FontFamily="Bauhaus 93" Height="41">
 
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}Hallo {0}">
@@ -55,8 +63,8 @@
                     </TextBlock>
 
                     <Label Content="Erstelle oder wähle ein Team!"
-                               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,38,0,0"
-                               FontSize="13" FontWeight="DemiBold" Foreground="Black" Height="27" Width="181"/>
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,38,0,0"
+                           FontSize="13" FontWeight="DemiBold" Foreground="Black" Height="27" Width="181"/>
                 </Grid>
 
             </Border>
@@ -89,9 +97,10 @@
                                 Height="25" Width="150"/>
 
                         <Border CornerRadius="20 20 20 20"
-                                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
-                                        BorderBrush="Azure" BorderThickness="3"
-                                        Height="220" Width="290">
+                                HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
+                                BorderBrush="Azure" BorderThickness="3"
+                                Height="220" Width="290">
+                            
                             <Border.Background>
                                 <RadialGradientBrush>
                                     <GradientStop Color="AliceBlue" Offset="0.1"/>
@@ -127,38 +136,49 @@
                 </Border>
 
                 <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
-                                CornerRadius="100 100 100 100"
-                                Height="400" Width="250"
-                                Background="LightGray">
+                        CornerRadius="100 100 100 100"
+                        Height="400" Width="250"
+                        Background="LightGray">
 
-                    <Canvas TextBlock.Foreground="Black" TextBlock.FontWeight="DemiBold">
-                        
-
-                        <Label Content="{Binding SelectedActiveTeam.Name}"
-                                       Canvas.Top="60"
-                                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                       Width="250"
-                                       Foreground="DarkRed" FontSize="25" FontWeight="DemiBold" FontFamily="Bauhaus 93"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
                         <Image Source="{Binding SelectedActiveTeam.League}"
-                                       Canvas.Top="270" Canvas.Left="10"
-                                       Height="50" Width="50"/>
+                               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25 35 0 0"
+                               Height="40" Width="40"/>
 
                         <TextBlock Text="{Binding SelectedActiveTeam.Season}"
-                                           Canvas.Top="320" Canvas.Left="17"
-                                           FontSize="13"/>
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34 76 0 0"
+                                   FontSize="9" FontWeight="ExtraBold" Foreground="Black"
+                                   Height="20"/>
 
-                        <TextBlock Canvas.Top="280" Canvas.Left="70"
-                                           FontSize="16">
+                        <TextBlock Text="{Binding SelectedActiveTeam.Playday, StringFormat={}Spieltag: {0}}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30 35 0 0"
+                                   FontSize="20" FontWeight="ExtraBold" Foreground="Black"
+                                   Height="40"/>
 
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}Aktueller Spieltag: {0}&#x0a;Anzahl Spieler: {1}">
-                                    <Binding Path="SelectedActiveTeam.Playday"/>
-                                    <Binding Path="SelectedActiveTeam.Players"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Canvas>
+                        <DataGrid ItemsSource="{Binding UserRankList}"
+                                  Style="{StaticResource StandardDataGrid}"
+                                  ColumnHeaderStyle="{StaticResource StandardDataGridColumnHeader}"
+                                  RowStyle="{StaticResource StandardDataGridRow}"
+                                  AlternatingRowBackground="DarkGray"
+                                  Grid.Row="1" VerticalAlignment="Top"
+                                  Height="200" Width="230">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="User"
+                                                    Binding="{Binding UserTeamUserFkNavigation.UserName}"
+                                                    Width="*"/>
+
+                                <DataGridTextColumn Header="Punkte"
+                                                    Binding="{Binding UserTeamPoints}"
+                                                    Width="70"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
                 </Border>
 
                 <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
@@ -210,12 +230,12 @@
 
                 <Grid>
                     <Button Style="{StaticResource Button}" Content="Team draften" Command="{Binding DraftCommand}"
-                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 30 0 0"
-                                Height="25" Width="200"/>
+                            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 30 0 0"
+                            Height="25" Width="200"/>
 
-                    <Button Style="{StaticResource Button}" Content="Zur Anmeldung" Command="{Binding LoginCommand}"
-                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 60 0 0" 
-                                Height="25" Width="200"/>
+                    <Button Style="{StaticResource Button}" Content="Zur Anmeldung" Command="{Binding StartCommand}"
+                            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 60 0 0" 
+                            Height="25" Width="200"/>
                 </Grid>
             </Border>
         </Grid>

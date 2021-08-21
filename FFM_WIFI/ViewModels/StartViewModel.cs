@@ -35,15 +35,16 @@ namespace FFM_WIFI.ViewModels
 
         // Attribute
         private User _user;
+        private Window _window;
 
         // Commands
-        public ICommand EditDBCommand { get; set; }
         public ICommand LoginCommand { get; set; }
         public ICommand NewUserCommand { get; set; }
 
         // Konstruktor
-        public StartViewModel()
+        public StartViewModel(Window window)
         {
+            _window = window;
             LoginCommand = new RelayCommand(CheckLogin);
             NewUserCommand = new RelayCommand(CheckNewUser);
         }
@@ -51,6 +52,7 @@ namespace FFM_WIFI.ViewModels
         private void GoToUserHome()
         {
             UserHomeWindow uhWindow = new UserHomeWindow(_user);
+            _window.Close();
             uhWindow.ShowDialog();
         }
 

@@ -15,6 +15,7 @@ namespace FFM_WIFI.Models.DataContext
         public int UserTeamSeason { get; set; }
         public int UserTeamUserFk { get; set; }
         public int UserTeamPlayday { get; set; }
+        public int UserTeamPoints { get; set; }
         public int UserTeamGk1 { get; set; }
         public int UserTeamDf1 { get; set; }
         public int UserTeamDf2 { get; set; }

@@ -35,9 +35,9 @@ namespace FFM_WIFI.Models.Utility
         #endregion
 
         #region Constructor
-        public Calculate(int playday, int league, int season, Info.Player[] teamInfo = null)
+        public Calculate(int playday, int league, int season, Info.Player[] playerInfo = null)
         {
-            PlayerInfo = teamInfo;
+            PlayerInfo = playerInfo;
             FixtureList = new ObservableCollection<Info.Fixture>();
             PlaydayList = new ObservableCollection<Info.Playday>();
             _get = new GetFrom();
@@ -83,15 +83,23 @@ namespace FFM_WIFI.Models.Utility
 
         private void SetIndexes()
         {
+            // Ligen haben verschiedene Größen, daher unterschiedliche Anzahl Spiele
+            int games = _league switch
+            {
+                78 => 9,
+                61 or 39 => 10,
+                _ => 0
+            };
+
             if (_playday == 1)
             {
                 _iMin = 0;
-                _iMax = _iMin + 9;
+                _iMax = games;
             }
             else
             {
-                _iMin = (_playday - 1) * 8 + (_playday - 1);
-                _iMax = _iMin + 9;
+                _iMin = (_playday - 1) * games;
+                _iMax = _iMin + games;
             }
         }
 

@@ -36,7 +36,7 @@
             public string name { get; set; }
             public string firstname { get; set; }
             public string lastname { get; set; }
-            public int age { get; set; }
+            public int? age { get; set; }
             public Birth birth { get; set; }
             public string nationality { get; set; }
             public string height { get; set; }

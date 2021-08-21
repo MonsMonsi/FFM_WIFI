@@ -40,7 +40,15 @@ namespace FFM_WIFI.Models.Utility
                 {
                     var userTeam = context.UserTeam.Where(u => u.UserTeamPk == _userTeam.UserTeamPk).FirstOrDefault();
 
+                    int points = 0;
+
+                    foreach (var p in _playerInfo)
+                    {
+                        points += p.Points;
+                    }
+
                     userTeam.UserTeamPlayday = _userTeam.UserTeamPlayday;
+                    userTeam.UserTeamPoints = points;
 
                     var performance = context.UserTeamPerformance.Where(p => p.UserTeamPerformanceUserTeamFk == _userTeam.UserTeamPk).FirstOrDefault();
 
@@ -53,6 +61,8 @@ namespace FFM_WIFI.Models.Utility
                     performance.UserTeamPerformanceMf2 = _playerInfo[6].Points; performance.UserTeamPerformanceAt3 = _playerInfo[15].Points;
                     performance.UserTeamPerformanceMf3 = _playerInfo[7].Points; performance.UserTeamPerformanceAt4 = _playerInfo[16].Points;
                     performance.UserTeamPerformanceMf4 = _playerInfo[8].Points;
+
+                    
 
                     context.SaveChanges();
                 }

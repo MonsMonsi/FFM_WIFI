@@ -3,6 +3,7 @@ using FFM_WIFI.Models.DataContext;
 using FFM_WIFI.Models.DataViewModel;
 using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedActiveTeam = value;
+                SetUserRankList();
                 _draft.RaiseCanExecuteChanged();
                 _game.RaiseCanExecuteChanged();
                 _pdf.RaiseCanExecuteChanged();
@@ -55,6 +57,18 @@ namespace FFM_WIFI.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        // UserRank Datagrid
+        private ObservableCollection<UserTeam> _userRankList;
+        public ObservableCollection<UserTeam> UserRankList
+        {
+            get { return _userRankList; }
+            set
+            {
+                _userRankList = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Commands
@@ -65,6 +79,7 @@ namespace FFM_WIFI.ViewModels
         private RelayCommand _game;
         public ICommand GameCommand { get { return _game; } }
         private RelayCommand _pdf;
+        public ICommand StartCommand { get; set; }
         public ICommand PdfCommand { get { return _pdf; } }
         #endregion
 
@@ -84,18 +99,26 @@ namespace FFM_WIFI.ViewModels
             _get = new GetFrom.Database(_user);
             //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
+            StartCommand = new RelayCommand(GoToStart);
             _draft = new RelayCommand(GoToDraft, () => SelectedActiveTeam != null && SelectedActiveTeam.Players != 17);
             _game = new RelayCommand(GoToGameHome, () => SelectedActiveTeam != null && SelectedActiveTeam.Players == 17);
             _pdf = new RelayCommand(SaveAsPdf, () => SelectedClassicTeam != null);
             SetTeamLists();
         }
 
+        private void GoToStart()
+        {
+            StartWindow sWindow = new StartWindow();
+            _window.Close();
+            sWindow.ShowDialog();
+        }
+
         #region Methods
         private void GoToNewTeam()
         {
-            NewTeamWindow ntwindow = new NewTeamWindow(User);
+            NewTeamWindow ntWindow = new NewTeamWindow(User);
             _window.Close();
-            ntwindow.ShowDialog();
+            ntWindow.ShowDialog();
         }
 
         private void GoToDraft()
@@ -130,6 +153,12 @@ namespace FFM_WIFI.ViewModels
                     ActiveTeamList.Add(team);
                 }
             }
+        }
+
+        private void SetUserRankList()
+        {
+            _get.UserTeam = SelectedActiveTeam.UserTeam;
+            UserRankList = new (_get.UserRank());
         }
         #endregion
 

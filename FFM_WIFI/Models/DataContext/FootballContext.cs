@@ -276,6 +276,8 @@ namespace FFM_WIFI.Models.DataContext
 
                 entity.Property(e => e.UserTeamPlayday).HasColumnName("UserTeam_Playday");
 
+                entity.Property(e => e.UserTeamPoints).HasColumnName("UserTeam_Points");
+
                 entity.Property(e => e.UserTeamSeason).HasColumnName("UserTeam_Season");
 
                 entity.Property(e => e.UserTeamUserFk).HasColumnName("UserTeam_User_FK");

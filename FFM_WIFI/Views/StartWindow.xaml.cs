@@ -12,7 +12,7 @@ namespace FFM_WIFI.Views
         public StartWindow()
         {
             InitializeComponent();
-            swvm = new StartViewModel();
+            swvm = new StartViewModel(this);
             this.DataContext = swvm;
         }
     }

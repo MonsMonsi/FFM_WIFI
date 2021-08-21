@@ -119,8 +119,8 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Halftime
         {
-            public int Home { get; set; }
-            public int Away { get; set; }
+            public int? Home { get; set; }
+            public int? Away { get; set; }
         }
 
         public class Fulltime
@@ -167,7 +167,7 @@ namespace FFM_WIFI.Models.DataJson
 
         public class Player
         {
-            public int Id { get; set; }
+            public int? Id { get; set; }
             public string Name { get; set; }
         }
 

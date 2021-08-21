@@ -35,7 +35,7 @@ namespace FFM_WIFI.Models.Utility
             #endregion
 
             #region Methods
-            public DataViewModel.Info.Team TeamInfo(UserTeam userTeam, League league, Season season, UserTeamPerformance performance, int points)
+            public DataViewModel.Info.Team TeamInfo(UserTeam userTeam, League league, Season season, UserTeamPerformance performance)
             {
                 DataViewModel.Info.Team temp;
                 DataViewModel.Info.Player[] players = new Database(null, userTeam).PlayerInfo();
@@ -44,12 +44,12 @@ namespace FFM_WIFI.Models.Utility
                 {
                     temp = new DataViewModel.Info.Team(userTeam.UserTeamPk, userTeam.UserTeamUserFkNavigation.UserPk, userTeam.UserTeamName, new GetFrom().Image(_images.Star),
                                                        userTeam.UserTeamPlayday, userTeam.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonPk,
-                                                       points, GetBestPlayers(players), userTeam, performance);
+                                                       userTeam.UserTeamPoints, GetBestPlayers(players), userTeam, performance);
                     return temp;
                 }
                 temp = new DataViewModel.Info.Team(userTeam.UserTeamPk, userTeam.UserTeamUserFkNavigation.UserPk, userTeam.UserTeamName, new GetFrom().Image(userTeam.UserTeamLogo),
                                                    userTeam.UserTeamPlayday, userTeam.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonPk,
-                                                   points, GetBestPlayers(players), userTeam, performance);
+                                                   userTeam.UserTeamPoints, GetBestPlayers(players), userTeam, performance);
                 return temp;
             }
 

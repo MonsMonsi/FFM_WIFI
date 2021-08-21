@@ -9,8 +9,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles.xaml"/>
                 <ResourceDictionary Source="Resources/Borders.xaml"/>
-                <ResourceDictionary Source="Resources/ListViews.xaml"/>
+                <ResourceDictionary Source="Resources/DataControls.xaml"/>
                 <ResourceDictionary Source="Resources/TextControls.xaml"/>
+                <ResourceDictionary Source="Resources/Scrollbars.xaml"/>
+                <ResourceDictionary Source="Resources/ComboBoxes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary> 
     </Application.Resources>

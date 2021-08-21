@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FFM_WIFI.Views"
+        xmlns:local="clr-namespace:FFM_WIFI.Views" xmlns:viewmodels="clr-namespace:FFM_WIFI.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:NewTeamViewModel}"
         mc:Ignorable="d"
         Title="NewTeamWindow" Height="700" Width="500"
         WindowStyle="None"
@@ -37,7 +37,7 @@
                     <Border Style="{StaticResource TextBoxBorder}" 
                             Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                        <TextBox Text="{Binding NewTeamName}"
+                        <TextBox Text="{Binding NewTeamName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                  BorderThickness="0"
                                  TextAlignment="Center"
                                  Padding="5 3 5 0"
@@ -45,6 +45,11 @@
                                  Width="170" Height="30"
                                  Foreground="Black" FontSize="20" FontWeight="DemiBold"/>
                     </Border>
+
+                    <Button Style="{StaticResource Button}" Command="{Binding NameCommand}"
+                            Content="weiter"
+                            Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 10"
+                            Height="25" Width="80"/>
                 </Grid>
             </Border>
 
@@ -71,40 +76,79 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Wähle die Liga" 
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 80"/>
 
-                    <ComboBox ItemsSource="{Binding LeagueList}" SelectedItem="{Binding SelectedLeague}" 
-                              ItemContainerStyle="{StaticResource ComboBoxItemLeague}"
-                              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10 0 0" 
-                              Background="Transparent"
-                              MaxHeight="30" Height="25" MinHeight="22" Width="150" MinWidth="120"/>
+                    <ListView ItemsSource="{Binding LeagueList}" SelectedItem="{Binding SelectedLeague}"
+                              Style="{StaticResource StandardListView}"
+                              ItemContainerStyle="{StaticResource ListViewItemLeague}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0"
+                              Height="70" Width="150"/>
 
-                    <TextBlock Text="Wähle die Saison" 
-                               Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
+                    <Border Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0 10 0 0"
+                            CornerRadius="25"
+                            BorderBrush="Darkred" BorderThickness="2"
+                            Width="60" Height="100">
+
+                        <Grid>
+
+                            <Image Source="{Binding SelectedLeague.LeagueLogo}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 19 0 0"
+                                   Height="40" Width="40"/>
+
+                            <TextBlock Text="{Binding SelectedSeason.SeasonName}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 44 0 0"
+                                       FontSize="11" FontWeight="ExtraBold" Foreground="Black"
+                                       Height="20"/>
+                        </Grid>
+                    </Border>
                     
-                    <ComboBox ItemsSource="{Binding SeasonList}" SelectedItem="{Binding SelectedSeason}"
-                              ItemContainerStyle="{StaticResource ComboBoxItemSeason}"
-                              Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 10 0 0"
-                              Background="Transparent"
-                              MaxHeight="30" Height="25" Width="150" MinWidth="144"/>
+                    <TextBlock Text="Wähle die Saison" 
+                               Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 80"/>
+
+                    <ListView ItemsSource="{Binding SeasonList}" SelectedItem="{Binding SelectedSeason}"
+                              Style="{StaticResource StandardListView}"
+                              ItemContainerStyle="{StaticResource ListViewItemSeason}"
+                              Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 30 0 0"
+                              Height="70" Width="150"/>
+
+                    <Button Style="{StaticResource Button}" Command="{Binding LeagueSeasonCommand}"
+                            Content="weiter"
+                            Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 10"
+                            Height="25" Width="80"/>
                 </Grid>
             </Border>
 
             <Border Style="{StaticResource GroupBorderRight}"
                     Grid.Row="2" Margin="30 10 30 10"
-                    TextBlock.Foreground="DarkRed" TextBlock.FontSize="22" TextBlock.FontWeight="DemiBold">
+                    TextBlock.Foreground="DarkRed" TextBlock.FontSize="20" TextBlock.FontWeight="DemiBold">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Wähle ein Logo"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                    <ComboBox ItemsSource="{Binding LogoList}" SelectedItem="{Binding SelectedLogo}"
-                              ItemContainerStyle="{StaticResource ComboBoxItemLogo}"
-                              HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 10 0 0"
-                              MaxHeight="30" Height="25" MinHeight="22" Width="150" MinWidth="120"/>
+                    <ListView ItemsSource="{Binding LogoList}" SelectedItem="{Binding SelectedLogo}"
+                              Style="{StaticResource StandardListView}"
+                              ItemContainerStyle="{StaticResource ListViewItemLogo}"
+                              Grid.ColumnSpan="2"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Height="130" Width="80"/>
+
+                    <Border Grid.Column="1"
+                            CornerRadius="25"
+                            BorderBrush="Darkred" BorderThickness="2"
+                            Width="120" Height="120">
+
+                        <Grid>
+
+                            <Image Source="{Binding SelectedLogo}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Height="100" Width="100"/>
+                        </Grid>
+                    </Border>
                 </Grid>
             </Border>
 
@@ -113,10 +157,17 @@
                     Grid.Row="3" Margin="80 30 80 30"
                     TextBlock.Foreground="Azure" TextBlock.FontSize="18" TextBlock.FontWeight="DemiBold">
 
-                <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
+                <Grid>
+                    <Button Style="{StaticResource Button}" Command="{Binding UndoCommand}"
+                            Content="undo"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 40"
+                            Height="25" Width="80"/>
+
+                    <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
                         Content="Team Speichern"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 40 0  0"
                         Height="25" Width="150"/>
+                </Grid>
             </Border>
         </Grid>
     </Border>
