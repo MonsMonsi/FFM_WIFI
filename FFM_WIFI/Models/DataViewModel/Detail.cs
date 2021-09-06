@@ -1,5 +1,4 @@
-﻿using FFM_WIFI.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ namespace FFM_WIFI.Models.DataViewModel
 {
     public class Detail
     {
-        public class Team : ITeamDetail
+        public class Team
         {
             public string CoachName { get; set; }
             public BitmapImage CoachImage { get; set; }

@@ -63,6 +63,10 @@
                                FontSize="24" FontWeight="Bold" Foreground="Azure"
                                Height="40"/>
 
+                    <TextBlock Text="Points  Goals  GDiff"
+                               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 38 23 0"
+                               FontSize="7.5" FontWeight="Bold" Foreground="Azure"/>
+
                     <ListView ItemsSource="{Binding StandingsList}"
                               Style="{StaticResource StandardListView}"
                               ItemContainerStyle="{StaticResource ListViewItemStandings}"
@@ -83,17 +87,12 @@
             <Border Style="{StaticResource ResultInnerBorder}"
                     Grid.Row="2" Margin="60 10 60 10">
 
-
                 <Grid>
-                    <Button Style="{StaticResource Button}" Command="{Binding SaveCommand}"
-                            Content="Saisonbericht speichern (Pdf)"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="130 0 0 0"
-                            Height="25" Width="250"/>
-
+                    
                     <Button Style="{StaticResource Button}" Command="{Binding HomeCommand}"
                             Content="UserHome"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 300 0"
-                            Height="25" Width="100"/>
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Height="25" Width="150"/>
                 </Grid>
             </Border>
         </Grid>

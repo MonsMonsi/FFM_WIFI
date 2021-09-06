@@ -61,21 +61,22 @@ namespace FFM_WIFI.ViewModels
         private Calculate calc;
         private int _fixtureCount;
         private int _playday;
+        private int _max;
         private bool _back;
         #endregion
 
         #region Commands
         private RelayCommand _previous;
-        public ICommand PreviousCommand { get { return _previous; } }
+        public ICommand PreviousCommand { get { return _previous; } } // Zeigt das vorige Spiel an
 
         private RelayCommand _next;
-        public ICommand NextCommand { get { return _next; } }
+        public ICommand NextCommand { get { return _next; } } // zeigt das nächste Spiel an
 
         private RelayCommand _home;
-        public ICommand HomeCommand { get { return _home; } }
+        public ICommand HomeCommand { get { return _home; } } // Zurück zum gameHomeWindow
         #endregion
 
-        // Konstruktor
+        #region Constructor
         public FixtureViewModel(Window window, Info.Team teamInfo, Info.Player[] playerInfo)
         {
             TeamInfo = teamInfo;
@@ -88,13 +89,17 @@ namespace FFM_WIFI.ViewModels
             _playday = _userTeam.UserTeamPlayday;
             calc = new Calculate(_playday, TeamInfo.UserTeam.UserTeamLeague, TeamInfo.Season, _playerInfo);
             calc.TeamPoints();
+            _max = 9;
+            ListToArray();
             _back = false;
-            _previous = new RelayCommand(ShowPrevious, () => _playday == _userTeam.UserTeamPlayday);
-            _next = new RelayCommand(ShowNext, () => _playday == _userTeam.UserTeamPlayday);
+            _previous = new RelayCommand(ShowPrevious, () => _fixtureCount > 0);
+            _next = new RelayCommand(ShowNext, () => _fixtureCount < _max - 1);
             _home = new RelayCommand(GoToGameHome, () => _back);
             _home.RaiseCanExecuteChanged();
         }
+        #endregion
 
+        #region Methods
         private void GoToGameHome()
         {
             UpdateTeamInfo();
@@ -116,6 +121,8 @@ namespace FFM_WIFI.ViewModels
 
         private void UpdateTeamInfo()
         {
+            // Wird aufgerufen, bevor User zum GameHomeWindow zurückgeleitet wird
+            // Updated den Spieltag
             TeamInfo.Playday++;
             TeamInfo.UserTeam.UserTeamPlayday++;
             var create = new Create.Info();
@@ -125,55 +132,45 @@ namespace FFM_WIFI.ViewModels
 
         private void ShowPrevious()
         {
-            if (_fixtureCount == 0)
-            {
-                _playerInfo = calc.PlayerInfo;
-                ListToArray();
-            }
+            _fixtureCount--;
             CurrentFixture = _fixtureInfo[_fixtureCount];
-            _fixtureCount++;
-            if (_fixtureCount == 9)
-            {
-                _playday++;
-                _previous.RaiseCanExecuteChanged();
-                _next.RaiseCanExecuteChanged();
-                _back = true;
-                _home.RaiseCanExecuteChanged();
-            }
+            _previous.RaiseCanExecuteChanged();
+            _next.RaiseCanExecuteChanged();
         }
 
         private void ShowNext()
         {
-            if (_fixtureCount == 0)
-            {
-                _playerInfo = calc.PlayerInfo;
-                ListToArray();
-            }
-            CurrentFixture = _fixtureInfo[_fixtureCount];
             _fixtureCount++;
-            if (_fixtureCount == 9)
+            if (_fixtureCount == _max - 1)
             {
                 _playday++;
-                _previous.RaiseCanExecuteChanged();
-                _next.RaiseCanExecuteChanged();
                 _back = true;
                 _home.RaiseCanExecuteChanged();
             }
+            CurrentFixture = _fixtureInfo[_fixtureCount];
+            _previous.RaiseCanExecuteChanged();
+            _next.RaiseCanExecuteChanged();
         }
 
         private void ListToArray()
         {
-            _fixtureInfo = new Info.Fixture[9];
+            // Wandelt die SpieltagsListe in ein Array um, somit kann leichter auf einzelne Spieltage zugegriffen werden
+            if (TeamInfo.UserTeam.UserTeamLeague == 61 || TeamInfo.UserTeam.UserTeamLeague == 39)
+            {
+                _max = 10;
+            }
+            _fixtureInfo = new Info.Fixture[_max];
             foreach (var f in calc.FixtureList)
             {
                 _fixtureInfo[_fixtureCount] = f;
                 _fixtureCount++;
             }
-            _fixtureCount = 0;
+            _fixtureCount = -1;
         }
 
         private void SetDraftedPlayersList()
         {
+            // Füllt die Spieler-ListView
             PlayerList.Clear();
             foreach (var p in _playerInfo)
             {
@@ -183,5 +180,6 @@ namespace FFM_WIFI.ViewModels
                 }
             }
         }
+        #endregion
     }
 }

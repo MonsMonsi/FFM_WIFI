@@ -17,6 +17,10 @@ namespace FFM_WIFI.Models.Utility
 {
     public class Calculate
     {
+        // Calculate-Klasse:
+        // -> berechnet zum einen die Spieltagsinformationen
+        // -> zum anderen die Punkte, die jedes team pro Spieltag erspielt
+
         #region Properties
         public Info.Player[] PlayerInfo { get; set; }
         public ObservableCollection<Info.Playday> PlaydayList { get; set; }
@@ -91,6 +95,8 @@ namespace FFM_WIFI.Models.Utility
                 _ => 0
             };
 
+            // Die Spieltag-Infos werden von der APi als Array zurückgesendet
+            // Die hier errechneten Indexes, entsprechen der jeweiligen Stelle im Array
             if (_playday == 1)
             {
                 _iMin = 0;
@@ -103,8 +109,10 @@ namespace FFM_WIFI.Models.Utility
             }
         }
 
-        private void GetFixtures()
+        private void GetFixtures() 
         {
+            // Am Beginn einer neuen Saison stehen in der API die Daten für alle Spieltag bereit
+            // Daher wird der gesamte Spielplan am Anfang der Saison abgespeichert und die jeweiligen Daten können von der Datei geholt werden
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string path = Path.Combine(docPath, @$"JsonFiles\AllFixtures\AllFixtures_L{_league}S{_season}.json");
 
@@ -122,6 +130,9 @@ namespace FFM_WIFI.Models.Utility
 
         private void SetProperties()
         {
+            // Die Spieltag-Details stehen nur in der API, wenn der Spieltag bereits abgeschlossen ist
+            // Daher können nur abgeschlossene Spieltag in ein File geschrieben werden
+            // Handelt es sich um einen neuen Spieltag, muss die Api abgefragt werden, ob bereits Daten vorhanden sind
             foreach (var id in _fixtures)
             {
                 JsonFixture.Response fixture;
@@ -171,6 +182,8 @@ namespace FFM_WIFI.Models.Utility
 
         private void SetLineUpPoints(JsonFixture.Response fixture)
         {
+            // Aus den geladenen Spieltag-Details werden nun die für die Wertung wichtigen Daten herausgeholt
+            // LineUp-Points erhält ein Spieler wenn er entweder in der Startelf (6 Punkte) war oder auf der Bank (2 Punkte)
             Info.Player[] temp = PlayerInfo;
             foreach (var s in fixture.Lineups[0].StartXI)
             {
@@ -227,6 +240,10 @@ namespace FFM_WIFI.Models.Utility
 
         private void SetEventPoints(JsonFixture.Response fixture)
         {
+            // Aus den geladenen Spieltag-Details werden die Events ausgewertet:
+            // -> Goal : 16 Punkte;
+            // -> Subst (Einwechslung): 2 Punkte;
+            // -> Card: Gelbe Karte (-1 Punkt), Rote Karte (-4 Punkte)
             Info.Player[] temp = PlayerInfo;
             foreach (var e in fixture.Events)
             {
@@ -280,6 +297,7 @@ namespace FFM_WIFI.Models.Utility
 
         private void SetPlaydayList(JsonFixture.Response fixture)
         {
+            // Füllt die PlaydayList-Property für das GameHomeWindow
             using (FootballContext context = new FootballContext())
             {
                 var venue = context.Venue.Where(v => v.VenuePk == fixture.Fixture.Venue.Id).FirstOrDefault();

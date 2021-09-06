@@ -75,7 +75,8 @@
                         CornerRadius="4 4 4 4"
                         Height="40" Width="120"
                         Background="Azure"
-                        BorderBrush="DarkRed" BorderThickness="2">
+                        BorderBrush="DarkRed" BorderThickness="2"
+                        Panel.ZIndex="2">
 
                     <Label Content="Teams"
                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
@@ -85,19 +86,19 @@
 
                 </Border>
 
-                <Border HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8 0 20 0"
+                <Border Style="{StaticResource GoldenInnerBorder}"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8 0 20 0"
                         CornerRadius="100 100 100 100"
-                        Height="350" Width="320"
-                        Background="LightGray">
+                        Height="400" Width="300">
 
                     <Grid>
 
                         <Button Style="{StaticResource Button}" Content="Neues Team" Command="{Binding NewTeamCommand}"
-                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 25 0 0" 
+                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 40 0 0" 
                                 Height="25" Width="150"/>
 
                         <Border CornerRadius="20 20 20 20"
-                                HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                 BorderBrush="Azure" BorderThickness="3"
                                 Height="220" Width="290">
                             
@@ -129,16 +130,14 @@
                             </Grid>
                         </Border>
 
-                        <Button Style="{StaticResource Button}" Content="Save (Pdf)" Command="{Binding PdfCommand}"
-                                HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 30" 
-                                Height="25" Width="150"/>
+                        
                     </Grid>
                 </Border>
 
-                <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
+                <Border Style="{StaticResource GoldenInnerBorder}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 20 0"
                         CornerRadius="100 100 100 100"
-                        Height="400" Width="250"
-                        Background="LightGray">
+                        Height="400" Width="250">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -199,7 +198,7 @@
                     Margin="5 5 5 20">
 
                 <Grid>
-                    <Button Style="{StaticResource Button}" Content="Team löschen" Command="{Binding}"
+                    <Button Style="{StaticResource Button}" Content="Team löschen" Command="{Binding DeleteCommand}"
                             HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 30 0 0" 
                             Height="25" Width="200"/>
 

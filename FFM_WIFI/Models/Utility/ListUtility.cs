@@ -5,6 +5,7 @@ namespace FFM_WIFI.Models.Utility
 {
     public static class ListUtility
     {
+        // Einfache BubbleSort-Methode
         public static void BubbleSort(this IList o)
         {
             for (int i = o.Count - 1; i >= 0; i--)

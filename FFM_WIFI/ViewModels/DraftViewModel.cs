@@ -17,7 +17,6 @@ namespace FFM_WIFI.ViewModels
         #region Properties
 
         // Properties für User
-        // Datenstruktur überdenken
         private UserTeam _userTeam;
         public UserTeam UserTeam
         {
@@ -93,14 +92,14 @@ namespace FFM_WIFI.ViewModels
         #region Commands
 
         private RelayCommand _draft;
-        public ICommand DraftCommand { get { return _draft; } }
+        public ICommand DraftCommand { get { return _draft; } } // Drafted einen Spieler
         private RelayCommand<object> _sub;
-        public ICommand SubCommand { get { return _sub; } }
+        public ICommand SubCommand { get { return _sub; } } // Löscht Spieler aus Auswahl
         private RelayCommand _save;
-        public ICommand SaveCommand { get { return _save; } }
+        public ICommand SaveCommand { get { return _save; } } // Speichert das Team und geht zurück zum UserHomeWindow
         #endregion
 
-        // Konstruktor
+        #region Constructor
         public DraftViewModel(Window window, UserTeam userTeam)
         {
             // Attribute setzen
@@ -121,13 +120,7 @@ namespace FFM_WIFI.ViewModels
             ShowPlayers();
             SetDraftText();
         }
-
-        // noch zu implemetieren
-
-
-
-
-        // 2: Neustart Button
+        #endregion
 
         #region Methods
         private void GoToUserHome(User user)
@@ -142,7 +135,7 @@ namespace FFM_WIFI.ViewModels
             if (SelectedPlayer != null)
             {
                 _draftedTeam[_draftIndex] = _selectedPlayer;
-                MoneyMax -= _selectedPlayer.Value;  // _moneyMax funktioniert nicht
+                MoneyMax -= _selectedPlayer.Value;
                 OnPropertyChanged("DraftedTeam");
                 _draft.RaiseCanExecuteChanged();
             }
@@ -165,6 +158,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetSeasonLeague()
         {
+            // Setzt Season und League Attribute
             using (FootballContext context = new FootballContext())
             {
                 var season = context.Season.Where(s => s.SeasonPk == _userTeam.UserTeamSeason).FirstOrDefault();
@@ -177,6 +171,7 @@ namespace FFM_WIFI.ViewModels
 
         private int GetDraftIndex()
         {
+            // Sucht nach dem ersten null-Wert im Array und gibt den entsprechenden Index zurück
             for (int i = 0; i < _draftedTeam.Length; i++)
             {
                 if (_draftedTeam[i] == null)
@@ -187,6 +182,7 @@ namespace FFM_WIFI.ViewModels
 
         private int GetDraftCount()
         {
+            // Gibt an, wieviele Drafts noch übrig sind
             int count = 0;
             for (int i = 0; i < _draftedTeam.Length; i++)
             {
@@ -198,6 +194,8 @@ namespace FFM_WIFI.ViewModels
 
         private void ShowPlayers()
         {
+            // Reseted die PlayerList und befüllt sie neu, immer wenn ein Spieler gedrafted wird
+            // je nachdem, welche Position gerade gedrafted werden soll, werden die entsprechenden Spieler angezeigt
             _draftIndex = GetDraftIndex();
             _draftCount = GetDraftCount();
             _save.RaiseCanExecuteChanged();
@@ -229,11 +227,11 @@ namespace FFM_WIFI.ViewModels
                 if (player.Position == _position && player.Value < _moneyMax && !_draftedTeam.Contains(player))
                     PlayerList.Add(player);
             }
-            // PlayerList.BubbleSort();
         }
 
         private void SetDraftText()
         {
+            // Setzt die DraftText-property
             if (_draftCount > 0)
                 DraftText = $"Bitte wähle einen {_position}! Du hast noch {_draftCount} Drafts";
             else
@@ -242,6 +240,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPosition()
         {
+            // Entsprechend dem untersten nicht besetzten Index im DraftedTeam-Array, wird die position der anzuzeigenden Spieler bestimmt
             switch (_draftIndex)
             {
                 case 0:
@@ -276,8 +275,10 @@ namespace FFM_WIFI.ViewModels
         {
             using (FootballContext context = new FootballContext())
             {
+                // Check, ob ein userTeam mit dem gleichen Namen bereits existiert
                 var userTeam = context.UserTeam.Where(u => u.UserTeamUserFk == UserTeam.UserTeamUserFkNavigation.UserPk && u.UserTeamName == UserTeam.UserTeamName).Include(u => u.UserTeamUserFkNavigation).FirstOrDefault();
 
+                // Speichern des neu zusammengestellten Teams
                 if (userTeam != null)
                 {
                     // Player PK hinterlegen

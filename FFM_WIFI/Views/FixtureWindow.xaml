@@ -228,14 +228,14 @@
                         Grid.Row="1" Margin="3 0 3 3">
 
                     <Grid>
-                        <Button Style="{StaticResource Button}" Command="{Binding AllCommand}"
-                                Content="Alle Spiele"     
-                                HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100 0 0 0"
+                        <Button Style="{StaticResource Button}" Command="{Binding PreviousCommand}"
+                                Content="Vorheriges Spiel"     
+                                HorizontalAlignment="Left" VerticalAlignment="Center" Margin="180 0 0 0"
                                 Height="25" Width="150"/>
                         
                         <Button Style="{StaticResource Button}" Command="{Binding NextCommand}"
                                 Content="Nächstes Spiel"     
-                                HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 100 0"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 180 0"
                                 Height="25" Width="150"/>
                     </Grid>
                 </Border>

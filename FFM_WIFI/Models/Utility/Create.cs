@@ -14,12 +14,9 @@ namespace FFM_WIFI.Models.Utility
 {
     public class Create
     {
+        // Create-Klasse: erstellt Objekte von Info-Klassen zur Verwendung in den ViewModels
         public class Info
         {
-            #region Properties
-            
-            #endregion
-
             #region Attributes
             private GetFrom _get;
             private List<DataViewModel.Info.Event> _eventList;
@@ -37,6 +34,7 @@ namespace FFM_WIFI.Models.Utility
             #region Methods
             public DataViewModel.Info.Team TeamInfo(UserTeam userTeam, League league, Season season, UserTeamPerformance performance)
             {
+                // Erstellung einer TeamInfo
                 DataViewModel.Info.Team temp;
                 DataViewModel.Info.Player[] players = new Database(null, userTeam).PlayerInfo();
 
@@ -55,6 +53,7 @@ namespace FFM_WIFI.Models.Utility
 
             public DataViewModel.Info.Player[] GetBestPlayers (DataViewModel.Info.Player[] temp)
             {
+                // Erstellung einer PlayerInfo
                 var allPlayers = temp;
                 var best = new DataViewModel.Info.Player[3];
                 int points = 20000000;
@@ -82,6 +81,7 @@ namespace FFM_WIFI.Models.Utility
 
             public Detail.Team TeamDetail(JsonFixture.Response fixture, string mode)
             {
+                // Erstellung eines TeamDetails
                 Detail.Team temp;
                 if (mode == "home")
                 {
@@ -102,6 +102,7 @@ namespace FFM_WIFI.Models.Utility
 
             public DataViewModel.Info.Fixture FixtureInfo(JsonFixture.Response fixture)
             {
+                // Erstellung einer FixtureInfo
                 _eventList.Clear();
                 SetEventList(fixture);
 
@@ -114,6 +115,7 @@ namespace FFM_WIFI.Models.Utility
 
             public DataViewModel.Info.Player PlayerInfo(Player player, int points)
             {
+                // Erstellung einer PlayerInfo
                 DataViewModel.Info.Player temp;
                 if (player != null)
                 {
@@ -126,6 +128,7 @@ namespace FFM_WIFI.Models.Utility
 
             public DataViewModel.Info.Playday PlaydayInfo(JsonFixture.Response fixture, Venue venue)
             {
+                // Erstellung einer PlaydayInfo
                 var temp = new DataViewModel.Info.Playday(fixture.Teams.Home.Name, new GetFrom().Image(fixture.Teams.Home.Logo),
                                                           fixture.Teams.Away.Name, new GetFrom().Image(fixture.Teams.Away.Logo),
                                                           fixture.Fixture.Date, fixture.Fixture.Referee, venue, fixture.Fixture.Status.Long);
@@ -134,6 +137,7 @@ namespace FFM_WIFI.Models.Utility
 
             public DataViewModel.Info.Standings StandingsInfo(JsonStandings.Standing standings)
             {
+                // Erstellung einer StandingsInfo
                 var temp = new DataViewModel.Info.Standings(standings.Rank, standings.Team.Name, _get.Image(standings.Team.Logo),
                                                             standings.Points, standings.All.Goals.For, standings.All.Goals.Against,
                                                             standings.All.Goals.For - standings.All.Goals.Against,
@@ -143,6 +147,7 @@ namespace FFM_WIFI.Models.Utility
 
             private void SetEventList(JsonFixture.Response fixture)
             {
+                // EventList wird gefüllt -> ist Teil einer FixtureInfo
                 DataViewModel.Info.Event temp;
                 foreach (var e in fixture.Events)
                 {

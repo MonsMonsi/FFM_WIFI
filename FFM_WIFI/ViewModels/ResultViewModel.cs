@@ -36,9 +36,10 @@ namespace FFM_WIFI.ViewModels
         #endregion
 
         #region Commands
-        public ICommand HomeCommand { get; set; }
+        public ICommand HomeCommand { get; set; } // Zurück zum UserHomeWindow
         #endregion
 
+        #region Constructor
         public ResultViewModel(Window window, Info.Team teamInfo, Info.Player[] playerInfo)
         {
             _window = window;
@@ -48,7 +49,9 @@ namespace FFM_WIFI.ViewModels
             HomeCommand = new RelayCommand(GoToUserHome);
             SetLists();
         }
+        #endregion
 
+        #region Methods
         private void GoToUserHome()
         {
             SetUser();
@@ -60,6 +63,7 @@ namespace FFM_WIFI.ViewModels
 
         private void WriteData()
         {
+            // erhöht den gespeicherten Spieltag um eins, dadurch wird die Saison als beendet markiert
             using (FootballContext context = new FootballContext())
             {
                 var userTeam = context.UserTeam.Where(u => u.UserTeamPk == ResultInfo.Team.TeamId).FirstOrDefault();
@@ -70,6 +74,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetUser()
         {
+            // Holt die Userdaten aus der Datenbank
             using (FootballContext context = new FootballContext())
             {
                 var user = context.User.Where(u => u.UserPk == ResultInfo.Team.UserId).FirstOrDefault();
@@ -79,8 +84,10 @@ namespace FFM_WIFI.ViewModels
 
         private void SetLists()
         {
+            // Füllt die Result-ListView
             ResultList.Add(ResultInfo);
             StandingsList = new ObservableCollection<Info.Standings>(ResultInfo.StandingsInfo);
         }
+        #endregion
     }
 }

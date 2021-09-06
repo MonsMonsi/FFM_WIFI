@@ -86,14 +86,14 @@ namespace FFM_WIFI.ViewModels
         #region Commands
 
         private RelayCommand<object> _sub;
-        public ICommand SubCommand { get { return _sub; } }
+        public ICommand SubCommand { get { return _sub; } } // Player substituieren
         private RelayCommand _line;
-        public ICommand LineUpCommand { get { return _line; } }
+        public ICommand LineUpCommand { get { return _line; } } // Player aufstellen
         private RelayCommand _play;
-        public ICommand PlayCommand { get { return _play; } }
+        public ICommand PlayCommand { get { return _play; } } // Nächsten Spieltag spielen
         private RelayCommand _save;
-        public ICommand SaveCommand { get { return _save; } }
-        public ICommand FastCommand { get; set; }
+        public ICommand SaveCommand { get { return _save; } } // Speichern und zurück zu UserHome
+        public ICommand FastCommand { get; set; } // Schnelle Aufstellung
 
         #endregion
 
@@ -109,7 +109,8 @@ namespace FFM_WIFI.ViewModels
         private string _position;
 
         #endregion
-        // Konstruktor
+
+        #region Constructor
         public GameHomeViewModel(Window window, Info.Team teamInfo, Info.Player[] playerInfo)
         {
             TeamInfo = teamInfo;
@@ -146,6 +147,7 @@ namespace FFM_WIFI.ViewModels
             _play.RaiseCanExecuteChanged();
             _window = window;
         }
+        #endregion
 
         #region Methods
         private void GoToFixture()
@@ -165,6 +167,8 @@ namespace FFM_WIFI.ViewModels
 
         private void SubPlayer(object position)
         {
+            // Wechselt angeklickten Spieler aus und setzt den _lineCount auf die entsprechende Position
+
             string t = position.ToString();
             int i = int.Parse(t);
 
@@ -183,6 +187,7 @@ namespace FFM_WIFI.ViewModels
 
         private void LineUpPlayer()
         {
+            // Wechselt Spieler ein und erhöht den _lineCount
             if (SelectedDraft != null)
             {
                 LineUp[_lineCount] = SelectedDraft;
@@ -199,11 +204,13 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPlayerInfo()
         {
+            // GetFrom-Klasse: s. Utility/GetFrom
             _playerInfo = _get.PlayerInfo();
         }
 
         private int GetLineUpIndex()
         {
+            // ermittelt, welche Position noch nicht besetzt ist
             for (int i = 0; i < LineUp.Length; i++)
             {
                 if (LineUp[i] == null)
@@ -214,6 +221,7 @@ namespace FFM_WIFI.ViewModels
 
         private void ResetDrafted()
         {
+            // Setzt Drafted Property der PlayerInfo auf false (nachdem Spieltag abgeschlossen wurde)
             int poi = 0;
             foreach (var p in _playerInfo)
             {
@@ -225,6 +233,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPlayerDraftList()
         {
+            // Füllt die Player-Listview mit den noch nicht gedrafteten Spielern
             SetPosition();
             DraftList.Clear();
             foreach (var p in _playerInfo)
@@ -236,6 +245,7 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPlaydayList()
         {
+            // Calculate-Klasse: s. Utility/Calculate
             Calculate calc = new Calculate(_playday, TeamInfo.UserTeam.UserTeamLeague, TeamInfo.Season);
             calc.PlaydayInfo();
             PlaydayList = calc.PlaydayList;
@@ -243,6 +253,7 @@ namespace FFM_WIFI.ViewModels
 
         private void FastLineUp()
         {
+            // Schnelle Mannschafts-Aufstellung: vorwiegend zum testen
             for (int i = 0; i < 11; i++)
             {
                 if (LineUp[i] != null)
@@ -320,6 +331,8 @@ namespace FFM_WIFI.ViewModels
 
         private void SetPosition()
         {
+            // Der _lineCount gibt die unterste, nicht besetzte position wieder,
+            // danach richten sich die in der Player-ListView angezeigten Spieler
             switch (_lineCount)
             {
                 case 0:
@@ -346,11 +359,13 @@ namespace FFM_WIFI.ViewModels
 
         private void WriteData()
         {
+            // Write-Klasse: s. Utility/WriteTo
             _write.UserTeamPerformance();
         }
 
         private void SetPlaydayDate()
         {
+            // errechnet, wann der Spieltag simuliert werden kann
             var playday = PlaydayList.Last();
             var now = DateTime.Now;
             _time = playday.Date - now;
@@ -363,10 +378,15 @@ namespace FFM_WIFI.ViewModels
 
         private bool CheckPlaydayComplete()
         {
+            // checkt, ob der Spieltag bereits abgeschlossen ist
             foreach (var p in PlaydayList)
             {
                 if (p.Status != "Match Finished")
                 {
+                    if (p.Status == "Match Abandoned")
+                    {
+                        return true;
+                    }
                     return false;
                 }
             }
@@ -374,6 +394,7 @@ namespace FFM_WIFI.ViewModels
         }
         private bool CheckLineUpComplete()
         {
+            // checkt, ob der Benutzer seine erste Elf gewählt hat 
             for (int i = 0; i < 11; i++)
             {
                 if (LineUp[i] == null)

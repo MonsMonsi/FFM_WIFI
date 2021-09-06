@@ -89,96 +89,102 @@ namespace DatabaseTesting
 
                 foreach (var a in assignment)
                 {
-                    switch (a.TeaPlaPlayerRating)
+                    if (a.TeaPlaPlayerValue == 0)
                     {
-                        case > 7300000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 21000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 40000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 65000000;
-                            break;
-                        case > 7200000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 19000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 38000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 52000000;
-                            break;
-                        case > 7100000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 17000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 36000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 50000000;
-                            break;
-                        case > 7000000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 16000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 35000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 48000000;
-                            break;
-                        case > 6900000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 15000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 33000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 46000000;
-                            break;
-                        case > 6800000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 14000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 30000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 40000000;
-                            break;
-                        case > 6700000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 13000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 25000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 33000000;
-                            break;
-                        case > 6600000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 10000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 20000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 29000000;
-                            break;
-                        case > 6400000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 8000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 15000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 23000000;
-                            break;
-                        case > 6200000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 6000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 10000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 18000000;
-                            break;
-                        case <= 6200000:
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
-                                a.TeaPlaPlayerValue = 4000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
-                                a.TeaPlaPlayerValue = 7000000;
-                            if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
-                                a.TeaPlaPlayerValue = 10000000;
-                            break;
+                        switch (a.TeaPlaPlayerRating)
+                        {
+                            case > 7300000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                {
+                                    a.TeaPlaPlayerValue = 21000000;
+                                }
+
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 40000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 65000000;
+                                break;
+                            case > 7200000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 19000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 38000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 52000000;
+                                break;
+                            case > 7100000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 17000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 36000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 50000000;
+                                break;
+                            case > 7000000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 16000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 35000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 48000000;
+                                break;
+                            case > 6900000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 15000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 33000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 46000000;
+                                break;
+                            case > 6800000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 14000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 30000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 40000000;
+                                break;
+                            case > 6700000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 13000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 25000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 33000000;
+                                break;
+                            case > 6600000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 10000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 20000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 29000000;
+                                break;
+                            case > 6400000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 8000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 15000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 23000000;
+                                break;
+                            case > 6200000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 6000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 10000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 18000000;
+                                break;
+                            case <= 6200000:
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Goalkeeper")
+                                    a.TeaPlaPlayerValue = 4000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Defender")
+                                    a.TeaPlaPlayerValue = 7000000;
+                                if (a.TeaPlaPlayerFkNavigation.PlayerPosition == "Midfielder" || a.TeaPlaPlayerFkNavigation.PlayerPosition == "Attacker")
+                                    a.TeaPlaPlayerValue = 10000000;
+                                break;
+                        }
                     }
                 }
                 context.SaveChanges();
@@ -280,12 +286,10 @@ namespace DatabaseTesting
             return idList;
         }
 
-        static void WriteInDb_TeamsVenues()
+        static void WriteInDb_TeamsVenues(int league, int season)
         {
-            int leagueKey = 78;
-
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string name = Path.Combine(docPath, @"JsonFiles\TeamVenue\Bundesliga2021_TeamVenue.json");
+            string name = Path.Combine(docPath, @$"JsonFiles\TeamVenue\TeamVenue_L{league}S{season}.json");
 
             var teamsVenues = JsonSerializer.Deserialize<JsonTeamVenue.Root>(File.ReadAllText(name));
 
@@ -310,8 +314,8 @@ namespace DatabaseTesting
 
                     
                     SeasonLeagueTeamAssignment assignment = new SeasonLeagueTeamAssignment();
-                    assignment.SeaLeaTeaSeasonFk = 2021;
-                    assignment.SeaLeaTeaLeagueFk = leagueKey;
+                    assignment.SeaLeaTeaSeasonFk = season;
+                    assignment.SeaLeaTeaLeagueFk = league;
                     assignment.SeaLeaTeaTeamFk = item.team.id;
 
                     context.SeasonLeagueTeamAssignment.Add(assignment);
@@ -336,14 +340,16 @@ namespace DatabaseTesting
 
         static void WriteInDB_Players()
         {
-            int teamId = 192;
+            int league = 61;
+            int season = 2021;
+            int team = 1063;
             int page = 1;
             int maxPage = 2;
 
             for (int i = page; i < maxPage + 1; i++)
             {
                 string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string name = Path.Combine(docPath, @$"JsonFiles\Squads\Bundesliga2021Squad{teamId}Page{page}.json");
+                string name = Path.Combine(docPath, @$"JsonFiles\Players\Players_L{league}S{season}T{team}P{page}.json");
 
                 var players = JsonSerializer.Deserialize<JsonPlayers.Root>(File.ReadAllText(name));
                 maxPage = players.paging.total;
@@ -360,7 +366,14 @@ namespace DatabaseTesting
                             player.PlayerPk = item.player.id;
                             player.PlayerFirstName = item.player.firstname;
                             player.PlayerLastName = item.player.lastname;
-                            player.PlayerDateOfBirth = item.player.birth.date;
+                            if (item.player.birth.date != null)
+                            {
+                                player.PlayerDateOfBirth = item.player.birth.date;
+                            }
+                            else
+                            {
+                                player.PlayerDateOfBirth = "01/01/2000";
+                            }
                             player.PlayerPosition = item.statistics[0].games.position;
                             player.PlayerNationality = item.player.nationality;
                             player.PlayerHeight = item.player.height;
@@ -372,10 +385,11 @@ namespace DatabaseTesting
                         TeamPlayerAssignment assignment = new TeamPlayerAssignment();
 
                         // den PK ermitteln auf den das assignment zeigen soll
-                        var assignmentPk = context.SeasonLeagueTeamAssignment.Where(a => a.SeaLeaTeaLeagueFk == 78 && a.SeaLeaTeaSeasonFk == 2021 && a.SeaLeaTeaTeamFk == teamId).Select(a => a.SeaLeaTeaPk).FirstOrDefault();
+                        var assignmentPk = context.SeasonLeagueTeamAssignment.Where(a => a.SeaLeaTeaLeagueFk == league && a.SeaLeaTeaSeasonFk == season && a.SeaLeaTeaTeamFk == team).Select(a => a.SeaLeaTeaPk).FirstOrDefault();
 
                         assignment.TeaPlaTeamFk = assignmentPk;
                         assignment.TeaPlaPlayerFk = item.player.id;
+                        assignment.TeaPlaSeasonFk = season;
                         if (item.statistics[0].games.rating != null)
                         {
                             assignment.TeaPlaPlayerRating = double.Parse(item.statistics[0].games.rating);
@@ -436,9 +450,9 @@ namespace DatabaseTesting
             }
         }
 
-        static void Main(string[] args)
+        static void GetOldValuesWriteNewValues()
         {
-            // get Ids and Values
+            // get Ids and Values of old Season and write to new Season
             var values = new SortedDictionary<int, int>();
             var idList = new List<int>();
 
@@ -454,11 +468,41 @@ namespace DatabaseTesting
                         idList.Add(p.TeaPlaPlayerFk);
                     }
                 }
+
+                var newSeason = context.TeamPlayerAssignment.Where(s => s.TeaPlaSeasonFk == 2021);
+
+                foreach (var n in newSeason)
+                {
+                    if (values.Keys.Contains(n.TeaPlaPlayerFk))
+                    {
+                        n.TeaPlaPlayerValue = values[n.TeaPlaPlayerFk];
+                        Console.WriteLine(values[n.TeaPlaPlayerFk]);
+                    }
+                }
+
+                context.SaveChanges();
             }
+        }
 
-            // write new values
+        public class Config
+        {
+            public string ConnectionString { get; set; }
+            public string ApiKeyName { get; set; }
+            public string ApiKeyValue { get; set; }
+        }
 
+        static void Main(string[] args)
+        {
+            var config = new Config();
 
+            config.ApiKeyName = "x-apisports-key";
+            config.ApiKeyValue = "a3a80245cddcf074947be5c6ac43484f";
+            config.ConnectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=WIFI_FootballAPI;Integrated Security=True;MultipleActiveResultSets=true";
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string path = Path.Combine(docPath, @$"JsonFiles\Config\Config.json");
+
+            File.WriteAllText(path, JsonSerializer.Serialize(config));
         }
     }
 }

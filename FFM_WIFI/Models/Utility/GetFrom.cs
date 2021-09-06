@@ -21,6 +21,8 @@ namespace FFM_WIFI.Models.Utility
 {
     public class GetFrom
     {
+        // GetFrom-Klasse: 
+        // -> holt Daten entweder aus der API, der Datenbank. oder aus Files
         public class Api
         {
             #region Properties
@@ -32,11 +34,8 @@ namespace FFM_WIFI.Models.Utility
             public int Count { get; set; }
             #endregion
 
-            #region Attributes
-
-            #endregion
-
             #region Constants
+            // Dienen zum Aufbau von API-Abfragen
             const string _apiBase = "https://v3.football.api-sports.io";
             const string _apiFixture = "/fixtures?";
             const string _apiPlayers = "/players?";
@@ -64,10 +63,11 @@ namespace FFM_WIFI.Models.Utility
             #region Methods
             public JsonFixture.Root Fixture()
             {
+                // Fragt ein Fixture-Detail von der Api ab
                 if (FixtureId != "0")
                 {
                     WebClient client = new WebClient();
-                    client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+                    client.Headers.Add(App.Config.ApiKeyName, App.Config.ApiKeyValue);
 
                     var fixture = JsonSerializer.Deserialize<JsonFixture.Root>(client.DownloadString($"{_apiBase}{_apiFixture}{_id}{FixtureId}"),
                                                                                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -79,10 +79,11 @@ namespace FFM_WIFI.Models.Utility
 
             public JsonAllFixtures.Root AllFixtures()
             {
+                // Fragt alle Fixtures einer Saison von der Api ab
                 if (LeagueId != "0" && SeasonId != "0")
                 {
                     WebClient client = new WebClient();
-                    client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+                    client.Headers.Add(App.Config.ApiKeyName, App.Config.ApiKeyValue);
 
                     var allFixtures = JsonSerializer.Deserialize<JsonAllFixtures.Root>(client.DownloadString($"{_apiBase}{_apiFixture}{_league}{LeagueId}&{_season}{SeasonId}"),
                                                                                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -94,13 +95,14 @@ namespace FFM_WIFI.Models.Utility
 
             public List<JsonPlayers.Root> Players()
             {
+                // Fragt die Spieler eines Teams von der Api ab und packt sie in eine Liste
                 if (TeamId != "0" && SeasonId != "0")
                 {
                     var list = new List<JsonPlayers.Root>();
                     int pages = 1;
 
                     WebClient client = new WebClient();
-                    client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+                    client.Headers.Add(App.Config.ApiKeyName, App.Config.ApiKeyValue);
 
                     string response = client.DownloadString(_apiBase + _apiFixture + _id + FixtureId);
 
@@ -128,8 +130,9 @@ namespace FFM_WIFI.Models.Utility
 
             public JsonStandings.Root Standings()
             {
+                // Fragt die aktuelle Tabelle von der Api ab
                 WebClient client = new WebClient();
-                client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+                client.Headers.Add(App.Config.ApiKeyName, App.Config.ApiKeyValue);
 
                 var standings = JsonSerializer.Deserialize<JsonStandings.Root>(client.DownloadString($"{_apiBase}{_apiStandings}{_league}{LeagueId}&{_season}{SeasonId}"),
                                                                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -139,10 +142,11 @@ namespace FFM_WIFI.Models.Utility
 
             public JsonTeamVenue.Root TeamVenue()
             {
+                // Fragt Team und Stadion-Informationen von der Api ab
                 if (LeagueId != "0" && SeasonId != "0")
                 {
                     WebClient client = new WebClient();
-                    client.Headers.Add("x-apisports-key", "a3a80245cddcf074947be5c6ac43484f");
+                    client.Headers.Add(App.Config.ApiKeyName, App.Config.ApiKeyValue);
 
                     var teamVenue = JsonSerializer.Deserialize<JsonTeamVenue.Root>(client.DownloadString($"{_apiBase}{_apiTeamVenue}{_league}{LeagueId}&{_season}{SeasonId}"),
                                                                                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -188,6 +192,7 @@ namespace FFM_WIFI.Models.Utility
             #region Methods
             public Info.Player[] PlayerInfo()
             {
+                // Holt Spielerdaten aus der Datenbank und gibt sie als Array zurück
                 Info.Player[] _players = new Info.Player[17];
 
                 using (FootballContext context = new FootballContext())
@@ -227,6 +232,7 @@ namespace FFM_WIFI.Models.Utility
 
             public List<Info.Team> TeamInfo()
             {
+                // Holt Teamdaten aus der Datenbank und gibt sie als Liste zurück 
                 List<Info.Team> _teams = new List<Info.Team>();
                 using (FootballContext context = new FootballContext())
                 {
@@ -249,6 +255,7 @@ namespace FFM_WIFI.Models.Utility
 
             public List<League> LeagueList()
             {
+                // Holt ligadaten aus der Datenbank und gibt sie als Liste zurück
                 var list = new List<League>();
 
                 using (FootballContext context = new FootballContext())
@@ -266,6 +273,7 @@ namespace FFM_WIFI.Models.Utility
 
             public List<Season> SeasonList()
             {
+                // Holt Saisondaten aus der Datenbank und gibt sie als Liste zurück
                 var list = new List<Season>();
 
                 using (FootballContext context = new FootballContext())
@@ -283,6 +291,7 @@ namespace FFM_WIFI.Models.Utility
 
             public List<string> LogoList()
             {
+                // Holt VereinsLogos aus der Datenbank und gibt sie als Liste zurück
                 var list = new List<string>();
 
                 using (FootballContext context = new FootballContext())
@@ -300,6 +309,7 @@ namespace FFM_WIFI.Models.Utility
 
             public List<UserTeam> UserRank()
             {
+                // Holt die UserTeams verschiedener user und gibt sie als Liste zurück
                 var _userTeams = new List<UserTeam>();
 
                 using (FootballContext context = new FootballContext())
@@ -351,6 +361,7 @@ namespace FFM_WIFI.Models.Utility
         }
         public BitmapImage Image(string path)
         {
+            // bekommt eine URI und gibt das entsprechende BitmapImage zurück 
             if (path != null)
             {
                 BitmapImage bI = new BitmapImage();

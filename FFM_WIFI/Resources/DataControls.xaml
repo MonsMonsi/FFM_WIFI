@@ -24,8 +24,9 @@
                             Opacity="0.8"
                             Margin="1"
                             CornerRadius="10" BorderThickness="0.8 0 0 0.8" BorderBrush="DarkSlateGray"
-                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width, Converter={converters:Resize}, ConverterParameter=90}"
-                            TextBlock.Foreground="Black" TextBlock.FontSize="13" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center">
+                            Height="{TemplateBinding Height}" Width="120"
+                            TextBlock.Foreground="Black" TextBlock.FontSize="11" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center"
+                            TextBlock.FontFamily="Bahnhof Condensed">
 
                         <Border.Background>
                             <RadialGradientBrush RadiusX="1.7" RadiusY="1.3">
@@ -37,18 +38,19 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="90"/>
                             </Grid.ColumnDefinitions>
 
                             <Image Source="{Binding LeagueLogo}"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"
                                    Opacity="0.8"
-                                   Height="28" Width="28"/>
+                                   Height="25" Width="25"/>
 
                             <TextBlock Text="{Binding LeagueName}"
                                        Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
                                        Padding="0 0 3 0"
-                                       Width="95"/>
+                                       Width="75"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -144,14 +146,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
-
-
-
-
 
     <!--ListViewItems-->
     <!--Style für Teamlisten-->
@@ -516,80 +510,181 @@
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="ResultListItemBorder"
                             CornerRadius="8"
-                            Background="Azure" BorderThickness="0.5" Margin="1"
-                            TextBlock.FontSize="16" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="Bahnhof Condensed" TextBlock.Foreground="SlateBlue"
-                            TextBlock.TextAlignment="Center">
+                            Background="LightSlateGray" BorderThickness="0.5" Margin="1">
 
                         <Grid Background="Transparent">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=25}"/>
-                                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=70}"/>
-                            </Grid.ColumnDefinitions>
+
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="100"/>
-                                <RowDefinition Height="100"/>
-                                <RowDefinition Height="100"/>
-                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="110"/>
+                                <RowDefinition Height="110"/>
+                                <RowDefinition Height="110"/>
+                                <RowDefinition Height="110"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="{Binding Team.Points}"/>
+                            <Border BorderThickness="2"
+                                    CornerRadius="25"
+                                    Background="Azure" 
+                                    Height="100" Width="250"
+                                    TextBlock.FontSize="17" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="Bahnhof Condensed" TextBlock.Foreground="DarkRed"
+                                    TextBlock.TextAlignment="Left">
 
-                            <Image Source="{Binding Player1.Image}"
-                                   Grid.Row="1" Margin="20 0 0 0"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Height="80" Width="80"/>
+                                <Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=30}"/>
+                                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=65}"/>
+                                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="1" Grid.Row="1"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       TextWrapping="Wrap"
-                                       Padding="0 10 0 0"
-                                       Height="100" Width="250">
+                                        <Image Source="{Binding Team.Logo}"
+                                               HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7"
+                                               Height="70" Width="70"/>
 
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}&#x0a;Punkte: {1}">
-                                        <Binding Path="Player1.Name"/>
-                                        <Binding Path="Player1.Points"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                                        <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 10 0 0"
+                                                   Height="50" Width="130">
 
-                            <Image Source="{Binding Player2.Image}"
-                                   Grid.Row="2" Margin="20 0 0 0"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Height="80" Width="80"/>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}&#x0a;    Punkte: {1}">
+                                                    <Binding Path="Team.Name"/>
+                                                    <Binding Path="Team.Points"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </Grid>
+                            </Border>
 
-                            <TextBlock Grid.Column="1" Grid.Row="2"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       TextWrapping="Wrap"
-                                       Padding="0 10 0 0"
-                                       Height="100" Width="250">
+                            <Border Grid.Row="1" 
+                                    BorderThickness="2"
+                                    CornerRadius="25"
+                                    Background="Azure"
+                                    Height="100" Width="250"
+                                    TextBlock.FontSize="11" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="Bahnhof Condensed" TextBlock.Foreground="DarkRed"
+                                    TextBlock.TextAlignment="Left">
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=30}"/>
+                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=65}"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Image Source="{Binding Team.BestPlayers[0].Image}"
+                                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                                           Margin="7"
+                                           Height="70" Width="70"/>
 
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}&#x0a;Punkte: {1}">
-                                        <Binding Path="Player2.Name"/>
-                                        <Binding Path="Player2.Points"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                                    <TextBlock Text="{Binding Team.BestPlayers[0].Name}"
+                                               Grid.Column="1"
+                                               TextWrapping="Wrap"
+                                               Padding="2 10 2 2"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top"
+                                               FontSize="14" FontWeight="Bold"
+                                               Height="35"/>
 
-                            <Image Source="{Binding Player3.Image}"
-                                   Grid.Row="3" Margin="20 0 0 0"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Height="80" Width="80"/>
+                                    <TextBlock Grid.Column="1"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 30 0 0"
+                                               TextWrapping="Wrap"
+                                               Padding="2"
+                                               Height="100" Width="250">
 
-                            <TextBlock Grid.Column="1" Grid.Row="3"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       TextWrapping="Wrap"
-                                       Padding="0 10 0 0"
-                                       Height="100" Width="250">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}Punkte:  {0}&#x0a;Position:  {1}&#x0a;Nationalität:  {2}">
+                                                <Binding Path="Team.BestPlayers[0].Points"/>
+                                                <Binding Path="Team.BestPlayers[0].Position"/>
+                                                <Binding Path="Team.BestPlayers[0].Nationality"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
 
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}&#x0a;Punkte: {1}">
-                                        <Binding Path="Player3.Name"/>
-                                        <Binding Path="Player3.Points"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                            <Border Grid.Row="2" 
+                                    BorderThickness="2"
+                                    CornerRadius="25"
+                                    Background="Azure"
+                                    Height="100" Width="250"
+                                    TextBlock.FontSize="11" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="Bahnhof Condensed" TextBlock.Foreground="DarkRed"
+                                    TextBlock.TextAlignment="Left">
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=30}"/>
+                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=65}"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Source="{Binding Team.BestPlayers[1].Image}"
+                                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                                           Margin="7"
+                                           Height="70" Width="70"/>
+
+                                    <TextBlock Text="{Binding Team.BestPlayers[1].Name}"
+                                               Grid.Column="1"
+                                               TextWrapping="Wrap"
+                                               Padding="2 10 2 2"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top"
+                                               FontSize="14" FontWeight="Bold"
+                                               Height="35"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 30 0 0"
+                                               TextWrapping="Wrap"
+                                               Padding="2"
+                                               Height="100" Width="250">
+
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}Punkte:  {0}&#x0a;Position:  {1}&#x0a;Nationalität:  {2}">
+                                                <Binding Path="Team.BestPlayers[1].Points"/>
+                                                <Binding Path="Team.BestPlayers[1].Position"/>
+                                                <Binding Path="Team.BestPlayers[1].Nationality"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="3" 
+                                    BorderThickness="2"
+                                    CornerRadius="25"
+                                    Background="Azure"
+                                    Height="100" Width="250"
+                                    TextBlock.FontSize="11" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="Bahnhof Condensed" TextBlock.Foreground="DarkRed"
+                                    TextBlock.TextAlignment="Left">
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=30}"/>
+                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Converter={converters:Resize}, ConverterParameter=65}"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Source="{Binding Team.BestPlayers[2].Image}"
+                                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                                           Margin="7"
+                                           Height="70" Width="70"/>
+
+                                    <TextBlock Text="{Binding Team.BestPlayers[2].Name}"
+                                               Grid.Column="1"
+                                               TextWrapping="Wrap"
+                                               Padding="2 10 2 2"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top"
+                                               FontSize="14" FontWeight="Bold"
+                                               Height="35"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 30 0 0"
+                                               TextWrapping="Wrap"
+                                               Padding="2"
+                                               Height="100" Width="250">
+
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}Punkte:  {0}&#x0a;Position:  {1}&#x0a;Nationalität:  {2}">
+                                                <Binding Path="Team.BestPlayers[2].Points"/>
+                                                <Binding Path="Team.BestPlayers[2].Position"/>
+                                                <Binding Path="Team.BestPlayers[2].Nationality"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -602,7 +697,7 @@
         </Setter>
     </Style>
 
-    <!--Style für Resultlisten-->
+    <!--Style für Standingslisten-->
     <!--                    -->
     <Style TargetType="ListViewItem"
            x:Key="ListViewItemStandings"

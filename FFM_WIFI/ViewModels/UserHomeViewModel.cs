@@ -5,6 +5,7 @@ using FFM_WIFI.Models.Utility;
 using FFM_WIFI.Views;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -36,9 +37,9 @@ namespace FFM_WIFI.ViewModels
             {
                 _selectedActiveTeam = value;
                 SetUserRankList();
+                _delete.RaiseCanExecuteChanged();
                 _draft.RaiseCanExecuteChanged();
                 _game.RaiseCanExecuteChanged();
-                _pdf.RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
         }
@@ -51,9 +52,9 @@ namespace FFM_WIFI.ViewModels
             set
             {
                 _selectedClassicTeam = value;
+                _delete.RaiseCanExecuteChanged();
                 _draft.RaiseCanExecuteChanged();
                 _game.RaiseCanExecuteChanged();
-                _pdf.RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
         }
@@ -73,23 +74,25 @@ namespace FFM_WIFI.ViewModels
 
         #region Commands
 
-        public ICommand NewTeamCommand { get; set; }
-        private RelayCommand _draft;
-        public ICommand DraftCommand { get { return _draft; } }
-        private RelayCommand _game;
-        public ICommand GameCommand { get { return _game; } }
-        private RelayCommand _pdf;
-        public ICommand StartCommand { get; set; }
-        public ICommand PdfCommand { get { return _pdf; } }
-        #endregion
+        public ICommand NewTeamCommand { get; set; } // Weiter zum NewTeamWindow
 
+        private RelayCommand _delete;
+        public ICommand DeleteCommand { get { return _delete; } } // Löscht bestehendes Team
+
+        private RelayCommand _draft;
+        public ICommand DraftCommand { get { return _draft; } } // Weiter zum DraftWindow
+
+        private RelayCommand _game;
+        public ICommand GameCommand { get { return _game; } } // Weiter zum GameHomeWindow
+        public ICommand StartCommand { get; set; } // Zurück zur Anmeldung
+        #endregion
 
         #region Attributes
         private Window _window;
         private GetFrom.Database _get;
-        //private Task _task;
         #endregion
-        // Konstruktor
+
+        #region Constructor
         public UserHomeViewModel(UserHomeWindow window, User user)
         {
             ActiveTeamList = new ObservableCollection<Info.Team>();
@@ -97,15 +100,16 @@ namespace FFM_WIFI.ViewModels
             User = user;
             _window = window;
             _get = new GetFrom.Database(_user);
-            //EditDBCommand = new RelayCommand(GoToEditDatabase);
             NewTeamCommand = new RelayCommand(GoToNewTeam);
             StartCommand = new RelayCommand(GoToStart);
+            _delete = new RelayCommand(DeleteTeam, () => SelectedActiveTeam != null || SelectedClassicTeam != null);
             _draft = new RelayCommand(GoToDraft, () => SelectedActiveTeam != null && SelectedActiveTeam.Players != 17);
             _game = new RelayCommand(GoToGameHome, () => SelectedActiveTeam != null && SelectedActiveTeam.Players == 17);
-            _pdf = new RelayCommand(SaveAsPdf, () => SelectedClassicTeam != null);
             SetTeamLists();
         }
+        #endregion
 
+        #region Methods
         private void GoToStart()
         {
             StartWindow sWindow = new StartWindow();
@@ -113,7 +117,6 @@ namespace FFM_WIFI.ViewModels
             sWindow.ShowDialog();
         }
 
-        #region Methods
         private void GoToNewTeam()
         {
             NewTeamWindow ntWindow = new NewTeamWindow(User);
@@ -124,24 +127,22 @@ namespace FFM_WIFI.ViewModels
         private void GoToDraft()
         {
             DraftWindow dWindow = new DraftWindow(SelectedActiveTeam.UserTeam);
+            _window.Close();
             dWindow.ShowDialog();
-
         }
 
         private void GoToGameHome()
         {
             GameHomeWindow ghWindow = new GameHomeWindow(SelectedActiveTeam);
+            _window.Close();
             ghWindow.ShowDialog();
-        }
-
-        private void SaveAsPdf()
-        {
-
         }
 
         private void SetTeamLists()
         {
-            // ineffektiv?
+            // Befüllt die Team-Listviews; GetFrom-Klasse: s. Utility/GetFrom
+            ClassicTeamList.Clear();
+            ActiveTeamList.Clear();
             foreach (var team in _get.TeamInfo())
             {
                 if (team.Playday > 34)
@@ -157,21 +158,28 @@ namespace FFM_WIFI.ViewModels
 
         private void SetUserRankList()
         {
-            _get.UserTeam = SelectedActiveTeam.UserTeam;
-            UserRankList = new (_get.UserRank());
+            // Befüllt das UserRank-Datagrid: Vergleich von Teams unterschiedlicher Benutzer
+            if (SelectedActiveTeam != null)
+            {
+                _get.UserTeam = SelectedActiveTeam.UserTeam;
+                UserRankList = new(_get.UserRank());
+            }
+        }
+
+        private void DeleteTeam()
+        {
+            // Löscht das ausgewählte Team
+            using (FootballContext context = new FootballContext())
+            {
+                var team = context.UserTeam.Where(t => t.UserTeamPk == SelectedActiveTeam.UserTeam.UserTeamPk).FirstOrDefault();
+                var performance = context.UserTeamPerformance.Where(t => t.UserTeamPerformanceUserTeamFk == SelectedActiveTeam.UserTeam.UserTeamPk).FirstOrDefault();
+
+                context.Remove(performance);
+                context.Remove(team);
+                context.SaveChanges();
+                SetTeamLists();
+            }
         }
         #endregion
-
-        //private void DeleteTeam()
-        //{
-        //    using (FootballContext context = new FootballContext())
-        //    {
-        //        var team = context.UserTeam.Where(t => t.UserTeamPk == SelectedUserTeam.UserTeamPk).FirstOrDefault();
-
-        //        context.Remove(team);
-        //        context.SaveChanges();
-        //        GetUserTeam();
-        //    }
-        //}
     }
 }

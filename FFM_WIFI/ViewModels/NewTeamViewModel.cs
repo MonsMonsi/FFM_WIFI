@@ -13,6 +13,7 @@ namespace FFM_WIFI.ViewModels
     class NewTeamViewModel : BaseViewModel
     {
         #region Properties
+        // TeamName-String
         private string _newTeamName;
         public string NewTeamName
         {
@@ -25,7 +26,7 @@ namespace FFM_WIFI.ViewModels
             }
         }
 
-        // Comboboxes
+        // ListViews
         public ObservableCollection<League> LeagueList { get; set; }
 
         private League _selectedLeague;
@@ -78,19 +79,19 @@ namespace FFM_WIFI.ViewModels
 
         #region Commands
         private RelayCommand _name;
-        public ICommand NameCommand => _name;
+        public ICommand NameCommand => _name; // Name wird gesetzt
 
         private RelayCommand _leagueSeason;
-        public ICommand LeagueSeasonCommand => _leagueSeason;
+        public ICommand LeagueSeasonCommand => _leagueSeason; // Liga und Saison wird gesetzt
 
         private RelayCommand _undo;
-        public ICommand UndoCommand => _undo;
+        public ICommand UndoCommand => _undo; // Alle Properties werden zurückgesetzt
 
         private RelayCommand _save;
-        public ICommand SaveCommand => _save;
+        public ICommand SaveCommand => _save; // Neues Team wird gespeichert
         #endregion
 
-        // Konstruktor
+        #region Constructor
         public NewTeamViewModel(Window window, User user)
         {
             _window = window;
@@ -101,6 +102,7 @@ namespace FFM_WIFI.ViewModels
             _undo = new RelayCommand(UndoAll, () => SelectedLogo != null);
             _save = new RelayCommand(SaveTeam, () => SelectedLogo != null);
         }
+        #endregion
 
         #region Methods
         private void GoToUserHome()
@@ -112,6 +114,8 @@ namespace FFM_WIFI.ViewModels
 
         private void SubmitName()
         {
+            // Vom User gesetzter Name wird zischengespeichert
+            // Liga und SaisonListen werden geladen
             LeagueList = new ObservableCollection<League>(_get.LeagueList());
             OnPropertyChanged("LeagueList");
             SeasonList = new ObservableCollection<Season>(_get.SeasonList());
@@ -122,6 +126,8 @@ namespace FFM_WIFI.ViewModels
 
         private void SubmitLeagueSeason()
         {
+            // Vom User gewählte Liga und Saison wird zwischengespeichert
+            // Logo-Liste wird geladen
             LogoList = new ObservableCollection<string>(_get.LogoList());
             OnPropertyChanged("LogoList");
             _leagueSeasonSubmitted = true;
@@ -130,6 +136,7 @@ namespace FFM_WIFI.ViewModels
 
         private void UndoAll()
         {
+            // Zurücksetzen aller zwischengespeicherter Properties
             LogoList.Clear();
             SeasonList.Clear();
             LeagueList.Clear();
@@ -145,11 +152,12 @@ namespace FFM_WIFI.ViewModels
         {
             using (FootballContext context = new FootballContext())
             {
+                // Checkt, ob bereits ein Team mit dem gewählten Namen vorhanden ist
                 var t = context.UserTeam.Where(t => t.UserTeamName.ToUpper() == NewTeamName.ToUpper()).FirstOrDefault();
 
+                // Wenn nicht, legt er ein neues Team an
                 if (t == null)
                 {
-                    // neues Team
                     UserTeam team = new UserTeam();
                     team.UserTeamName = NewTeamName;
                     team.UserTeamLogo = _selectedLogo;

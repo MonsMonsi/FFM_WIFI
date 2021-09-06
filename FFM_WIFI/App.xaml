@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <local:Resize x:Key="Resize"/>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles.xaml"/>
+                <ResourceDictionary Source="Resources/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/Borders.xaml"/>
                 <ResourceDictionary Source="Resources/DataControls.xaml"/>
                 <ResourceDictionary Source="Resources/TextControls.xaml"/>

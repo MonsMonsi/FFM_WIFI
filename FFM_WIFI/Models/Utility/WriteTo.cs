@@ -10,6 +10,7 @@ namespace FFM_WIFI.Models.Utility
 {
     public class WriteTo
     {
+        // WriteTo-Klasse: Schreibt Daten in die Datenbank
         public class Database
         {
             #region Properties
@@ -61,8 +62,6 @@ namespace FFM_WIFI.Models.Utility
                     performance.UserTeamPerformanceMf2 = _playerInfo[6].Points; performance.UserTeamPerformanceAt3 = _playerInfo[15].Points;
                     performance.UserTeamPerformanceMf3 = _playerInfo[7].Points; performance.UserTeamPerformanceAt4 = _playerInfo[16].Points;
                     performance.UserTeamPerformanceMf4 = _playerInfo[8].Points;
-
-                    
 
                     context.SaveChanges();
                 }

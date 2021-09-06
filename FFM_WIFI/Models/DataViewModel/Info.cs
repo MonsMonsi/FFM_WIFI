@@ -55,9 +55,9 @@ namespace FFM_WIFI.Models.DataViewModel
             #region Methods
             private void SetProperties()
             {
-                switch (_type)
+                switch (_type.ToLower())
                 {
-                    case "Goal":
+                    case "goal":
                         CommentHeader = "TOR !!! TOR!!!";
                         CommentText = $"{PlayerName} Knallt die Kugel ins Kreuzeck!!!";
                         break;
@@ -65,7 +65,7 @@ namespace FFM_WIFI.Models.DataViewModel
                         CommentHeader = "Auswechslung!";
                         CommentText = $"{PlayerName} geht runter. Für ihn kommt {AssistName}";
                         break;
-                    case "Card":
+                    case "card":
                         if (_detail == "Yellow Card")
                         {
                             CommentHeader = "Gelbe Karte!";
@@ -76,6 +76,10 @@ namespace FFM_WIFI.Models.DataViewModel
                             CommentHeader = "Rote Karte!";
                             CommentText = $"{PlayerName} muss vorzeitig duschen gehen!!";
                         }
+                        break;
+                    case "var":
+                        CommentHeader = "VAR";
+                        CommentText = "Die Szene wird überprüft!";
                         break;
                     default:
                         CommentHeader = "Anderes Ereignis!";
@@ -291,23 +295,23 @@ namespace FFM_WIFI.Models.DataViewModel
                 }
             }
 
-            private Player GetBestPlayer(ref Player[] temp)
-            {
-                Player player = new Player();
-                int index = 0;
-                player.Points = 0;
+            //private Player GetBestPlayer(ref Player[] temp)
+            //{
+            //    Player player = new Player();
+            //    int index = 0;
+            //    player.Points = 0;
 
-                for (int i = 0; i < temp.Length; i++)
-                {
-                    if (temp[i] != null && temp[i].Points > player.Points)
-                    {
-                        player = temp[i];
-                        index = i;
-                    }
-                }
-                temp[index] = null;
-                return player;
-            }
+            //    for (int i = 0; i < temp.Length; i++)
+            //    {
+            //        if (temp[i] != null && temp[i].Points > player.Points)
+            //        {
+            //            player = temp[i];
+            //            index = i;
+            //        }
+            //    }
+            //    temp[index] = null;
+            //    return player;
+            //}
             #endregion
         }
         public class Standings

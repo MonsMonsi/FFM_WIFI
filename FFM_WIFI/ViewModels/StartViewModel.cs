@@ -9,7 +9,7 @@ namespace FFM_WIFI.ViewModels
 {
     class StartViewModel : BaseViewModel
     {
-        // Properties
+        #region Properties
         // Properties für Login
         private string _userName;
         public string UserName
@@ -32,23 +32,28 @@ namespace FFM_WIFI.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
-        // Attribute
+        #region Attributes
         private User _user;
         private Window _window;
+        #endregion
 
-        // Commands
-        public ICommand LoginCommand { get; set; }
-        public ICommand NewUserCommand { get; set; }
+        #region Commands
+        public ICommand LoginCommand { get; set; } // Login für bereits bestehende User
+        public ICommand NewUserCommand { get; set; } // Erstellt neuen User
+        #endregion
 
-        // Konstruktor
+        #region Constructor
         public StartViewModel(Window window)
         {
             _window = window;
             LoginCommand = new RelayCommand(CheckLogin);
             NewUserCommand = new RelayCommand(CheckNewUser);
         }
+        #endregion
 
+        #region Methods
         private void GoToUserHome()
         {
             UserHomeWindow uhWindow = new UserHomeWindow(_user);
@@ -60,6 +65,7 @@ namespace FFM_WIFI.ViewModels
         {
             if (_userName != null)
             {
+                // Checkt die Datenbank, ob User bereits vorhanden
                 using (FootballContext context = new FootballContext())
                 {
                     var existingUser = context.User.Where(u => u.UserName == UserName && u.UserPassword == UserPassword).FirstOrDefault();
@@ -102,6 +108,6 @@ namespace FFM_WIFI.ViewModels
                 }
             }
         }
-
+        #endregion
     }
 }
