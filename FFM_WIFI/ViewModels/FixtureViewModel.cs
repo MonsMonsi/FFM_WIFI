@@ -103,7 +103,7 @@ namespace FFM_WIFI.ViewModels
         private void GoToGameHome()
         {
             UpdateTeamInfo();
-            if (_playday > 34)
+            if (_playday > _userTeam.UserTeamMaxPlayday)
             {
                 GoToResult();
             }

@@ -67,7 +67,7 @@ namespace FFM_WIFI.ViewModels
             using (FootballContext context = new FootballContext())
             {
                 var userTeam = context.UserTeam.Where(u => u.UserTeamPk == ResultInfo.Team.TeamId).FirstOrDefault();
-                userTeam.UserTeamPlayday++;
+                userTeam.UserTeamPlayday = ResultInfo.Team.Playday;
                 context.SaveChanges();
             }
         }

@@ -33,7 +33,6 @@ namespace FFM_WIFI.Models.DataContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer(App.Config.ConnectionString);
             }
         }
@@ -193,11 +192,19 @@ namespace FFM_WIFI.Models.DataContext
 
                 entity.Property(e => e.TeaPlaPlayerValue).HasColumnName("TeaPla_PlayerValue");
 
+                entity.Property(e => e.TeaPlaSeasonFk).HasColumnName("TeaPla_Season_FK");
+
                 entity.HasOne(d => d.TeaPlaPlayerFkNavigation)
                     .WithMany(p => p.TeamPlayerAssignment)
                     .HasForeignKey(d => d.TeaPlaPlayerFk)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("TeaPla_Player_FK");
+
+                entity.HasOne(d => d.TeaPlaSeasonFkNavigation)
+                    .WithMany(p => p.TeamPlayerAssignment)
+                    .HasForeignKey(d => d.TeaPlaSeasonFk)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TeamPlayer_Assignment_Season");
 
                 entity.HasOne(d => d.TeaPlaTeamFkNavigation)
                     .WithMany(p => p.TeamPlayerAssignment)
@@ -254,6 +261,8 @@ namespace FFM_WIFI.Models.DataContext
                 entity.Property(e => e.UserTeamLeague).HasColumnName("UserTeam_League");
 
                 entity.Property(e => e.UserTeamLogo).HasColumnName("UserTeam_Logo");
+
+                entity.Property(e => e.UserTeamMaxPlayday).HasColumnName("UserTeam_MaxPlayday");
 
                 entity.Property(e => e.UserTeamMf1).HasColumnName("UserTeam_MF1");
 

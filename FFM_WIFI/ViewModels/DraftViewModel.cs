@@ -203,6 +203,7 @@ namespace FFM_WIFI.ViewModels
             SetDraftText();
             PlayerList.Clear();
 
+            // wenn _allPlayers leer ist, holt er die Spielerdaten aus der Datenbank und schreibt sie in _allPlayers
             if (_allPlayers.Count == 0)
             {
                 using (FootballContext context = new FootballContext())
@@ -222,6 +223,7 @@ namespace FFM_WIFI.ViewModels
                 }
             }
 
+            // ist _allPlayers bereits gefüllt, entnimmt er die nötigen Spielerdaten aus _allPlayers
             foreach (var player in _allPlayers)
             {
                 if (player.Position == _position && player.Value < _moneyMax && !_draftedTeam.Contains(player))

@@ -11,11 +11,13 @@ namespace FFM_WIFI.Models.DataContext
         public Season()
         {
             SeasonLeagueTeamAssignment = new HashSet<SeasonLeagueTeamAssignment>();
+            TeamPlayerAssignment = new HashSet<TeamPlayerAssignment>();
         }
 
         public int SeasonPk { get; set; }
         public string SeasonName { get; set; }
 
         public virtual ICollection<SeasonLeagueTeamAssignment> SeasonLeagueTeamAssignment { get; set; }
+        public virtual ICollection<TeamPlayerAssignment> TeamPlayerAssignment { get; set; }
     }
 }

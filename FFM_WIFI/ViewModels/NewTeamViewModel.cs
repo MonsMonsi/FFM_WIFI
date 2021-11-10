@@ -165,6 +165,15 @@ namespace FFM_WIFI.ViewModels
                     team.UserTeamSeason = _selectedSeason.SeasonPk;
                     team.UserTeamUserFk = _user.UserPk;
                     team.UserTeamPlayday = 1;
+
+                    // verschiedene Ligen haben unterschiedliche Anzahl Teams
+                    int max = _selectedLeague.LeaguePk switch
+                    {
+                        78 => 34,
+                        61 or 39 => 38,
+                        _ => 0
+                    };
+                    team.UserTeamMaxPlayday = max;
                     team.UserTeamPoints = 0;
                     team.UserTeamGk1 = 0; team.UserTeamDf1 = 0; team.UserTeamDf2 = 0; team.UserTeamDf3 = 0; team.UserTeamDf4 = 0; team.UserTeamMf1 = 0; team.UserTeamMf2 = 0;
                     team.UserTeamMf3 = 0; team.UserTeamMf4 = 0; team.UserTeamAt1 = 0; team.UserTeamAt2 = 0; team.UserTeamGk2 = 0; team.UserTeamDf5 = 0; team.UserTeamMf5 = 0;

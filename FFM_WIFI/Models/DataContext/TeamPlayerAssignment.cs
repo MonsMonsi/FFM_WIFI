@@ -10,10 +10,12 @@ namespace FFM_WIFI.Models.DataContext
     {
         public int TeaPlaTeamFk { get; set; }
         public int TeaPlaPlayerFk { get; set; }
+        public int TeaPlaSeasonFk { get; set; }
         public double TeaPlaPlayerRating { get; set; }
         public int TeaPlaPlayerValue { get; set; }
 
         public virtual Player TeaPlaPlayerFkNavigation { get; set; }
+        public virtual Season TeaPlaSeasonFkNavigation { get; set; }
         public virtual SeasonLeagueTeamAssignment TeaPlaTeamFkNavigation { get; set; }
     }
 }

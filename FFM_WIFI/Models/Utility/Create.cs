@@ -38,7 +38,7 @@ namespace FFM_WIFI.Models.Utility
                 DataViewModel.Info.Team temp;
                 DataViewModel.Info.Player[] players = new Database(null, userTeam).PlayerInfo();
 
-                if (userTeam.UserTeamPlayday > 34)
+                if (userTeam.UserTeamPlayday > userTeam.UserTeamMaxPlayday)
                 {
                     temp = new DataViewModel.Info.Team(userTeam.UserTeamPk, userTeam.UserTeamUserFkNavigation.UserPk, userTeam.UserTeamName, new GetFrom().Image(_images.Star),
                                                        userTeam.UserTeamPlayday, userTeam.UserTeamNumberPlayers, new GetFrom().Image(league.LeagueLogo), season.SeasonPk,

@@ -10,6 +10,9 @@ using System.Windows.Data;
 
 namespace FFM_WIFI.Models.Converters
 {
+    // Die Property Password der PasswordBox-Control (ein string der das eingegebene Passwort darstellt) ist keine Dependency Property und kann deswegen nicht 
+    // gebindet werden, wie z.B. die Text-Property einer Textbox
+    // daher brauch man diesen Converter
     public  class PasswordBoxAssistant
     {
         public static readonly DependencyProperty BoundPassword =

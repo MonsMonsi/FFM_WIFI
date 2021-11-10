@@ -145,7 +145,7 @@ namespace FFM_WIFI.ViewModels
             ActiveTeamList.Clear();
             foreach (var team in _get.TeamInfo())
             {
-                if (team.Playday > 34)
+                if (team.Playday > team.UserTeam.UserTeamMaxPlayday)
                 {
                     ClassicTeamList.Add(team);
                 }
